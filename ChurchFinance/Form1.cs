@@ -15,6 +15,8 @@ namespace ChurchFinance
         public Form1()
         {
             InitializeComponent();
+
+
         }
     }
 }
