@@ -24,8 +24,8 @@ namespace UI
         {
             InitializeComponent();
 
-            SelectColor = Color.LightCyan;
-            etcTabColor = Color.LightGray;
+            SelectColor = Color.Cyan;
+            etcTabColor = Color.White;
 
             // 폰트 설정
             tabFont = new Font(new FontFamily("휴먼편지체"), 10);
@@ -43,9 +43,9 @@ namespace UI
             // Tab의 사이즈를 조절하려면 TabSizeMode.Fixed로 변경하고 조절해야함
             tabControl1.SizeMode = TabSizeMode.Fixed;
             tabControl1.ItemSize = new Size(100, 20);
-                        
-            tabPage1.BackColor = SelectColor;
-            tabPage2.BackColor = SelectColor;
+
+            // 페이지의 Background를 설정
+            setPageBackground();
 
             tabPage1.BorderStyle = BorderStyle.None;
 
@@ -106,6 +106,24 @@ namespace UI
             privateFont.AddFontFile(currentPath + "\\Font\\Daum_Regular.ttf");
 
             tabFont = new Font(privateFont.Families[0], 10f);
+        }
+
+        /// <summary>
+        /// tabPage의 배경을 설정합니다.
+        /// </summary>
+        private void setPageBackground()
+        {
+            String currentPath = Environment.CurrentDirectory;
+            Image img =  Image.FromFile(currentPath + "\\Image\\cyan.jpg");
+
+            Bitmap resizedImg = new Bitmap(img, tabPage1.Size);
+
+            tabPage1.BackgroundImage = resizedImg;
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
