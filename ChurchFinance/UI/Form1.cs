@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace UI
         Rectangle[] myTabRect = new Rectangle[2];
         Color SelectColor;
         Color etcTabColor;
+        Font tabFont;
 
         public Form1()
         {
@@ -25,10 +27,15 @@ namespace UI
             SelectColor = Color.LightCyan;
             etcTabColor = Color.LightGray;
 
+            // 폰트 설정
+            tabFont = new Font(new FontFamily("휴먼편지체"), 10);
+
+            setFont();
+
             // OwnerDrawFixed모드를 설정해서 상위 Form에서 정의할 수 있도록 함
             tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
 
-            tabControl1.Dock = DockStyle.Fill;
+            //tabControl1.Dock = DockStyle.Fill;
 
             myTabRect[0] = tabControl1.GetTabRect(0);
             myTabRect[1] = tabControl1.GetTabRect(1);
@@ -37,8 +44,8 @@ namespace UI
             tabControl1.SizeMode = TabSizeMode.Fixed;
             tabControl1.ItemSize = new Size(100, 20);
                         
-            tabPage1.BackColor = Color.White;
-            tabPage2.BackColor = Color.White;
+            tabPage1.BackColor = SelectColor;
+            tabPage2.BackColor = SelectColor;
 
             tabPage1.BorderStyle = BorderStyle.None;
 
@@ -67,23 +74,38 @@ namespace UI
             else
             {
                 // 선택되지 않은 아이템
-                //g.FillRectangle(etcTabBrush, SelectedItemRect);
+                g.FillRectangle(etcTabBrush, SelectedItemRect);
             }
 
             switch(e.Index)
             {
                 case 0:
-                    g.DrawString("수 입", e.Font, new SolidBrush(Color.Black), new Point(35, 5));
+                    g.DrawString("수입", tabFont, new SolidBrush(Color.Black), new Point(35, 5));
 
                     break;
 
                 case 1:
-                    g.DrawString("지 출", e.Font, new SolidBrush(Color.Black), new Point(135, 5));
+                    g.DrawString("지출", tabFont, new SolidBrush(Color.Black), new Point(135, 5));
 
                     break;
 
             }
 
+        }
+
+
+        /// <summary>
+        /// 폰트를 설정합니다 
+        /// </summary>
+        private void setFont()
+        {
+            PrivateFontCollection privateFont = new PrivateFontCollection();
+
+            String currentPath = Environment.CurrentDirectory;
+
+            privateFont.AddFontFile(currentPath + "\\Font\\Daum_Regular.ttf");
+
+            tabFont = new Font(privateFont.Families[0], 10f);
         }
     }
 }
