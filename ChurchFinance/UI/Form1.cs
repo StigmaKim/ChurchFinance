@@ -120,10 +120,5 @@ namespace UI
 
             tabPage1.BackgroundImage = resizedImg;
         }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
     }
 }
