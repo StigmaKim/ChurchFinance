@@ -33,6 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NeoTabControlLibrary">
+      <HintPath>..\..\..\..\Download\NeoTabControlLibrary_demo\NeoTabControlLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="NeoTabControlLibrary.CommonObjects">
+      <HintPath>..\..\..\..\Download\NeoTabControlLibrary_demo\NeoTabControlLibrary.CommonObjects.dll</HintPath>
+    </Reference>
     <Reference Include="NeoTabControlLibrary.Renderer.MarginBlue">
       <HintPath>..\..\..\..\Download\NeoTabControlLibrary_demo\Add-ins\MarginBlue\NeoTabControlLibrary.Renderer.MarginBlue.dll</HintPath>
     </Reference>
