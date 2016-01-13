@@ -45,7 +45,11 @@ namespace UI
             tabControl1.ItemSize = new Size(100, 20);
 
             // 페이지의 Background를 설정
-            setPageBackground();
+            //setPageBackground();
+
+            tabPage1.BackColor = Color.Cyan;
+            tabPage2.BackColor = Color.Cyan;
+
 
             tabPage1.BorderStyle = BorderStyle.None;
 
@@ -63,13 +67,17 @@ namespace UI
 
             Rectangle SelectedItemRect = tabControl1.GetTabRect(e.Index);
 
+            Image tabImg = Image.FromFile(Environment.CurrentDirectory + "\\image\\cyan.jpg");
+            Bitmap tImg = new Bitmap(tabImg, SelectedItemRect.Size);
+
             SolidBrush curTabBrush = new SolidBrush(SelectColor);
             SolidBrush etcTabBrush = new SolidBrush(etcTabColor);
             
             if (e.State == DrawItemState.Selected)
             {
                 // 선택된 아이템
-                g.FillRectangle(curTabBrush, SelectedItemRect);
+                //g.FillRectangle(curTabBrush, SelectedItemRect);
+                g.DrawImage(tImg, SelectedItemRect.Location);
             }
             else
             {
@@ -80,12 +88,12 @@ namespace UI
             switch(e.Index)
             {
                 case 0:
-                    g.DrawString("수입", tabFont, new SolidBrush(Color.Black), new Point(35, 5));
+                    g.DrawString("수 입", tabFont, new SolidBrush(Color.Black), new Point(35, 5));
 
                     break;
 
                 case 1:
-                    g.DrawString("지출", tabFont, new SolidBrush(Color.Black), new Point(135, 5));
+                    g.DrawString("지 출", tabFont, new SolidBrush(Color.Black), new Point(135, 5));
 
                     break;
 
