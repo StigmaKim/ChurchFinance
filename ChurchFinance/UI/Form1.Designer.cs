@@ -28,63 +28,46 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabControl1.SuspendLayout();
+            this.neoTabWindow1 = new NeoTabControlLibrary.NeoTabWindow();
+            this.imgBtnContainer1 = new UI.ImgBtnContainer();
+            ((System.ComponentModel.ISupportInitialize)(this.neoTabWindow1)).BeginInit();
             this.SuspendLayout();
             // 
-            // tabControl1
+            // neoTabWindow1
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.neoTabWindow1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(12, 12);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(898, 437);
-            this.tabControl1.TabIndex = 0;
+            this.neoTabWindow1.Location = new System.Drawing.Point(13, 116);
+            this.neoTabWindow1.Name = "neoTabWindow1";
+            this.neoTabWindow1.RendererName = null;
+            this.neoTabWindow1.Size = new System.Drawing.Size(968, 451);
+            this.neoTabWindow1.TabIndex = 1;
             // 
-            // tabPage1
+            // imgBtnContainer1
             // 
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(890, 411);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(890, 411);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.imgBtnContainer1.Location = new System.Drawing.Point(13, 13);
+            this.imgBtnContainer1.Name = "imgBtnContainer1";
+            this.imgBtnContainer1.Size = new System.Drawing.Size(968, 97);
+            this.imgBtnContainer1.TabIndex = 2;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(935, 461);
-            this.Controls.Add(this.tabControl1);
+            this.ClientSize = new System.Drawing.Size(993, 579);
+            this.Controls.Add(this.imgBtnContainer1);
+            this.Controls.Add(this.neoTabWindow1);
             this.Name = "Form1";
-            this.Text = "Form1";
-            this.tabControl1.ResumeLayout(false);
+            this.Text = "정산 프로그램";
+            ((System.ComponentModel.ISupportInitialize)(this.neoTabWindow1)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private NeoTabControlLibrary.NeoTabWindow neoTabWindow1;
+        private ImgBtnContainer imgBtnContainer1;
     }
 }
 

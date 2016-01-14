@@ -61,6 +61,18 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="ImageBtn.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ImageBtn.Designer.cs">
+      <DependentUpon>ImageBtn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ImgBtnContainer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ImgBtnContainer.Designer.cs">
+      <DependentUpon>ImgBtnContainer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestForm.cs">
@@ -71,6 +83,12 @@
     </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImageBtn.resx">
+      <DependentUpon>ImageBtn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImgBtnContainer.resx">
+      <DependentUpon>ImgBtnContainer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -100,8 +118,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Image\iCalendar.png" />
     <Content Include="Image\cyan.jpg" />
+    <Content Include="Image\m.png" />
     <Content Include="Image\page.jpg" />
+    <Content Include="Image\w.png" />
+    <Content Include="Image\y.png" />
+    <Content Include="Image\year.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
