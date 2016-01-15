@@ -20,7 +20,7 @@ namespace UI
             {
                 m_dbConnection = new SQLiteConnection("Data Source=TestDB.sqlite;Version=3;");
                 m_dbConnection.Open();
-                Debug.WriteLine("Oepn DB Connection");
+                //Debug.WriteLine("Oepn DB Connection");
             }
             catch(SQLiteException e)
             {
@@ -33,7 +33,7 @@ namespace UI
             try
             {
                 m_dbConnection.Close();
-                Debug.WriteLine("Close DB Connection");
+                //Debug.WriteLine("Close DB Connection");
             }
             catch(SQLiteException e)
             {
@@ -73,6 +73,18 @@ namespace UI
             adapter.Fill(ds);
 
             return ds;
+        }
+
+        public string DateTimeSQLite(DateTime datetime)
+        {
+            string dateTimeFormat = "{0}-{1}-{2} {3}:{4}:{5}.{6}";
+            return string.Format(dateTimeFormat, datetime.Year, datetime.Month, datetime.Day, datetime.Hour, datetime.Minute, datetime.Second, datetime.Millisecond);
+        }
+
+        public string DateTimeS(DateTime datetime)
+        {
+            string dateTimeFormat = "{0}-{1}-{2}";
+            return string.Format(dateTimeFormat, datetime.Year, datetime.Month, datetime.Day);
         }
     }
 }

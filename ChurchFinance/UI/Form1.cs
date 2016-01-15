@@ -19,10 +19,28 @@ namespace UI
     {
         // DataGridView 생성
         DataGridView income = null;
-        DataGridView _income = null;
         DataGridView income_total = null;
         DataGridView _income_total = null;
-        int dgvcnt = 0;
+
+        DataGridView _income_Thanks = null;
+        DataGridView _income_10 = null;
+        DataGridView _income_Cell = null;
+        DataGridView _income_Archi = null;
+        DataGridView _income_Mission = null;
+        DataGridView _income_Rice = null;
+        DataGridView _income_Help = null;
+        DataGridView _income_Other = null;
+
+        int Sum_Thanks = 0;
+        int Sum_10 = 0;
+        int Sum_Cell = 0;
+        int Sum_Archi = 0;
+        int Sum_Mission = 0;
+        int Sum_Rice = 0;
+        int Sum_Help = 0;
+        int Sum_Other = 0;
+
+        Control currentTab = null;       
 
         // DB 관련 
         SQLite SQLite = null ;
@@ -47,16 +65,65 @@ namespace UI
             SQLite = new SQLite(); // DB Object
             cmd = SQLite.GetSQLCommand(); // Command Object
 
+            dateTimePicker1.ValueChanged += DateTimePicker1_ValueChanged;
+
             neoTabWindow1.Renderer = NeoTabControlLibrary.AddInRendererManager.LoadRenderer("MarginBlueRendererVS2");
             neoTabWindow1.BackColor = Color.White;
 
             setImgBtn();
             setWeekTabPage();
-            setInitialTotal();
 
             panel5.BackColor = Color.LightGray;
             panel2.BackColor = Color.LightGray;
             
+        }
+
+        private void DateTimePicker1_ValueChanged(object sender, EventArgs e) // 날짜 바뀔땐 항상 감사헌금 띄움
+        {
+            /*
+            W_IncomeTab.Controls.Remove(currentTab);
+            W_IncomeTab.Controls.Remove(income);
+            W_IncomeTab.Controls.Remove(income_total);
+            W_IncomeTab.Controls.Remove(_income_total);
+            */
+            W_IncomeTab.Controls.Add(_income_Thanks);
+            W_IncomeTab.Controls.Add(_income_10);
+            W_IncomeTab.Controls.Add(_income_Cell);
+            W_IncomeTab.Controls.Add(_income_Archi);
+            W_IncomeTab.Controls.Add(_income_Mission);
+            W_IncomeTab.Controls.Add(_income_Rice);
+            W_IncomeTab.Controls.Add(_income_Help);
+            W_IncomeTab.Controls.Add(_income_Other);
+
+            // 값 변화있을때 Re Draw
+            SetThanksDGV(2);
+            Set10DGV(2);        
+            SetCellDGV(2);       
+            SetArchiDGV(2);      
+            SetMissionDGV(2);   
+            SetRiceDGV(2);  
+            SetHelpDGV(2);    
+            SetOtherDGV(2);
+
+            W_IncomeTab.Controls.Remove(_income_Thanks);
+            W_IncomeTab.Controls.Remove(_income_10);
+            W_IncomeTab.Controls.Remove(_income_Cell);
+            W_IncomeTab.Controls.Remove(_income_Archi);
+            W_IncomeTab.Controls.Remove(_income_Mission);
+            W_IncomeTab.Controls.Remove(_income_Rice);
+            W_IncomeTab.Controls.Remove(_income_Help);
+            W_IncomeTab.Controls.Remove(_income_Other);
+
+            SetInputSumDGV();
+
+            W_IncomeTab.Controls.Add(_income_Thanks);
+            currentTab = _income_Thanks;
+            /*
+            W_IncomeTab.Controls.Add(_income_Thanks);
+            W_IncomeTab.Controls.Add(income);
+            W_IncomeTab.Controls.Add(_income_total);
+            W_IncomeTab.Controls.Add(income_total);
+            */
         }
 
 
@@ -129,19 +196,7 @@ namespace UI
         }
 
         #endregion 
-
-        private void setInitialTotal()
-        {
-            int sum = 0;
-            for (int i = 0; i < _income.RowCount - 1; i++)
-            {
-                Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
-                if (_income.Rows[i].Cells[1].Value.ToString() != "")
-                    sum += (int)_income.Rows[i].Cells[1].Value;
-            }
-
-            _income_total.Rows[0].Cells[1].Value = sum;
-        }
+        
         private void setWeekTabPage()
         {
             W_IncomeTab = new NeoTabPage();
@@ -158,22 +213,85 @@ namespace UI
             neoTabWindow1.Controls.Add(W_SpendingTab);
 
             AddGridView();
+            CreateTable();
+
+            // 최초 DGV 그리기.
+            SetThanksDGV(1);
+            Set10DGV(1);
+            SetCellDGV(1);    
+            SetArchiDGV(1);      
+            SetMissionDGV(1);    
+            SetRiceDGV(1);     
+            SetHelpDGV(1);      
+            SetOtherDGV(1);      
+
+            W_IncomeTab.Controls.Remove(_income_Thanks);
+            W_IncomeTab.Controls.Remove(_income_10);
+            W_IncomeTab.Controls.Remove(_income_Cell);
+            W_IncomeTab.Controls.Remove(_income_Archi);
+            W_IncomeTab.Controls.Remove(_income_Mission);
+            W_IncomeTab.Controls.Remove(_income_Rice);
+            W_IncomeTab.Controls.Remove(_income_Help);
+            W_IncomeTab.Controls.Remove(_income_Other);
+            
+
             SetInputSumDGV(); // 최초 DGV 그리기. ( 수입 SUM )
-            SetThanksDGV(); // 최초 DGV 그리기. ( 감사헌금 )
+            W_IncomeTab.Controls.Add(_income_Thanks);
+            currentTab = _income_Thanks;
         }
 
+        private void CreateTable()
+        {
+            SQLite.Execute(string.Format("create table Offering_Thanks " +
+                "(no Integer primary key autoincrement, date datetime, name varchar(40), amount Integer)"));
+            SQLite.Execute(string.Format("create table Offering_10 " +
+                "(no Integer primary key autoincrement, date datetime, name varchar(40), amount Integer)"));
+            SQLite.Execute(string.Format("create table Offering_Cell " +
+                "(no Integer primary key autoincrement, date datetime, name varchar(40), amount Integer)"));
+            SQLite.Execute(string.Format("create table Offering_Archi " +
+                "(no Integer primary key autoincrement, date datetime, name varchar(40), amount Integer)"));
+            SQLite.Execute(string.Format("create table Offering_Mission " +
+                "(no Integer primary key autoincrement, date datetime, name varchar(40), amount Integer)"));
+            SQLite.Execute(string.Format("create table Offering_Rice " +
+                "(no Integer primary key autoincrement, date datetime, name varchar(40), amount Integer)"));
+            SQLite.Execute(string.Format("create table Offering_Help " +
+                "(no Integer primary key autoincrement, date datetime, name varchar(40), amount Integer)"));
+            SQLite.Execute(string.Format("create table Offering_Other " +
+                "(no Integer primary key autoincrement, date datetime, name varchar(40), amount Integer)"));
+        }
         private void AddGridView()
         {
-            #region 수입 탭 GridView 설정
+            #region 수입 탭 GridView 선언
 
             income = new DataGridView();
-            _income = new DataGridView();
             income_total = new DataGridView();
             _income_total = new DataGridView();
 
+            _income_Thanks = new DataGridView();
+            _income_10 = new DataGridView();
+            _income_Cell = new DataGridView();
+            _income_Archi = new DataGridView();
+            _income_Mission = new DataGridView();
+            _income_Rice = new DataGridView();
+            _income_Help = new DataGridView();
+            _income_Other = new DataGridView();
 
-            _income.CellEndEdit += _income_CellEndEdit;
 
+            _income_Thanks.CellEndEdit += _income_Thanks_CellEndEdit;
+            _income_10.CellEndEdit += _income_10_CellEndEdit;
+            _income_Cell.CellEndEdit += _income_Cell_CellEndEdit;
+            _income_Archi.CellEndEdit += _income_Archi_CellEndEdit;
+            _income_Mission.CellEndEdit += _income_Mission_CellEndEdit;
+            _income_Rice.CellEndEdit += _income_Rice_CellEndEdit;
+            _income_Help.CellEndEdit += _income_Help_CellEndEdit;
+            _income_Other.CellEndEdit += _income_Other_CellEndEdit;
+            
+            income.CellMouseDown += Income_CellMouseDown;
+
+
+            #endregion
+
+            #region DGV 옵션 1
             // income ---------------------------------------
             income.Size = new Size(300, 400);
             income.Location = new Point(20, 20);
@@ -199,18 +317,6 @@ namespace UI
                 income.Rows.Add(row);
             }
             */
-
-            // _income ----------------------------------
-            _income.Size = new Size(600, 400);
-            _income.Location = new Point(350, 20);
-            _income.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            _income.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            //_income.ColumnCount = 3;
-
-            for (int i = 0; i < income.Columns.Count; i++)
-            {
-                income.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            }
 
             // income_total ------------------------------
             income_total.Size = new Size(300, 26);
@@ -246,49 +352,338 @@ namespace UI
                 _income_total.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
 
-            
+            #endregion
+
+            #region DGV 옵션 2
+            // _income_Thanks ----------------------------------
+            _income_Thanks.Size = new Size(600, 400);
+            _income_Thanks.Location = new Point(350, 20);
+            _income_Thanks.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            _income_Thanks.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        
+            // _income_10 ----------------------------------
+            _income_10.Size = new Size(600, 400);
+            _income_10.Location = new Point(350, 20);
+            _income_10.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            _income_10.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            // _income_Cell ----------------------------------
+            _income_Cell.Size = new Size(600, 400);
+            _income_Cell.Location = new Point(350, 20);
+            _income_Cell.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            _income_Cell.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            // _income_Archi ----------------------------------
+            _income_Archi.Size = new Size(600, 400);
+            _income_Archi.Location = new Point(350, 20);
+            _income_Archi.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            _income_Archi.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            // _income_Mission ----------------------------------
+            _income_Mission.Size = new Size(600, 400);
+            _income_Mission.Location = new Point(350, 20);
+            _income_Mission.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            _income_Mission.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            // _income_Rice ----------------------------------
+            _income_Rice.Size = new Size(600, 400);
+            _income_Rice.Location = new Point(350, 20);
+            _income_Rice.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            _income_Rice.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            // _income_Help ----------------------------------
+            _income_Help.Size = new Size(600, 400);
+            _income_Help.Location = new Point(350, 20);
+            _income_Help.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            _income_Help.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            // _income_Other ----------------------------------
+            _income_Other.Size = new Size(600, 400);
+            _income_Other.Location = new Point(350, 20);
+            _income_Other.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            _income_Other.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            #endregion
+
             // Draw DGVS --------------------------------------------------
 
             W_IncomeTab.Controls.Add(income);
-            W_IncomeTab.Controls.Add(_income);
+
+            W_IncomeTab.Controls.Add(_income_Thanks);
+            W_IncomeTab.Controls.Add(_income_10);
+            W_IncomeTab.Controls.Add(_income_Cell);
+            W_IncomeTab.Controls.Add(_income_Archi);
+            W_IncomeTab.Controls.Add(_income_Mission);
+            W_IncomeTab.Controls.Add(_income_Rice);
+            W_IncomeTab.Controls.Add(_income_Help);
+            W_IncomeTab.Controls.Add(_income_Other);
+
             W_IncomeTab.Controls.Add(income_total);
             W_IncomeTab.Controls.Add(_income_total);
-
-            #endregion
+            
         }
 
-        private void _income_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private void Income_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            int sum = 0;
+            Debug.WriteLine("Rows : " + e.RowIndex);
+            W_IncomeTab.Controls.Remove(currentTab);
 
-            for (int i = 0; i < _income.RowCount - 1; i++)
+            switch (e.RowIndex)
+            {
+                case 0:
+                    W_IncomeTab.Controls.Add(_income_Thanks);
+                    _income_total.Rows[0].Cells[1].Value = Sum_Thanks;
+                    currentTab = _income_Thanks;
+                    break;
+                case 1:
+                    W_IncomeTab.Controls.Add(_income_10);
+                    _income_total.Rows[0].Cells[1].Value = Sum_10;
+                    currentTab = _income_10;
+                    break;
+                case 2:
+                    W_IncomeTab.Controls.Add(_income_Cell);
+                    _income_total.Rows[0].Cells[1].Value = Sum_Cell;
+                    currentTab = _income_Cell;
+                    break;
+                case 3:
+                    W_IncomeTab.Controls.Add(_income_Archi);
+                    _income_total.Rows[0].Cells[1].Value = Sum_Archi;
+                    currentTab = _income_Archi;
+                    break;
+                case 4:
+                    W_IncomeTab.Controls.Add(_income_Mission);
+                    _income_total.Rows[0].Cells[1].Value = Sum_Mission;
+                    currentTab = _income_Mission;
+                    break;
+                case 5:
+                    W_IncomeTab.Controls.Add(_income_Rice);
+                    currentTab = _income_Rice;
+                    break;
+                case 6:
+                    W_IncomeTab.Controls.Add(_income_Help);
+                    _income_total.Rows[0].Cells[1].Value = Sum_Help;
+                    currentTab = _income_Help;
+                    break;
+                case 7:
+                    W_IncomeTab.Controls.Add(_income_Other);
+                    _income_total.Rows[0].Cells[1].Value = Sum_Other;
+                    currentTab = _income_Other;
+                    break;
+            }
+        }
+        
+        #region 에딧 이벤트
+        private void _income_Thanks_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            // Set New Value`s Date
+            if (_income_Thanks.Rows[e.RowIndex].Cells[2].Value.ToString() == "")
+                _income_Thanks.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
+
+            // Set Sumation.
+            int sum = 0;
+            for (int i = 0; i < _income_Thanks.RowCount - 1; i++)
+            {
+                if (_income_Thanks.Rows[i].Cells[1].Value.ToString() != "")
+                    sum += Convert.ToInt32(_income_Thanks.Rows[i].Cells[1].Value);
+            }
+            Sum_Thanks = sum;
+            _income_total.Rows[0].Cells[1].Value = Sum_Thanks;
+
+            SetInputSumDGV();
+            SQLite.CloseDB();
+        }
+
+        private void _income_10_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            // Set New Value`s Date
+            if (_income_10.Rows[e.RowIndex].Cells[2].Value.ToString() == "")
+                _income_10.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
+
+            // Set Sumation.
+            int sum = 0;
+            for (int i = 0; i < _income_10.RowCount - 1; i++)
+            {
+                if (_income_10.Rows[i].Cells[1].Value.ToString() != "")
+                    sum += Convert.ToInt32(_income_10.Rows[i].Cells[1].Value);
+            }
+            Sum_10 = sum;
+            _income_total.Rows[0].Cells[1].Value = Sum_10;
+
+            SetInputSumDGV();
+            SQLite.CloseDB();
+        }
+
+        private void _income_Cell_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            // Set New Value`s Date
+            if (_income_Cell.Rows[e.RowIndex].Cells[2].Value.ToString() == "")
+                _income_Cell.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
+
+            // Set Sumation.
+            int sum = 0;
+            for (int i = 0; i < _income_Cell.RowCount - 1; i++)
             {
                 //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
-                if (_income.Rows[i].Cells[1].Value.ToString() != "")
-                    sum += (int)_income.Rows[i].Cells[1].Value;
+                if (_income_Cell.Rows[i].Cells[1].Value.ToString() != "")
+                    sum += Convert.ToInt32(_income_Cell.Rows[i].Cells[1].Value);
             }
+            Sum_Cell = sum;
+            _income_total.Rows[0].Cells[1].Value = Sum_Cell;
 
-            _income_total.Rows[0].Cells[1].Value = sum;
+            SetInputSumDGV();
+            SQLite.CloseDB();
         }
 
-        private void SetThanksDGV()
+        private void _income_Archi_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            // Set New Value`s Date
+            if (_income_Archi.Rows[e.RowIndex].Cells[2].Value.ToString() == "")
+                _income_Archi.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
+
+            // Set Sumation.
+            int sum = 0;
+            for (int i = 0; i < _income_Archi.RowCount - 1; i++)
+            {
+                //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
+                if (_income_Archi.Rows[i].Cells[1].Value.ToString() != "")
+                    sum += Convert.ToInt32(_income_Archi.Rows[i].Cells[1].Value);
+            }
+            Sum_Archi = sum;
+            _income_total.Rows[0].Cells[1].Value = Sum_Archi;
+
+            SetInputSumDGV();
+            SQLite.CloseDB();
+        }
+
+        private void _income_Mission_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            // Set New Value`s Date
+            if (_income_Mission.Rows[e.RowIndex].Cells[2].Value.ToString() == "")
+                _income_Mission.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
+
+            // Set Sumation.
+            int sum = 0;
+            for (int i = 0; i < _income_Mission.RowCount - 1; i++)
+            {
+                //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
+                if (_income_Mission.Rows[i].Cells[1].Value.ToString() != "")
+                    sum += Convert.ToInt32(_income_Mission.Rows[i].Cells[1].Value);
+            }
+            Sum_Mission = sum;
+            _income_total.Rows[0].Cells[1].Value = Sum_Mission;
+
+            SetInputSumDGV();
+            SQLite.CloseDB();
+        }
+
+        private void _income_Rice_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            // Set New Value`s Date
+            if (_income_Rice.Rows[e.RowIndex].Cells[2].Value.ToString() == "")
+                _income_Rice.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
+
+            // Set Sumation.
+            int sum = 0;
+            for (int i = 0; i < _income_Rice.RowCount - 1; i++)
+            {
+                //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
+                if (_income_Rice.Rows[i].Cells[1].Value.ToString() != "")
+                    sum += Convert.ToInt32(_income_Rice.Rows[i].Cells[1].Value);
+            }
+            Sum_Rice = sum;
+            _income_total.Rows[0].Cells[1].Value = Sum_Rice;
+
+            SetInputSumDGV();
+            SQLite.CloseDB();
+        }
+
+        private void _income_Help_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            // Set New Value`s Date
+            if (_income_Help.Rows[e.RowIndex].Cells[2].Value.ToString() == "")
+                _income_Help.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
+
+            // Set Sumation.
+            int sum = 0;
+            for (int i = 0; i < _income_Help.RowCount - 1; i++)
+            {
+                //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
+                if (_income_Help.Rows[i].Cells[1].Value.ToString() != "")
+                    sum += Convert.ToInt32(_income_Help.Rows[i].Cells[1].Value);
+            }
+            Sum_Help = sum;
+            _income_total.Rows[0].Cells[1].Value = Sum_Help;
+
+            SetInputSumDGV();
+            SQLite.CloseDB();
+        }
+
+        private void _income_Other_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            // Set New Value`s Date
+            if (_income_Other.Rows[e.RowIndex].Cells[2].Value.ToString() == "")
+                _income_Other.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
+
+            // Set Sumation.
+            int sum = 0;
+            for (int i = 0; i < _income_Other.RowCount - 1; i++)
+            {
+                //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
+                if (_income_Other.Rows[i].Cells[1].Value.ToString() != "")
+                    sum += Convert.ToInt32(_income_Other.Rows[i].Cells[1].Value);
+            }
+            Sum_Other = sum;
+            _income_total.Rows[0].Cells[1].Value = Sum_Other;
+
+            SetInputSumDGV();
+            SQLite.CloseDB();
+        }
+        #endregion
+
+        #region SetDGV Area
+        private void SetThanksDGV(int check)
         {
             try
             {
                 SQLite.ConnectToDB();
 
-                SQLite.Execute(string.Format("create table Offering_Thanks " + 
-                    "(no Integer primary key autoincrement, date varchar(40), name varchar(40), amount int)"));
-
-                DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Thanks order by no asc"));
-                _income.DataSource = ds.Tables[0];
-
-                for (int i = 0; i< _income.Columns.Count; i++)
+                if (check == 1)
                 {
-                    _income.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Thanks where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    _income_Thanks.DataSource = ds.Tables[0];
+                    Debug.WriteLine("Value :: " + _income_Thanks.Rows[0].Cells[1].Value);
                 }
+                else if (check == 2)
+                {
+                    Debug.WriteLine("Test :: " + check);
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Thanks where date = '{0}' order by no asc", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+                    Debug.WriteLine("Date : " + dateTimePicker1.Value.ToShortDateString());
+                    _income_Thanks.DataSource = ds.Tables[0];
+                    Debug.WriteLine("Value :: " + _income_Thanks.Rows[0].Cells[1].Value);
 
-                dgvcnt = _income.Rows.Count; // dgvcnt Setting!!!!!!!!!!!!!!
+                }
+                
+                for (int i = 0; i< _income_Thanks.Columns.Count; i++)
+                {
+                    _income_Thanks.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
+                
+                // Set Sumation.
+                int sum = 0;
+                for (int i = 0; i < _income_Thanks.RowCount - 1; i++)
+                {
+                    //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
+                    if (_income_Thanks.Rows[i].Cells[1].Value.ToString() != "")
+                    {
+                        Debug.WriteLine("value : " + Convert.ToInt32(_income_Thanks.Rows[i].Cells[1].Value));
+                        sum += Convert.ToInt32(_income_Thanks.Rows[i].Cells[1].Value);
+                    }
+                        
+                }
+                                    
+                Sum_Thanks = sum;
+                Debug.WriteLine("Sum Thanks : " + Sum_Thanks);
+                _income_total.Rows[0].Cells[1].Value = Sum_Thanks;
+                
                 SQLite.CloseDB();
             }
             catch(SQLiteException e)
@@ -298,28 +693,336 @@ namespace UI
             }   
         }
 
+        private void Set10DGV(int check)
+        {
+            try
+            {
+                SQLite.ConnectToDB();
+
+                if (check == 1)
+                {
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_10 where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    _income_10.DataSource = ds.Tables[0];
+                }
+                else if (check == 2)
+                {
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_10 where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    _income_10.DataSource = ds.Tables[0];
+                }
+
+                for (int i = 0; i < _income_10.Columns.Count; i++)
+                {
+                    _income_10.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
+
+                // Set Sumation.
+                int sum = 0;
+                for (int i = 0; i < _income_10.RowCount - 1; i++)
+                {
+                    //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
+                    if (_income_10.Rows[i].Cells[1].Value.ToString() != "")
+                        sum += Convert.ToInt32(_income_10.Rows[i].Cells[1].Value);
+                }
+                Sum_10 = sum;
+
+                SQLite.CloseDB();
+            }
+            catch (SQLiteException e)
+            {
+                SQLite.CloseDB();
+                Debug.WriteLine(e);
+            }
+        }
+
+        private void SetCellDGV(int check)
+        {
+            try
+            {
+                SQLite.ConnectToDB();
+
+                if (check == 1)
+                {
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Cell where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    _income_Cell.DataSource = ds.Tables[0];
+                }
+                else if (check == 2)
+                {
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Cell where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    _income_Cell.DataSource = ds.Tables[0];
+                }
+
+                for (int i = 0; i < _income_Cell.Columns.Count; i++)
+                {
+                    _income_Cell.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
+
+                // Set Sumation.
+                int sum = 0;
+                for (int i = 0; i < _income_Cell.RowCount - 1; i++)
+                {
+                    //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
+                    if (_income_Cell.Rows[i].Cells[1].Value.ToString() != "")
+                        sum += Convert.ToInt32(_income_Cell.Rows[i].Cells[1].Value);
+                }
+                Sum_Cell = sum;
+                
+                SQLite.CloseDB();
+            }
+            catch (SQLiteException e)
+            {
+                SQLite.CloseDB();
+                Debug.WriteLine(e);
+            }
+        }
+
+        private void SetArchiDGV(int check)
+        {
+            try
+            {
+                SQLite.ConnectToDB();
+
+                if (check == 1)
+                {
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Archi where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    _income_Archi.DataSource = ds.Tables[0];
+                }
+                else if (check == 2)
+                {
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Archi where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    _income_Archi.DataSource = ds.Tables[0];
+                }
+
+                for (int i = 0; i < _income_Archi.Columns.Count; i++)
+                {
+                    _income_Archi.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
+
+                // Set Sumation.
+                int sum = 0;
+                for (int i = 0; i < _income_Archi.RowCount - 1; i++)
+                {
+                    //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
+                    if (_income_Archi.Rows[i].Cells[1].Value.ToString() != "")
+                        sum += Convert.ToInt32(_income_Archi.Rows[i].Cells[1].Value);
+                }
+                Sum_Archi = sum;
+                
+                SQLite.CloseDB();
+            }
+            catch (SQLiteException e)
+            {
+                SQLite.CloseDB();
+                Debug.WriteLine(e);
+            }
+        }
+
+        private void SetMissionDGV(int check)
+        {
+            try
+            {
+                SQLite.ConnectToDB();
+
+                if (check == 1)
+                {
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Mission where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    _income_Mission.DataSource = ds.Tables[0];
+                }
+                else if (check == 2)
+                {
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Mission where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    _income_Mission.DataSource = ds.Tables[0];
+                }
+
+                for (int i = 0; i < _income_Mission.Columns.Count; i++)
+                {
+                    _income_Mission.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
+
+                // Set Sumation.
+                int sum = 0;
+                for (int i = 0; i < _income_Mission.RowCount - 1; i++)
+                {
+                    //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
+                    if (_income_Mission.Rows[i].Cells[1].Value.ToString() != "")
+                        sum += Convert.ToInt32(_income_Mission.Rows[i].Cells[1].Value);
+                }
+                Sum_Mission = sum;
+                
+                SQLite.CloseDB();
+            }
+            catch( SQLiteException e)
+            {
+                Debug.WriteLine(e);
+            }
+        }
+
+        private void SetRiceDGV(int check)
+        {
+            try
+            {
+                SQLite.ConnectToDB();
+
+                if (check == 1)
+                {
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Rice where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    _income_Rice.DataSource = ds.Tables[0];
+                }
+                else if (check == 2)
+                {
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Rice where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    _income_Rice.DataSource = ds.Tables[0];
+                }
+
+                for (int i = 0; i < _income_Rice.Columns.Count; i++)
+                {
+                    _income_Rice.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
+
+                // Set Sumation.
+                int sum = 0;
+                for (int i = 0; i < _income_Rice.RowCount - 1; i++)
+                {
+                    //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
+                    if (_income_Rice.Rows[i].Cells[1].Value.ToString() != "")
+                        sum += Convert.ToInt32(_income_Rice.Rows[i].Cells[1].Value);
+                }
+                Sum_Rice = sum;
+                
+                SQLite.CloseDB();
+            }
+            catch (SQLiteException e)
+            {
+                Debug.WriteLine(e);
+            }
+        }
+
+        private void SetHelpDGV(int check)
+        {
+            try
+            {
+                SQLite.ConnectToDB();
+
+                if (check == 1)
+                {
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Help where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    _income_Help.DataSource = ds.Tables[0];
+                }
+                else if (check == 2)
+                {
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Help where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    _income_Help.DataSource = ds.Tables[0];
+                }
+
+                for (int i = 0; i < _income_Help.Columns.Count; i++)
+                {
+                    _income_Help.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
+
+                // Set Sumation.
+                int sum = 0;
+                for (int i = 0; i < _income_Help.RowCount - 1; i++)
+                {
+                    //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
+                    if (_income_Help.Rows[i].Cells[1].Value.ToString() != "")
+                        sum += Convert.ToInt32(_income_Help.Rows[i].Cells[1].Value);
+                }
+                Sum_Help = sum;
+                
+                SQLite.CloseDB();
+            }
+            catch (SQLiteException e)
+            {
+                Debug.WriteLine(e);
+            }
+        }
+
+        private void SetOtherDGV(int check)
+        {
+            try
+            {
+                SQLite.ConnectToDB();
+
+                if (check == 1)
+                {
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Other where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    _income_Other.DataSource = ds.Tables[0];
+                }
+                else if (check == 2)
+                {
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Other where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    _income_Other.DataSource = ds.Tables[0];
+                }
+
+                for (int i = 0; i < _income_Other.Columns.Count; i++)
+                {
+                    _income_Other.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
+
+                // Set Sumation.
+                int sum = 0;
+                for (int i = 0; i < _income_Other.RowCount - 1; i++)
+                {
+                    //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
+                    if (_income_Other.Rows[i].Cells[1].Value.ToString() != "")
+                        sum += Convert.ToInt32(_income_Other.Rows[i].Cells[1].Value);
+                }
+                Sum_Other = sum;
+                
+                SQLite.CloseDB();
+            }
+            catch (SQLiteException e)
+            {
+                Debug.WriteLine(e);
+            }
+        }
+
+        #endregion
+
         private void SetInputSumDGV()
         {
             try
             {
-                // 감사헌금
                 SQLite.ConnectToDB();
-                cmd = SQLite.GetSQLCommand();
-                cmd.CommandText = string.Format("select sum(amount) from Offering_Thanks");
-                object sum = cmd.ExecuteScalar();
-                income.Rows[0].Cells[0].Value = "감사헌금";
-                income.Rows[0].Cells[1].Value = sum;
+                income.Rows.Clear();
+
+                // 감사헌금
+                String[] a = { "감사헌금", Sum_Thanks.ToString() };
+                income.Rows.Add(a);
+
+                // 십일조
+                string[] b = {  "십일조", Sum_10.ToString() };
+                income.Rows.Add(b);
+
+                // 구역헌금
+                string[] c = { "구역헌금", Sum_Cell.ToString() };
+                income.Rows.Add(c);
+
+                // 건축헌금
+                string[] d = { "건축헌금", Sum_Archi.ToString() };
+                income.Rows.Add(d);
+
+                // 선교헌금
+                string[] e = { "선교헌금", Sum_Mission.ToString() };
+                income.Rows.Add(e);
+
+                // 성미헌금
+                string[] f = { "성미헌금", Sum_Rice.ToString() };
+                income.Rows.Add(f);
+
+                // 구제헌금
+                string[] g = { "구제헌금", Sum_Help.ToString() };
+                income.Rows.Add(g);
+
+                // 기타헌금
+                string[] h = { "기타헌금", Sum_Other.ToString() };
+                income.Rows.Add(h);
+
                 
-
-
-
-
-
                 // Total of Total
                 int sumn = 0;
-                for (int i = 0; i < income.RowCount; i++)
+                for (int i = 0; i < income.RowCount-1; i++)
                 {
-                    Debug.WriteLine("Cell 0 : " + income.Rows[0].Cells[1].Value);
+                    //Debug.WriteLine("Cell 0 : " + income.Rows[0].Cells[1].Value);
                     if (income.Rows[i].Cells[1].Value.ToString() != "")
                         sumn += Convert.ToInt32(income.Rows[i].Cells[1].Value);
                 }
@@ -338,15 +1041,32 @@ namespace UI
         private void button1_Click(object sender, EventArgs e)
         {
             
-            SQLite.Execute(string.Format("Delete From Offering_thanks"));
-            
-            Debug.WriteLine("Check value : " + _income.RowCount);
-            Debug.WriteLine("Check value : " + _income.Rows[0].Cells[0].Value);
-            for (int i = 0; i < _income.RowCount-1 ; i ++)
-            {
-                // cell 0 - name, 1 - amount, 2- date
-                SQLite.Execute(string.Format("insert into Offering_thanks (name, amount, date) values('{0}', {1}, '{2}')", _income.Rows[i].Cells[0].Value, _income.Rows[i].Cells[1].Value, _income.Rows[i].Cells[2].Value)); 
-            }
+            SQLite.Execute(string.Format("Delete From Offering_thanks where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString() ));
+            SQLite.Execute(string.Format("Delete From Offering_10 where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+            SQLite.Execute(string.Format("Delete From Offering_Cell where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+            SQLite.Execute(string.Format("Delete From Offering_Archi where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+            SQLite.Execute(string.Format("Delete From Offering_Mission where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+            SQLite.Execute(string.Format("Delete From Offering_Rice where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+            SQLite.Execute(string.Format("Delete From Offering_Help where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+            SQLite.Execute(string.Format("Delete From Offering_other where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+
+            for (int i = 0; i < _income_Thanks.RowCount-1 ; i ++)
+                SQLite.Execute(string.Format("insert into Offering_thanks (name, amount, date) values('{0}', {1}, '{2}')", _income_Thanks.Rows[i].Cells[0].Value, _income_Thanks.Rows[i].Cells[1].Value, ((DateTime)_income_Thanks.Rows[i].Cells[2].Value).ToShortDateString() ));
+            for (int i = 0; i < _income_10.RowCount - 1; i++)
+                SQLite.Execute(string.Format("insert into Offering_10 (name, amount, date) values('{0}', {1}, '{2}')", _income_10.Rows[i].Cells[0].Value, _income_10.Rows[i].Cells[1].Value, ((DateTime)_income_10.Rows[i].Cells[2].Value).ToShortDateString()));
+            for (int i = 0; i < _income_Cell.RowCount - 1; i++)
+                SQLite.Execute(string.Format("insert into Offering_Cell (name, amount, date) values('{0}', {1}, '{2}')", _income_Cell.Rows[i].Cells[0].Value, _income_Cell.Rows[i].Cells[1].Value, ((DateTime)_income_Cell.Rows[i].Cells[2].Value).ToShortDateString()));
+            for (int i = 0; i < _income_Archi.RowCount - 1; i++)
+                SQLite.Execute(string.Format("insert into Offering_Archi (name, amount, date) values('{0}', {1}, '{2}')", _income_Archi.Rows[i].Cells[0].Value, _income_Archi.Rows[i].Cells[1].Value, ((DateTime)_income_Archi.Rows[i].Cells[2].Value).ToShortDateString()));
+            for (int i = 0; i < _income_Mission.RowCount - 1; i++)
+                SQLite.Execute(string.Format("insert into Offering_Mission (name, amount, date) values('{0}', {1}, '{2}')", _income_Mission.Rows[i].Cells[0].Value, _income_Mission.Rows[i].Cells[1].Value, ((DateTime)_income_Mission.Rows[i].Cells[2].Value).ToShortDateString()));
+            for (int i = 0; i < _income_Rice.RowCount - 1; i++)
+                SQLite.Execute(string.Format("insert into Offering_Rice (name, amount, date) values('{0}', {1}, '{2}')", _income_Rice.Rows[i].Cells[0].Value, _income_Rice.Rows[i].Cells[1].Value, ((DateTime)_income_Rice.Rows[i].Cells[2].Value).ToShortDateString()));
+            for (int i = 0; i < _income_Help.RowCount - 1; i++)
+                SQLite.Execute(string.Format("insert into Offering_Help (name, amount, date) values('{0}', {1}, '{2}')", _income_Help.Rows[i].Cells[0].Value, _income_Help.Rows[i].Cells[1].Value, ((DateTime)_income_Help.Rows[i].Cells[2].Value).ToShortDateString()));
+            for (int i = 0; i < _income_Other.RowCount - 1; i++)
+                SQLite.Execute(string.Format("insert into Offering_Other (name, amount, date) values('{0}', {1}, '{2}')", _income_Other.Rows[i].Cells[0].Value, _income_Other.Rows[i].Cells[1].Value, ((DateTime)_income_Other.Rows[i].Cells[2].Value).ToShortDateString()));
+
 
             /*
             int i = 0;
