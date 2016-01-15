@@ -53,6 +53,10 @@ namespace UI
             setImgBtn();
             setWeekTabPage();
             setInitialTotal();
+
+            panel5.BackColor = Color.LightGray;
+            panel2.BackColor = Color.LightGray;
+            
         }
 
 
