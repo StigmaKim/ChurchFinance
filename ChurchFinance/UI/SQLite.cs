@@ -31,6 +31,7 @@ namespace UI
             try
             {
                 m_dbConnection.Close();
+                Debug.WriteLine("Close DB Connection");
             }
             catch(SQLiteException e)
             {

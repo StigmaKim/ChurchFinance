@@ -11,10 +11,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace UI
 {
     public partial class Form1 : Form
     {
+        // DB 관련 
+        SQLite SQLite;
 
         // Week Tab
         NeoTabPage W_IncomeTab;
@@ -32,12 +35,13 @@ namespace UI
         public Form1()
         {
             InitializeComponent();
+            SQLite = new SQLite(); // DB Object
 
             neoTabWindow1.Renderer = NeoTabControlLibrary.AddInRendererManager.LoadRenderer("MarginBlueRendererVS2");
             neoTabWindow1.BackColor = Color.White;
 
             setImgBtn();
-
+            
             setTabPage();
             
         }
