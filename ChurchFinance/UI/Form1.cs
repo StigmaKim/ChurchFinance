@@ -136,12 +136,14 @@ namespace UI
             income.Size = new Size(400, 400);
             income.Location = new Point(20, 20);
 
-            DataGridViewColumn type = new DataGridViewColumn();
-            type.HeaderText = "수입 타입";
-            DataGridViewColumn much = new DataGridViewColumn();
-            
-            income.Columns.Add(new DataGridViewColumn());
-            
+            income.ColumnCount = 2;
+
+            income.Columns[0].Name = "수입";
+            income.Columns[1].Name = "금액";
+
+            String[] rows = { "십일조", "4,300,200원" };
+            income.Rows.Add(rows);
+
             _income.Size = new Size(400, 400);
             _income.Location = new Point(450, 20);
 
