@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NeoTabControlLibrary;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,115 +16,79 @@ namespace UI
     public partial class Form1 : Form
     {
 
-        Rectangle[] myTabRect = new Rectangle[2];
-        Color SelectColor;
-        Color etcTabColor;
-        Font tabFont;
-
         public Form1()
         {
             InitializeComponent();
 
-            SelectColor = Color.Cyan;
-            etcTabColor = Color.White;
+            neoTabWindow1.Renderer = NeoTabControlLibrary.AddInRendererManager.LoadRenderer("MarginBlueRendererVS2");
+            neoTabWindow1.BackColor = Color.White;
 
-            // 폰트 설정
-            tabFont = new Font(new FontFamily("휴먼편지체"), 10);
+            setImgBtn();
 
-            setFont();
+            setTabPage();
 
-            // OwnerDrawFixed모드를 설정해서 상위 Form에서 정의할 수 있도록 함
-            tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
+            AddGridView();
 
-            //tabControl1.Dock = DockStyle.Fill;
 
-            myTabRect[0] = tabControl1.GetTabRect(0);
-            myTabRect[1] = tabControl1.GetTabRect(1);
+        }
+        
 
-            // Tab의 사이즈를 조절하려면 TabSizeMode.Fixed로 변경하고 조절해야함
-            tabControl1.SizeMode = TabSizeMode.Fixed;
-            tabControl1.ItemSize = new Size(100, 20);
+        private void setImgBtn()
+        {
 
-            // 페이지의 Background를 설정
-            setPageBackground();
+            // 첫번째 아이콘 추가
+            ImageBtn weekBtn = new ImageBtn();
+            weekBtn.img = new Bitmap(Environment.CurrentDirectory + "\\Image\\Week.png");
+            weekBtn.ImgName = "Week";
+            weekBtn.str = "주 단위 정산";
+            imgBtnContainer1.InputBtn(weekBtn);
 
-            tabPage1.BorderStyle = BorderStyle.None;
+            // 두번째 아이콘 추가
+            ImageBtn monthBtn = new ImageBtn();
+            monthBtn.img = new Bitmap(Environment.CurrentDirectory + "\\Image\\Month.png");
+            monthBtn.ImgName = "Month";
+            monthBtn.str = "월 단위 정산";
+            imgBtnContainer1.InputBtn(monthBtn);
 
-            tabControl1.DrawItem += new DrawItemEventHandler(OnDrawItem);
+            // 세번째 아이콘 추가
+            ImageBtn yearBtn = new ImageBtn();
+            yearBtn.img = new Bitmap(Environment.CurrentDirectory + "\\Image\\Year.png");
+            yearBtn.ImgName = "Year";
+            yearBtn.str = "년 단위 정산";
+            imgBtnContainer1.InputBtn(yearBtn);
+
         }
 
-        /// <summary>
-        /// tabControl1을 Custom하게 그림
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnDrawItem(object sender, DrawItemEventArgs e)
+        private void setTabPage()
         {
-            Graphics g = e.Graphics;
+            NeoTabPage incomeTab = new NeoTabPage();
+            NeoTabPage spendingTab = new NeoTabPage();
 
-            Rectangle SelectedItemRect = tabControl1.GetTabRect(e.Index);
+            incomeTab.Text = "수 입";
+            incomeTab.BackColor = Color.White;
+            spendingTab.Text = "지 출";
+            spendingTab.BackColor = Color.White;
 
-            SolidBrush curTabBrush = new SolidBrush(SelectColor);
-            SolidBrush etcTabBrush = new SolidBrush(etcTabColor);
+            neoTabWindow1.Controls.Add(incomeTab);
+            neoTabWindow1.Controls.Add(spendingTab);
+        }
+
+        private void AddGridView()
+        {
+            DataGridView income = new DataGridView();
+            DataGridView _income = new DataGridView();
+
+            income.Size = new Size(400, 400);
+            income.Location = new Point(20, 20);
             
-            if (e.State == DrawItemState.Selected)
-            {
-                // 선택된 아이템
-                g.FillRectangle(curTabBrush, SelectedItemRect);
-            }
-            else
-            {
-                // 선택되지 않은 아이템
-                g.FillRectangle(etcTabBrush, SelectedItemRect);
-            }
 
-            switch(e.Index)
-            {
-                case 0:
-                    g.DrawString("수입", tabFont, new SolidBrush(Color.Black), new Point(35, 5));
+            _income.Size = new Size(400, 400);
+            _income.Location = new Point(450, 20);
 
-                    break;
-
-                case 1:
-                    g.DrawString("지출", tabFont, new SolidBrush(Color.Black), new Point(135, 5));
-
-                    break;
-
-            }
+            neoTabWindow1.Controls[0].Controls.Add(income);
+            neoTabWindow1.Controls[0].Controls.Add(_income);
 
         }
 
-
-        /// <summary>
-        /// 폰트를 설정합니다 
-        /// </summary>
-        private void setFont()
-        {
-            PrivateFontCollection privateFont = new PrivateFontCollection();
-
-            String currentPath = Environment.CurrentDirectory;
-
-            privateFont.AddFontFile(currentPath + "\\Font\\Daum_Regular.ttf");
-
-            tabFont = new Font(privateFont.Families[0], 10f);
-        }
-
-        /// <summary>
-        /// tabPage의 배경을 설정합니다.
-        /// </summary>
-        private void setPageBackground()
-        {
-            String currentPath = Environment.CurrentDirectory;
-            Image img =  Image.FromFile(currentPath + "\\Image\\cyan.jpg");
-
-            Bitmap resizedImg = new Bitmap(img, tabPage1.Size);
-
-            tabPage1.BackgroundImage = resizedImg;
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
     }
 }
