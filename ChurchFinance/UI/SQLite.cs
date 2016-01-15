@@ -11,6 +11,7 @@ namespace UI
     class SQLite
     {
         SQLiteConnection m_dbConnection;
+        SQLiteCommand cmd;
 
         public void ConnectToDB()
         {
@@ -38,6 +39,26 @@ namespace UI
                 Debug.WriteLine(e);
             }
         }
-
+        public SQLiteCommand GetSQLCommand()
+        {
+            return new SQLiteCommand(m_dbConnection);
+        }
+        public void Execute(string sql)
+        {
+            ConnectToDB();
+            cmd = GetSQLCommand();
+            cmd.CommandText = sql;
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                CloseDB();
+                return;
+            }
+            CloseDB();
+            return;
+        }
     }
 }
