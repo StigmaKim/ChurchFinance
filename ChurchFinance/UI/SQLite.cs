@@ -53,8 +53,9 @@ namespace UI
             {
                 cmd.ExecuteNonQuery();
             }
-            catch
+            catch(SQLiteException e) 
             {
+                Debug.WriteLine("BUG!!!!!!!!!!!! " + e);
                 CloseDB();
                 return;
             }
