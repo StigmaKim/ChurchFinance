@@ -20,6 +20,8 @@ namespace UI
         // DataGridView 생성
         DataGridView income = null;
         DataGridView _income = null;
+        DataGridView income_total = null;
+        DataGridView total = null;
         int dgvcnt = 0;
 
         // DB 관련 
@@ -37,10 +39,10 @@ namespace UI
         // Year Tab
         NeoTabPage Y_IncomeTab;
         NeoTabPage Y_SpendingTab;
-
-
+        
         public Form1()
         {
+            
             InitializeComponent();
             SQLite = new SQLite(); // DB Object
             cmd = SQLite.GetSQLCommand(); // Command Object
@@ -51,7 +53,7 @@ namespace UI
             setImgBtn();
             setWeekTabPage();
         }
-        
+
 
         /// <summary>
         /// 아이콘 설정
@@ -149,12 +151,17 @@ namespace UI
 
             income = new DataGridView();
             _income = new DataGridView();
+            income_total = new DataGridView();
+            total = new DataGridView();
+            _income.CellEnter += _income_CellEnter;
 
+            // income ---------------------------------------
             income.Size = new Size(300, 400);
             income.Location = new Point(20, 20);
             income.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             income.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             income.ColumnCount = 2;
+            income.ReadOnly = true;
 
             income.Columns[0].Name = "수 입";
             income.Columns[1].Name = "금 액";
@@ -173,6 +180,8 @@ namespace UI
                 income.Rows.Add(row);
             }
             */
+
+            // _income ----------------------------------
             _income.Size = new Size(600, 400);
             _income.Location = new Point(350, 20);
             _income.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -184,10 +193,63 @@ namespace UI
                 income.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
 
+            // income_total ------------------------------
+            income_total.Size = new Size(300, 26);
+            income_total.Location = new Point(20, 425);
+            income_total.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            income_total.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            income_total.ColumnHeadersVisible = false;
+            income_total.ColumnCount = 2;
+            income_total.ReadOnly = true;
+
+            income_total.Rows[0].Cells[0].Value = "Total";
+
+            for (int i = 0; i < income_total.Columns.Count; i++)
+            {
+                income_total.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
+
+            // _income_total -------------------------------
+            total.Size = new Size(600, 26);
+            total.Location = new Point(350, 425);
+            total.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            total.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            total.ColumnHeadersVisible = false;
+            total.ColumnCount = 3;
+            total.ReadOnly = true;
+
+            total.Rows[0].Cells[0].Value = "Total";
+            total.Rows[0].Cells[1].Value = "";
+            total.Rows[0].Cells[2].Value = "";
+
+            for (int i = 0; i < total.Columns.Count; i++)
+            {
+                total.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
+
+            
+            // Draw DGVS --------------------------------------------------
+
             W_IncomeTab.Controls.Add(income);
             W_IncomeTab.Controls.Add(_income);
+            W_IncomeTab.Controls.Add(income_total);
+            W_IncomeTab.Controls.Add(total);
 
             #endregion
+        }
+        
+
+        private void _income_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            int sum = 0;
+            for (int i = 0; i < _income.RowCount - 1; i++)
+            {
+                if (_income.Rows[i].Cells[1].Value.ToString() != "")
+                    sum += (int)_income.Rows[i].Cells[1].Value;
+            }
+
+            //Debug.WriteLine("Sum : " + sum);
+            total.Rows[0].Cells[1].Value = sum;
         }
 
         private void SetThanksDGV()
@@ -207,7 +269,7 @@ namespace UI
                     _income.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 }
 
-                dgvcnt = _income.Rows.Count;
+                dgvcnt = _income.Rows.Count; // dgvcnt Setting!!!!!!!!!!!!!!
                 SQLite.CloseDB();
             }
             catch(SQLiteException e)
@@ -235,28 +297,35 @@ namespace UI
                 SQLite.CloseDB();
                 Debug.WriteLine(e);
             }
-
         }
 
+       
         private void button1_Click(object sender, EventArgs e)
         {
             SQLite.ConnectToDB();
             cmd = SQLite.GetSQLCommand();
             int i = 0;
-            for (; i < dgvcnt; i++)
-            {
-                cmd.CommandText = string.Format("update Offering_Thanks set name = '{0}', amount = {1} where no = {2}", _income.Rows[i].Cells[0].Value, _income.Rows[i].Cells[1].Value, i + 1);
-                cmd.ExecuteNonQuery();
-            }
-            i--;
-            for (; i < _income.Rows.Count - 1; i++)
-            {
-                cmd.CommandText = string.Format("Insert into Offering_Thanks (name, amount) values('{0}', {1})", _income.Rows[i].Cells[0].Value, _income.Rows[i].Cells[1].Value);
-                cmd.ExecuteNonQuery();
-            }
+            try {
+                for (; i < dgvcnt; i++)
+                {
+                    cmd.CommandText = string.Format("update Offering_Thanks set name = '{0}', amount = {1} where no = {2}", _income.Rows[i].Cells[0].Value, _income.Rows[i].Cells[1].Value, i + 1);
+                    cmd.ExecuteNonQuery();
+                }
+                i--;
+                for (; i < _income.Rows.Count - 1; i++)
+                {
+                    cmd.CommandText = string.Format("Insert into Offering_Thanks (name, amount) values('{0}', {1})", _income.Rows[i].Cells[0].Value, _income.Rows[i].Cells[1].Value);
+                    cmd.ExecuteNonQuery();
+                }
 
-            DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Thanks order by no asc"));
-            _income.DataSource = ds.Tables[0];
+                DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Thanks order by no asc"));
+                _income.DataSource = ds.Tables[0];
+            }
+            catch( SQLiteException err)
+            {
+                SQLite.CloseDB();
+                Debug.WriteLine(err);
+            }
 
             SQLite.CloseDB();
         }
