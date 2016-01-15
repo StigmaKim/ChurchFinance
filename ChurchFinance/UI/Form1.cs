@@ -242,6 +242,7 @@ namespace UI
         private void _income_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
             int sum = 0;
+
             for (int i = 0; i < _income.RowCount - 1; i++)
             {
                 if (_income.Rows[i].Cells[1].Value.ToString() != "")
