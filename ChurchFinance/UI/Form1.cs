@@ -110,6 +110,9 @@ namespace UI
             // Tab 다 지우고 새로 넣기
             neoTabWindow1.Controls.Clear();
 
+            neoTabWindow1.Controls.Add(W_IncomeTab);
+            neoTabWindow1.Controls.Add(W_SpendingTab);
+
         }
 
         #endregion 
@@ -121,8 +124,10 @@ namespace UI
 
             W_IncomeTab.Text = "수 입";
             W_IncomeTab.BackColor = Color.White;
+            W_IncomeTab.AutoScroll = true;
             W_SpendingTab.Text = "지 출";
             W_SpendingTab.BackColor = Color.White;
+            W_SpendingTab.AutoScroll = true;
 
             neoTabWindow1.Controls.Add(W_IncomeTab);
             neoTabWindow1.Controls.Add(W_SpendingTab);
@@ -139,16 +144,28 @@ namespace UI
 
             income.Size = new Size(400, 400);
             income.Location = new Point(20, 20);
-
+            income.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            income.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             income.ColumnCount = 2;
 
-            income.Columns[0].Name = "수입";
-            income.Columns[1].Name = "금액";
-
+            income.Columns[0].Name = "수 입";
+            income.Columns[1].Name = "금 액";
+            
             String[] rows = { "십일조", "4,300,200원" };
             income.Rows.Add(rows);
 
-            _income.Size = new Size(400, 400);
+            for (int i = 0; i < income.Columns.Count; i++)
+            {
+                income.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
+
+            for(int i = 0;i < 20; i++)
+            {
+                String[] row = { " ", " " };
+                income.Rows.Add(row);
+            }
+
+            _income.Size = new Size(400, 300);
             _income.Location = new Point(450, 20);
 
             W_IncomeTab.Controls.Add(income);

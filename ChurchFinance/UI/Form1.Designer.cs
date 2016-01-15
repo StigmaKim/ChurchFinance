@@ -41,7 +41,7 @@
             this.neoTabWindow1.Location = new System.Drawing.Point(13, 125);
             this.neoTabWindow1.Name = "neoTabWindow1";
             this.neoTabWindow1.RendererName = null;
-            this.neoTabWindow1.Size = new System.Drawing.Size(968, 442);
+            this.neoTabWindow1.Size = new System.Drawing.Size(1116, 513);
             this.neoTabWindow1.TabIndex = 1;
             // 
             // imgBtnContainer1
@@ -56,7 +56,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(993, 579);
+            this.ClientSize = new System.Drawing.Size(1141, 650);
             this.Controls.Add(this.imgBtnContainer1);
             this.Controls.Add(this.neoTabWindow1);
             this.Name = "Form1";
