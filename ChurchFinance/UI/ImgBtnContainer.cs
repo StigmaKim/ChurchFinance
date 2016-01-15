@@ -23,7 +23,7 @@ namespace UI
         {
             InitializeComponent();
 
-            margin = 5;
+            margin = 15;
 
             xLoc = 5;
             yLoc = 5;
@@ -37,7 +37,7 @@ namespace UI
         /// </summary>
         public void InputBtn(ImageBtn btn)
         {
-            btn.Size = new Size(Height - (margin * 2), Height - (margin * 2));
+            btn.Size = new Size(Height - (10), Height - (10));
             btn.Location = new Point(curPoint.X,curPoint.Y);
 
             Controls.Add(btn);
