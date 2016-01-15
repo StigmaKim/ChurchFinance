@@ -204,7 +204,11 @@ namespace UI
                 adapter.Fill(ds);
                 _income.DataSource = ds.Tables[0];
 
-                
+                for(int i = 0; i< _income.Columns.Count; i++)
+                {
+                    _income.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
+                                
 
                 SQLite.CloseDB();
             }
