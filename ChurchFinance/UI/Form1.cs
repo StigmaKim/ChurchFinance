@@ -27,6 +27,7 @@ namespace UI
         // Year Tab
         NeoTabPage Y_IncomeTab;
         NeoTabPage Y_SpendingTab;
+        NeoTabPage Test;
 
 
         public Form1()
