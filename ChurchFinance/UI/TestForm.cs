@@ -19,6 +19,9 @@ namespace UI
         {
             InitializeComponent();
 
+            dateTimePicker1.Size = new Size(200, 200);
+
+            panel1.BackColor = Color.Blue;
 
         }
         
@@ -28,6 +31,18 @@ namespace UI
 
   //          testCol.HeaderText = "Test";
     //        dataGridView1.Columns.Add(testCol);
+        }
+
+        private void dataGridView1_CellLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine(e.ColumnIndex + "/" + e.RowIndex);
+
+            
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
