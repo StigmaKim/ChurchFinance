@@ -118,13 +118,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Image\iCalendar.png" />
-    <Content Include="Image\cyan.jpg" />
     <Content Include="Image\m.png" />
-    <Content Include="Image\page.jpg" />
     <Content Include="Image\w.png" />
     <Content Include="Image\y.png" />
-    <Content Include="Image\year.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

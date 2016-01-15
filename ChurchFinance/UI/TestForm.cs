@@ -18,12 +18,17 @@ namespace UI
         public TestForm()
         {
             InitializeComponent();
-            
-        }
 
+
+        }
+        
         private void button1_Click(object sender, EventArgs e)
         {
-            //imageBtn1.Invalidate();
+//            DataGridViewColumn testCol = new DataGridViewColumn();
+
+  //          testCol.HeaderText = "Test";
+    //        dataGridView1.Columns.Add(testCol);
         }
     }
 }
+

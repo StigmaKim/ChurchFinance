@@ -18,7 +18,9 @@ namespace UI
         // 이미지 관련 변수
         private Point imgLoc;
         private Size imgSz;
+        private int cut;
         public Bitmap img;
+        public String ImgName;
 
         // 배경색
         public Color backColor;
@@ -53,7 +55,7 @@ namespace UI
             {
                 img = new Bitmap(
                     Image.FromFile(Environment.CurrentDirectory + "\\Image\\iCalendar.png")
-                    , new Size(Width / 2, Height / 2)
+                    , new Size(Width, Height)
                     );
 
                 imgSz = img.Size;
@@ -75,6 +77,8 @@ namespace UI
 
             borderPen = new Pen(Color.Transparent);
             margin = 2;
+
+            cut = 0;
 
             Paint += ImageBtn_Paint;
             // MouseDown 이벤트
@@ -99,9 +103,12 @@ namespace UI
             try
             {
                 // 이미지 관련 작업
-                Bitmap _img = new Bitmap(img, new Size((Width / 3) * 2, (Height / 3) * 2));
+                //Bitmap _img = new Bitmap(img, new Size((Width / 3) * 2, (Height / 3) * 2));
+                Bitmap _img = new Bitmap(img, new Size(Width - cut, Height - cut));
                 imgSz = _img.Size;
-                imgLoc = new Point((Width / 2) - (imgSz.Width / 2), Height / 15);
+                //imgLoc = new Point((Width / 2) - (imgSz.Width / 2), Height / 15);
+                imgLoc = new Point(cut, cut);
+
 
                 // 문자열 관련 작업
                 strFont = new Font(fontName, (float)(Height / 10),FontStyle.Bold);
@@ -110,19 +117,20 @@ namespace UI
 
                 g.DrawImage(_img, imgLoc);
 
-                g.DrawString(str, strFont, strBrush, strLoc);
+                //g.DrawString(str, strFont, strBrush, strLoc);
             }
             catch (Exception ex)
             {
                 ex.ToString();
             }
 
+            
             // Border 그리기
             g.DrawLine(borderPen, new Point(margin, margin), new Point(margin, Height - margin));
             g.DrawLine(borderPen, new Point(margin, margin), new Point(Width - margin, margin));
             g.DrawLine(borderPen, new Point(Width - margin, margin), new Point(Width - margin, Height - margin));
             g.DrawLine(borderPen, new Point(margin, Height - margin), new Point(Width - margin, Height - margin));
-
+            
         }
 
         #endregion
@@ -137,32 +145,43 @@ namespace UI
 
         private void ImageBtn_MouseDown(object sender, MouseEventArgs e)
         {
+            Invalidate();
 
-            BackColor = Color.LightBlue;
-            borderPen.Color = Color.SkyBlue;
+            img = new Bitmap(
+                    Image.FromFile(Environment.CurrentDirectory + "\\Image\\"+ ImgName + "-Mousedown.png")
+                    , new Size(Width, Height)
+                    );
         }
 
 
         private void ImageBtn_MouseUp(object sender, MouseEventArgs e)
         {
-            BackColor = Color.LightCyan;
-            borderPen.Color = Color.Transparent;
+            img = new Bitmap(
+                    Image.FromFile(Environment.CurrentDirectory + "\\Image\\" + ImgName + "-Mouseover.png")
+                    , new Size(Width, Height)
+                    );
+
+            Invalidate();
         }
 
         private void ImageBtn_MouseHover(object sender, EventArgs e)
         {
 
-            BackColor = Color.LightCyan;
-            strBrush.Color = Color.Coral;
-                        
+            img = new Bitmap(
+                    Image.FromFile(Environment.CurrentDirectory + "\\Image\\" + ImgName + "-Mouseover.png")
+                    , new Size(Width, Height)
+                    );
+            Invalidate();            
         }
 
         private void ImageBtn_MouseLeave(object sender, EventArgs e)
         {
 
-            BorderStyle = BorderStyle.None;
-            BackColor = Color.Transparent;
-            strBrush.Color = Color.Black;
+            img = new Bitmap(
+                    Image.FromFile(Environment.CurrentDirectory + "\\Image\\" + ImgName +".png")
+                    , new Size(Width, Height)
+                    );
+            Invalidate();
         }
 
         #endregion
