@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
+using System.Data;
 using System.Diagnostics;
 
 namespace UI
@@ -59,6 +60,18 @@ namespace UI
             }
             CloseDB();
             return;
+        }
+
+        public DataSet ExecuteSelectQuery(string sql)
+        {
+            ConnectToDB();
+            cmd = GetSQLCommand();
+            cmd.CommandText = string.Format(sql);
+            SQLiteDataAdapter adapter = new SQLiteDataAdapter(cmd);
+            DataSet ds = new DataSet();
+            adapter.Fill(ds);
+
+            return ds;
         }
     }
 }

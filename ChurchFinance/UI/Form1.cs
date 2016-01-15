@@ -20,6 +20,7 @@ namespace UI
         // DataGridView 생성
         DataGridView income = null;
         DataGridView _income = null;
+        int dgvcnt = 0;
 
         // DB 관련 
         SQLite SQLite = null ;
@@ -172,7 +173,7 @@ namespace UI
                 income.Rows.Add(row);
             }
             */
-            _income.Size = new Size(700, 400);
+            _income.Size = new Size(600, 400);
             _income.Location = new Point(350, 20);
             _income.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             _income.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
@@ -197,19 +198,16 @@ namespace UI
 
                 SQLite.Execute(string.Format("create table Offering_Thanks " + 
                     "(no Integer primary key autoincrement, date DATE, name varchar(40), amount int)"));
-                
-                cmd.CommandText = string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Thanks order by no asc");
-                SQLiteDataAdapter adapter = new SQLiteDataAdapter(cmd);
-                DataSet ds = new DataSet();
-                adapter.Fill(ds);
+
+                DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Thanks order by no asc"));
                 _income.DataSource = ds.Tables[0];
 
-                for(int i = 0; i< _income.Columns.Count; i++)
+                for (int i = 0; i< _income.Columns.Count; i++)
                 {
                     _income.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 }
-                                
 
+                dgvcnt = _income.Rows.Count;
                 SQLite.CloseDB();
             }
             catch(SQLiteException e)
@@ -240,5 +238,27 @@ namespace UI
 
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SQLite.ConnectToDB();
+            cmd = SQLite.GetSQLCommand();
+            int i = 0;
+            for (; i < dgvcnt; i++)
+            {
+                cmd.CommandText = string.Format("update Offering_Thanks set name = '{0}', amount = {1} where no = {2}", _income.Rows[i].Cells[0].Value, _income.Rows[i].Cells[1].Value, i + 1);
+                cmd.ExecuteNonQuery();
+            }
+            i--;
+            for (; i < _income.Rows.Count - 1; i++)
+            {
+                cmd.CommandText = string.Format("Insert into Offering_Thanks (name, amount) values('{0}', {1})", _income.Rows[i].Cells[0].Value, _income.Rows[i].Cells[1].Value);
+                cmd.ExecuteNonQuery();
+            }
+
+            DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이름', amount as '금 액', date as '날 짜' from Offering_Thanks order by no asc"));
+            _income.DataSource = ds.Tables[0];
+
+            SQLite.CloseDB();
+        }
     }
 }
