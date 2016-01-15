@@ -16,6 +16,19 @@ namespace UI
     public partial class Form1 : Form
     {
 
+        // Week Tab
+        NeoTabPage W_IncomeTab;
+        NeoTabPage W_SpendingTab;
+
+        // Month Tab
+        NeoTabPage M_IncomeTab;
+        NeoTabPage M_SpendingTab;
+
+        // Year Tab
+        NeoTabPage Y_IncomeTab;
+        NeoTabPage Y_SpendingTab;
+
+
         public Form1()
         {
             InitializeComponent();
@@ -26,21 +39,21 @@ namespace UI
             setImgBtn();
 
             setTabPage();
-
-            AddGridView();
-
-
+            
         }
         
 
+        /// <summary>
+        /// 아이콘 설정
+        /// </summary>
         private void setImgBtn()
         {
-
             // 첫번째 아이콘 추가
             ImageBtn weekBtn = new ImageBtn();
             weekBtn.img = new Bitmap(Environment.CurrentDirectory + "\\Image\\Week.png");
             weekBtn.ImgName = "Week";
             weekBtn.str = "주 단위 정산";
+            weekBtn.Click += WeekBtn_Click;
             imgBtnContainer1.InputBtn(weekBtn);
 
             // 두번째 아이콘 추가
@@ -48,6 +61,7 @@ namespace UI
             monthBtn.img = new Bitmap(Environment.CurrentDirectory + "\\Image\\Month.png");
             monthBtn.ImgName = "Month";
             monthBtn.str = "월 단위 정산";
+            monthBtn.Click += MonthBtn_Click;
             imgBtnContainer1.InputBtn(monthBtn);
 
             // 세번째 아이콘 추가
@@ -55,39 +69,86 @@ namespace UI
             yearBtn.img = new Bitmap(Environment.CurrentDirectory + "\\Image\\Year.png");
             yearBtn.ImgName = "Year";
             yearBtn.str = "년 단위 정산";
+            yearBtn.Click += YearBtn_Click;
             imgBtnContainer1.InputBtn(yearBtn);
 
         }
 
+        #region 클릭 이벤트
+
+        /// <summary>
+        /// Year 버튼 클릭 이벤트
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void YearBtn_Click(object sender, EventArgs e)
+        {
+            neoTabWindow1.Controls.Clear();
+        }
+
+        /// <summary>
+        /// Month 버튼 클릭 이벤트
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MonthBtn_Click(object sender, EventArgs e)
+        {
+            neoTabWindow1.Controls.Clear();
+        }
+
+        /// <summary>
+        /// Week 버튼 클릭 이벤트
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void WeekBtn_Click(object sender, EventArgs e)
+        {
+            // Tab 다 지우고 새로 넣기
+            neoTabWindow1.Controls.Clear();
+
+        }
+
+        #endregion 
+
         private void setTabPage()
         {
-            NeoTabPage incomeTab = new NeoTabPage();
-            NeoTabPage spendingTab = new NeoTabPage();
+            W_IncomeTab = new NeoTabPage();
+            W_SpendingTab = new NeoTabPage();
 
-            incomeTab.Text = "수 입";
-            incomeTab.BackColor = Color.White;
-            spendingTab.Text = "지 출";
-            spendingTab.BackColor = Color.White;
+            W_IncomeTab.Text = "수 입";
+            W_IncomeTab.BackColor = Color.White;
+            W_SpendingTab.Text = "지 출";
+            W_SpendingTab.BackColor = Color.White;
 
-            neoTabWindow1.Controls.Add(incomeTab);
-            neoTabWindow1.Controls.Add(spendingTab);
+            neoTabWindow1.Controls.Add(W_IncomeTab);
+            neoTabWindow1.Controls.Add(W_SpendingTab);
+
+            AddGridView();
         }
 
         private void AddGridView()
         {
+            #region 수입 탭 GridView 설정
+
             DataGridView income = new DataGridView();
             DataGridView _income = new DataGridView();
 
             income.Size = new Size(400, 400);
             income.Location = new Point(20, 20);
-            
 
+            DataGridViewColumn type = new DataGridViewColumn();
+            type.HeaderText = "수입 타입";
+            DataGridViewColumn much = new DataGridViewColumn();
+            
+            income.Columns.Add(new DataGridViewColumn());
+            
             _income.Size = new Size(400, 400);
             _income.Location = new Point(450, 20);
 
-            neoTabWindow1.Controls[0].Controls.Add(income);
-            neoTabWindow1.Controls[0].Controls.Add(_income);
+            W_IncomeTab.Controls.Add(income);
+            W_IncomeTab.Controls.Add(_income);
 
+            #endregion
         }
 
     }
