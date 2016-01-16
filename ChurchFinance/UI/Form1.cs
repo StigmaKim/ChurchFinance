@@ -84,13 +84,13 @@ namespace UI
             M_ReportTab.Controls.Add(sr);
 
             M_IncomeTab = new NeoTabPage();
-            M_IncomeTab.Text = "수입 명세";
+            M_IncomeTab.Text = "재정 수입";
             IncomeProgress ip = new IncomeProgress(IncomeProgress.DMode.income);
             ip.Dock = DockStyle.Fill;
             M_IncomeTab.Controls.Add(ip);
 
             M_SpendingTab = new NeoTabPage();
-            M_SpendingTab.Text = "제출 명세";
+            M_SpendingTab.Text = "재정 지출";
             IncomeProgress sp = new IncomeProgress(IncomeProgress.DMode.spend);
             ip.Dock = DockStyle.Fill;
             M_SpendingTab.Controls.Add(sp);
