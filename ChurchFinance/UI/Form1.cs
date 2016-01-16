@@ -81,6 +81,12 @@ namespace UI
             SpendReport sr = new SpendReport();
             sr.Dock = DockStyle.Fill;
             M_IncomeTab.Controls.Add(sr);
+
+            M_SpendingTab = new NeoTabPage();
+            M_SpendingTab.Text = "수입 명세";
+            IncomeProgress ip = new IncomeProgress();
+            ip.Dock = DockStyle.Fill;
+            M_SpendingTab.Controls.Add(ip);
             
         }
 
@@ -186,6 +192,7 @@ namespace UI
             neoTabWindow1.Controls.Clear();
 
             neoTabWindow1.Controls.Add(M_IncomeTab);
+            neoTabWindow1.Controls.Add(M_SpendingTab);
         }
 
         /// <summary>

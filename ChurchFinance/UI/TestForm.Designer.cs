@@ -37,11 +37,12 @@
             // neoTabWindow1
             // 
             this.neoTabWindow1.Controls.Add(this.neoTabPage1);
-            this.neoTabWindow1.Location = new System.Drawing.Point(12, 12);
+            this.neoTabWindow1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.neoTabWindow1.Location = new System.Drawing.Point(0, 0);
             this.neoTabWindow1.Name = "neoTabWindow1";
             this.neoTabWindow1.RendererName = null;
             this.neoTabWindow1.SelectedIndex = 0;
-            this.neoTabWindow1.Size = new System.Drawing.Size(729, 602);
+            this.neoTabWindow1.Size = new System.Drawing.Size(820, 609);
             this.neoTabWindow1.TabIndex = 0;
             // 
             // neoTabPage1
@@ -57,7 +58,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(752, 626);
+            this.ClientSize = new System.Drawing.Size(820, 609);
             this.Controls.Add(this.neoTabWindow1);
             this.Name = "TestForm";
             this.Text = "TestForm";
