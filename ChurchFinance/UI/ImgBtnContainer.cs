@@ -25,9 +25,7 @@ namespace UI
 
             margin = 15;
 
-
-            //xLoc = 5;
-            xLoc = Width;
+            xLoc = 5;
             yLoc = 5;
 
             curPoint = new Point(xLoc, yLoc);
@@ -44,7 +42,7 @@ namespace UI
             
             Controls.Add(btn);
 
-            xLoc -= (margin + btn.Size.Width);
+            xLoc += (margin + btn.Size.Width);
             curPoint = new Point(xLoc, yLoc);
 
         }
