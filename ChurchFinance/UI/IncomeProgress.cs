@@ -511,12 +511,13 @@ namespace UI
             budgetPrepare = 11453000;
 
             // 지출 진행 데이터 입력
-            pray = 2900000;
+            pray = 200000;
             spendMission = 660000;
             edu = 1050500;
             person = 3500000;
             service = 112500;
             manage = 3303980;
+            loan = 900410;
             prepare = 900410;
 
             #endregion
@@ -703,10 +704,12 @@ namespace UI
             progressView.Rows[5].Cells[1].Value = special.ToString("n0").ToString();
             progressView.Rows[5].Cells[2].Value = ((float)special / (float)budgetSpecial * 100).ToString("00.00") + "%";
 
+            // 절기 헌금
             progressView.Rows[6].Cells[0].Value = "절기 헌금";
             progressView.Rows[6].Cells[1].Value = season.ToString("n0").ToString();
             progressView.Rows[6].Cells[2].Value = ((float)season / (float)budgetSeason * 100).ToString("00.00") + "%";
 
+            // 합계
             progressView.Rows[7].Cells[0].Value = "합계";
             progressView.Rows[7].Cells[1].Value = sum.ToString("n0").ToString();
             progressView.Rows[7].Cells[2].Value = ((float)sum / (float)budgetSum * 100).ToString("00.00") + "%";
@@ -787,7 +790,50 @@ namespace UI
         /// </summary>
         private void spendProgressInput()
         {
+            // 예배비
+            progressView.Rows[0].Cells[0].Value = "예배비";
+            progressView.Rows[0].Cells[1].Value = pray.ToString("n0").ToString();
+            progressView.Rows[0].Cells[2].Value = ((float)pray / (float)budgetPray * 100).ToString("00.00") + "%";
 
+            // 선교비
+            progressView.Rows[1].Cells[0].Value = "선교비";
+            progressView.Rows[1].Cells[1].Value = spendMission.ToString("n0").ToString();
+            progressView.Rows[1].Cells[2].Value = ((float)spendMission / (float)budgetSpendMission * 100).ToString("00.00") + "%";
+
+            // 교육비
+            progressView.Rows[2].Cells[0].Value = "교육비";
+            progressView.Rows[2].Cells[1].Value = edu.ToString("n0").ToString();
+            progressView.Rows[2].Cells[2].Value = ((float)edu / (float)budgetEdu * 100).ToString("00.00") + "%";
+
+            // 인건비
+            progressView.Rows[3].Cells[0].Value = "인건비";
+            progressView.Rows[3].Cells[1].Value = person.ToString("n0").ToString();
+            progressView.Rows[3].Cells[2].Value = ((float)person / (float)budgetPerson * 100).ToString("00.00") + "%";
+
+            // 봉사비
+            progressView.Rows[4].Cells[0].Value = "봉사비";
+            progressView.Rows[4].Cells[1].Value = service.ToString("n0").ToString();
+            progressView.Rows[4].Cells[2].Value = ((float)service / (float)budgetService * 100).ToString("00.00") + "%";
+
+            // 운영 관리비
+            progressView.Rows[5].Cells[0].Value = "운영 관리비";
+            progressView.Rows[5].Cells[1].Value = manage.ToString("n0").ToString();
+            progressView.Rows[5].Cells[2].Value = ((float)manage / (float)budgetManage * 100).ToString("00.00") + "%";
+
+            // 대출 관리비
+            progressView.Rows[6].Cells[0].Value = "대출 관리비";
+            progressView.Rows[6].Cells[1].Value = loan.ToString("n0").ToString();
+            progressView.Rows[6].Cells[2].Value = ((float)loan / (float)budgetLoan * 100).ToString("00.00") + "%";
+
+            // 예비비
+            progressView.Rows[7].Cells[0].Value = "예비비";
+            progressView.Rows[7].Cells[1].Value = prepare.ToString("n0").ToString();
+            progressView.Rows[7].Cells[2].Value = ((float)prepare / (float)budgetPrepare * 100).ToString("00.00") + "%";
+
+            // 합계
+            progressView.Rows[8].Cells[0].Value = "합계";
+            progressView.Rows[8].Cells[1].Value = spendSum.ToString("n0").ToString();
+            progressView.Rows[8].Cells[2].Value = ((float)spendSum / (float)budgetSpendSum * 100).ToString("00.00") + "%";
         }
 
         /// <summary>
