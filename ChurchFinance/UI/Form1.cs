@@ -75,6 +75,12 @@ namespace UI
 
             panel5.BackColor = Color.LightGray;
             panel2.BackColor = Color.LightGray;
+
+            M_IncomeTab = new NeoTabPage();
+            M_IncomeTab.Text = "재정 보고";
+            SpendReport sr = new SpendReport();
+            sr.Dock = DockStyle.Fill;
+            M_IncomeTab.Controls.Add(sr);
             
         }
 
@@ -178,6 +184,8 @@ namespace UI
         private void MonthBtn_Click(object sender, EventArgs e)
         {
             neoTabWindow1.Controls.Clear();
+
+            neoTabWindow1.Controls.Add(M_IncomeTab);
         }
 
         /// <summary>
@@ -233,7 +241,6 @@ namespace UI
             W_IncomeTab.Controls.Remove(_income_Rice);
             W_IncomeTab.Controls.Remove(_income_Help);
             W_IncomeTab.Controls.Remove(_income_Other);
-            
 
             SetInputSumDGV(); // 최초 DGV 그리기. ( 수입 SUM )
             W_IncomeTab.Controls.Add(_income_Thanks);
@@ -259,6 +266,7 @@ namespace UI
             SQLite.Execute(string.Format("create table Offering_Other " +
                 "(no Integer primary key autoincrement, date datetime, name varchar(40), amount Integer)"));
         }
+
         private void AddGridView()
         {
             #region 수입 탭 GridView 선언
@@ -355,6 +363,7 @@ namespace UI
             #endregion
 
             #region DGV 옵션 2
+
             // _income_Thanks ----------------------------------
             _income_Thanks.Size = new Size(600, 400);
             _income_Thanks.Location = new Point(350, 20);
@@ -472,6 +481,7 @@ namespace UI
         }
         
         #region 에딧 이벤트
+
         private void _income_Thanks_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             // Set New Value`s Date

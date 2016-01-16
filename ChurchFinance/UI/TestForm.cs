@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NeoTabControlLibrary;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,36 +15,21 @@ namespace UI
     {
 
         private NeoTabControlLibrary.NeoTabPage neoTabPage2;
+        private IncomeProgress ip;
 
         public TestForm()
         {
             InitializeComponent();
 
-            dateTimePicker1.Size = new Size(200, 200);
+            neoTabWindow1.Renderer = AddInRendererManager.LoadRenderer("MarginBlueRendererVS2");
 
-            panel1.BackColor = Color.Blue;
-
+            ip = new IncomeProgress();
+            ip.Dock = DockStyle.Fill;
+            neoTabPage1.Controls.Add(ip);
+            neoTabPage1.Text = "수 입";
+            neoTabPage1.BackColor = Color.White;
         }
         
-        private void button1_Click(object sender, EventArgs e)
-        {
-//            DataGridViewColumn testCol = new DataGridViewColumn();
-
-  //          testCol.HeaderText = "Test";
-    //        dataGridView1.Columns.Add(testCol);
-        }
-
-        private void dataGridView1_CellLeave(object sender, DataGridViewCellEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine(e.ColumnIndex + "/" + e.RowIndex);
-
-            
-        }
-
-        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
 

@@ -55,9 +55,10 @@
             // 
             // imgBtnContainer1
             // 
+            this.imgBtnContainer1.BackColor = System.Drawing.SystemColors.Control;
             this.imgBtnContainer1.Location = new System.Drawing.Point(13, 13);
             this.imgBtnContainer1.Name = "imgBtnContainer1";
-            this.imgBtnContainer1.Size = new System.Drawing.Size(968, 97);
+            this.imgBtnContainer1.Size = new System.Drawing.Size(993, 97);
             this.imgBtnContainer1.TabIndex = 2;
             // 
             // panel1
