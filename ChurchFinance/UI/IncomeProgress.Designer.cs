@@ -45,7 +45,7 @@
             this.budgetView.Location = new System.Drawing.Point(19, 99);
             this.budgetView.Name = "budgetView";
             this.budgetView.RowTemplate.Height = 23;
-            this.budgetView.Size = new System.Drawing.Size(426, 206);
+            this.budgetView.Size = new System.Drawing.Size(430, 206);
             this.budgetView.TabIndex = 0;
             // 
             // title
@@ -64,7 +64,7 @@
             this.progressView.Location = new System.Drawing.Point(475, 99);
             this.progressView.Name = "progressView";
             this.progressView.RowTemplate.Height = 23;
-            this.progressView.Size = new System.Drawing.Size(451, 206);
+            this.progressView.Size = new System.Drawing.Size(430, 206);
             this.progressView.TabIndex = 2;
             // 
             // label1
@@ -81,7 +81,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold);
-            this.label2.Location = new System.Drawing.Point(681, 58);
+            this.label2.Location = new System.Drawing.Point(663, 58);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 29);
             this.label2.TabIndex = 4;
@@ -90,7 +90,7 @@
             // etcView
             // 
             this.etcView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.etcView.Location = new System.Drawing.Point(627, 357);
+            this.etcView.Location = new System.Drawing.Point(607, 360);
             this.etcView.Name = "etcView";
             this.etcView.RowTemplate.Height = 23;
             this.etcView.Size = new System.Drawing.Size(298, 49);

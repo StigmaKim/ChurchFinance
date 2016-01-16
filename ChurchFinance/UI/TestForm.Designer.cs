@@ -42,7 +42,7 @@
             this.neoTabWindow1.Name = "neoTabWindow1";
             this.neoTabWindow1.RendererName = null;
             this.neoTabWindow1.SelectedIndex = 0;
-            this.neoTabWindow1.Size = new System.Drawing.Size(820, 609);
+            this.neoTabWindow1.Size = new System.Drawing.Size(1020, 609);
             this.neoTabWindow1.TabIndex = 0;
             // 
             // neoTabPage1
@@ -58,7 +58,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(820, 609);
+            this.ClientSize = new System.Drawing.Size(1020, 609);
             this.Controls.Add(this.neoTabWindow1);
             this.Name = "TestForm";
             this.Text = "TestForm";

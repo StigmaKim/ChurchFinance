@@ -84,7 +84,7 @@ namespace UI
 
             M_SpendingTab = new NeoTabPage();
             M_SpendingTab.Text = "수입 명세";
-            IncomeProgress ip = new IncomeProgress();
+            IncomeProgress ip = new IncomeProgress(IncomeProgress.DMode.income);
             ip.Dock = DockStyle.Fill;
             M_SpendingTab.Controls.Add(ip);
             
