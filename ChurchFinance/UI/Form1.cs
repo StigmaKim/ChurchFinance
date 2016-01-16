@@ -51,6 +51,7 @@ namespace UI
         NeoTabPage W_SpendingTab;
 
         // Month Tab
+        NeoTabPage M_ReportTab;
         NeoTabPage M_IncomeTab;
         NeoTabPage M_SpendingTab;
 
@@ -76,17 +77,23 @@ namespace UI
             panel5.BackColor = Color.LightGray;
             panel2.BackColor = Color.LightGray;
 
-            M_IncomeTab = new NeoTabPage();
-            M_IncomeTab.Text = "재정 보고";
+            M_ReportTab = new NeoTabPage();
+            M_ReportTab.Text = "재정 보고";
             SpendReport sr = new SpendReport();
             sr.Dock = DockStyle.Fill;
-            M_IncomeTab.Controls.Add(sr);
+            M_ReportTab.Controls.Add(sr);
 
-            M_SpendingTab = new NeoTabPage();
-            M_SpendingTab.Text = "수입 명세";
+            M_IncomeTab = new NeoTabPage();
+            M_IncomeTab.Text = "수입 명세";
             IncomeProgress ip = new IncomeProgress(IncomeProgress.DMode.income);
             ip.Dock = DockStyle.Fill;
-            M_SpendingTab.Controls.Add(ip);
+            M_IncomeTab.Controls.Add(ip);
+
+            M_SpendingTab = new NeoTabPage();
+            M_SpendingTab.Text = "제출 명세";
+            IncomeProgress sp = new IncomeProgress(IncomeProgress.DMode.spend);
+            ip.Dock = DockStyle.Fill;
+            M_SpendingTab.Controls.Add(sp);
             
         }
 
@@ -191,6 +198,7 @@ namespace UI
         {
             neoTabWindow1.Controls.Clear();
 
+            neoTabWindow1.Controls.Add(M_ReportTab);
             neoTabWindow1.Controls.Add(M_IncomeTab);
             neoTabWindow1.Controls.Add(M_SpendingTab);
         }
