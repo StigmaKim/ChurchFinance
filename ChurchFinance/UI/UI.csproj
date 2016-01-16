@@ -103,6 +103,7 @@
     <Compile Include="SpendReport.Designer.cs">
       <DependentUpon>SpendReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="WeekSpendPage.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
