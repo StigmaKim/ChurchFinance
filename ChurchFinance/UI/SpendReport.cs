@@ -211,6 +211,9 @@ namespace UI
 
         #endregion
         
+        /// <summary>
+        /// 생성자
+        /// </summary>
         public SpendReport()
         {
             InitializeComponent();
@@ -229,17 +232,15 @@ namespace UI
             
             // 차월 이월액
             balance = foreYearBalance - (spend - income);
-
-            /*
-            Title.Text = Date.Year + "년 " + Date.Month + "월 재정 보고";
             
-            setForeYearBalance();
-
-            inputInputSpendData();
-            */
             Paint += SpendReport_Paint;
         }
 
+        /// <summary>
+        /// 지출 보고서
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SpendReport_Paint(object sender, PaintEventArgs e)
         {
 
