@@ -730,9 +730,10 @@ namespace UI
         /// <summary>
         /// 생성자
         /// </summary>
-        public IncomeProgress(DMode drawMode)
+        public IncomeProgress(DMode drawMode, Button button2)
         {
             InitializeComponent();
+            printDocument1.PrintPage += PrintDocument1_PrintPage;   
 
             mode = drawMode;
 
@@ -799,7 +800,7 @@ namespace UI
             budgetSpendSum = BudgetPray + BudgetSpendMission + BudgetEdu + BudgetPerson + BudgetService + BudgetManage + BudgetLoan + BudgetPrepare;
             spendSum = Pray + SpendMission + Edu + Person + Service + Manage + Loan + Prepare;
 
-            
+            title.Location = new Point(330, 40);
             if (mode == DMode.income)
             {
                 title.Text = date.Year + "년 " + date.Month + "월 재정 수입 명세서";
@@ -811,6 +812,19 @@ namespace UI
                 spendSetView();
             }
             setViews();
+            button2.Click += Button2_Click;
+        }
+
+        private void Button2_Click(object sender, EventArgs e)
+        {
+            printDocument1.Print();
+        }
+
+        private void PrintDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            Bitmap bm = new Bitmap(this.budgetView.Width, this.budgetView.Height);
+            budgetView.DrawToBitmap(bm, new Rectangle(0, 0, this.budgetView.Width, this.budgetView.Height));
+            e.Graphics.DrawImage(bm, 0, 0);
         }
 
         /// <summary>
@@ -818,6 +832,9 @@ namespace UI
         /// </summary>
         private void setViews()
         {
+            budgetView.Width = 600;
+            budgetView.Location = new Point(150, 110);
+
             // 예산 데이터뷰 세팅
             budgetView.ColumnCount = 5;
             budgetView.ReadOnly = true;

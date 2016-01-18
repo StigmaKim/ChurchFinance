@@ -30,6 +30,8 @@
         {
             this.budgetView = new System.Windows.Forms.DataGridView();
             this.title = new System.Windows.Forms.Label();
+            this.printDocument1 = new System.Drawing.Printing.PrintDocument();
+            this.printDialog1 = new System.Windows.Forms.PrintDialog();
             ((System.ComponentModel.ISupportInitialize)(this.budgetView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,6 +54,10 @@
             this.title.TabIndex = 1;
             this.title.Text = "label1";
             // 
+            // printDialog1
+            // 
+            this.printDialog1.UseEXDialog = true;
+            // 
             // IncomeProgress
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -70,5 +76,7 @@
 
         private System.Windows.Forms.DataGridView budgetView;
         private System.Windows.Forms.Label title;
+        private System.Drawing.Printing.PrintDocument printDocument1;
+        private System.Windows.Forms.PrintDialog printDialog1;
     }
 }
