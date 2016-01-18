@@ -28,19 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.DataView = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DataView)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridView1
+            // DataView
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(19, 64);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(647, 501);
-            this.dataGridView1.TabIndex = 0;
+            this.DataView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DataView.Location = new System.Drawing.Point(19, 64);
+            this.DataView.Name = "DataView";
+            this.DataView.RowTemplate.Height = 23;
+            this.DataView.Size = new System.Drawing.Size(647, 501);
+            this.DataView.TabIndex = 0;
             // 
             // label1
             // 
@@ -57,10 +57,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.DataView);
             this.Name = "SpendDetail";
             this.Size = new System.Drawing.Size(794, 590);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DataView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -68,7 +68,7 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView DataView;
         private System.Windows.Forms.Label label1;
     }
 }

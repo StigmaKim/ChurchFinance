@@ -21,22 +21,336 @@ namespace UI
         private Pray budgetPray;
 
         /// <summary>
-        /// 선교비
+        /// 현재 예배비
         /// </summary>
         private Pray curPray;
 
+        /// <summary>
+        /// 선교비
+        /// </summary>
+        private MissionWork budgetMissionWork;
 
+        /// <summary>
+        /// 현재 선교비
+        /// </summary>
+        private MissionWork curMissionWork;
 
-        #region 예산 변수
-        
+        /// <summary>
+        /// 예산 교육비
+        /// </summary>
+        private Education budgetEdu;
+
+        /// <summary>
+        /// 교육비
+        /// </summary>
+        private Education curEdu;
+
+        /// <summary>
+        /// 예산 인건비
+        /// </summary>
+        private Person budgetPerson;
+
+        /// <summary>
+        /// 현재 인건비
+        /// </summary>
+        private Person curPerson;
+
+        /// <summary>
+        /// 예산 봉사비
+        /// </summary>
+        private Service budgetService;
+
+        /// <summary>
+        /// 현재 봉사비
+        /// </summary>
+        private Service curService;
+
+        /// <summary>
+        /// 예산 운영 관리비
+        /// </summary>
+        private Manage budgetManage;
+
+        /// <summary>
+        /// 현재 운영 관리비
+        /// </summary>
+        private Manage curManage;
+
+        /// <summary>
+        /// 예산 대출 관련비
+        /// </summary>
+        private Loan budgetLoan;
+
+        /// <summary>
+        /// 현재 대출 관련비
+        /// </summary>
+        private Loan curLoan;
 
         #endregion
+
+        #region get / set
+
+        public Pray BudgetPray
+        {
+            get
+            {
+                return budgetPray;
+            }
+
+            set
+            {
+                budgetPray = value;
+            }
+        }
+
+        public Pray CurPray
+        {
+            get
+            {
+                return curPray;
+            }
+
+            set
+            {
+                curPray = value;
+            }
+        }
+
+        public MissionWork BudgetMissionWork
+        {
+            get
+            {
+                return budgetMissionWork;
+            }
+
+            set
+            {
+                budgetMissionWork = value;
+            }
+        }
+
+        public MissionWork CurMissionWork
+        {
+            get
+            {
+                return curMissionWork;
+            }
+
+            set
+            {
+                curMissionWork = value;
+            }
+        }
+
+        public Education BudgetEdu
+        {
+            get
+            {
+                return budgetEdu;
+            }
+
+            set
+            {
+                budgetEdu = value;
+            }
+        }
+
+        public Education CurEdu
+        {
+            get
+            {
+                return curEdu;
+            }
+
+            set
+            {
+                curEdu = value;
+            }
+        }
+
+        public Person BudgetPerson
+        {
+            get
+            {
+                return budgetPerson;
+            }
+
+            set
+            {
+                budgetPerson = value;
+            }
+        }
+
+        public Person CurPerson
+        {
+            get
+            {
+                return curPerson;
+            }
+
+            set
+            {
+                curPerson = value;
+            }
+        }
+
+        public Service BudgetService
+        {
+            get
+            {
+                return budgetService;
+            }
+
+            set
+            {
+                budgetService = value;
+            }
+        }
+
+        public Service CurService
+        {
+            get
+            {
+                return curService;
+            }
+
+            set
+            {
+                curService = value;
+            }
+        }
+
+        public Manage BudgetManage
+        {
+            get
+            {
+                return budgetManage;
+            }
+
+            set
+            {
+                budgetManage = value;
+            }
+        }
+
+        public Manage CurManage
+        {
+            get
+            {
+                return curManage;
+            }
+
+            set
+            {
+                curManage = value;
+            }
+        }
+
+        public Loan BudgetLoan
+        {
+            get
+            {
+                return budgetLoan;
+            }
+
+            set
+            {
+                budgetLoan = value;
+            }
+        }
+
+        public Loan CurLoan
+        {
+            get
+            {
+                return curLoan;
+            }
+
+            set
+            {
+                curLoan = value;
+            }
+        }
 
         #endregion
 
         public SpendDetail()
         {
             InitializeComponent();
+
+            #region 예시 데이터 입력
+
+            // 예산 데이터 입력
+            budgetPray.Flower = 1500000;
+            budgetPray.Singer = 1200000;
+            budgetPray.Jubo = 200000;
+            budgetMissionWork.Misson = 8000000;
+            budgetMissionWork.Visit = 700000;
+            budgetEdu.WeekSchool = 2400000;
+            budgetEdu.Student = 2400000;
+            budgetEdu.YoungMan = 1800000;
+            budgetEdu.ScholarShip = 6000000;
+            budgetEdu.Book = 600000;
+            budgetPerson.Priest = 21600000;
+            budgetPerson.Missionary = 20400000;
+            budgetPerson.Bonus = 1800000;
+            budgetService.GyeongJo = 1000000;
+            budgetService.Saving = 1200000;
+            budgetService.Events = 7000000;
+            budgetManage.Home = 2520000;
+            budgetManage.Church = 22000000;
+            budgetManage.Ministry = 4600000;
+            budgetManage.Office = 2000000;
+            budgetManage.Water = 3000000;
+            budgetManage.Communication = 1500000;
+            budgetManage.CarManage = 10000000;
+            budgetManage.CarBuy = 6000000;
+            budgetManage.Sang = 1000000;
+            budgetManage.Tool = 2000000;
+            budgetManage.Etc = 12000000;
+            budgetLoan.Repayment = 12000000;
+            budgetLoan.Interest = 8000000;
+
+            // 현재 데이터 입력
+            curPray.Flower = 100000;
+            curPray.Singer = 100000;
+            curPray.Jubo = 0;
+            curMissionWork.Misson = 660000;
+            curMissionWork.Visit = 0;
+            curEdu.WeekSchool = 200000;
+            curEdu.Student = 200000;
+            curEdu.YoungMan = 150000;
+            curEdu.ScholarShip = 500000;
+            curEdu.Book = 0;
+            curPerson.Priest = 1800000;
+            curPerson.Missionary = 1700000;
+            curPerson.Bonus = 0;
+            curService.GyeongJo = 0;
+            curService.Saving = 100000;
+            curService.Events = 12500;
+            curManage.Home = 210000;
+            curManage.Church = 1324300;
+            curManage.Ministry = 300000;
+            curManage.Office = 337400;
+            curManage.Water = 0;
+            curManage.Communication = 0;
+            curManage.CarManage = 504000;
+            curManage.CarBuy = 0;
+            curManage.Sang = 0;
+            curManage.Tool = 0;
+            curManage.Etc = 628250;
+
+            #endregion
+
+            // 표 설정
+            setView();
+        }
+
+        /// <summary>
+        /// DataGridView 설정
+        /// </summary>
+        private void setView()
+        {
+
         }
     }
 
@@ -326,7 +640,7 @@ namespace UI
     /// <summary>
     /// 봉사비
     /// </summary>
-    public class service
+    public class Service
     {
         #region 변수 선언
 
@@ -392,7 +706,7 @@ namespace UI
     /// <summary>
     /// 운영 관리비
     /// </summary>
-    public class manage
+    public class Manage
     {
 
         #region 변수 선언
@@ -436,6 +750,11 @@ namespace UI
         /// 차량 구입비 정립
         /// </summary>
         private int carBuy;
+
+        /// <summary>
+        /// 상회비
+        /// </summary>
+        private int sang;
 
         /// <summary>
         /// 비품비
@@ -578,6 +897,19 @@ namespace UI
             set
             {
                 etc = value;
+            }
+        }
+
+        public int Sang
+        {
+            get
+            {
+                return sang;
+            }
+
+            set
+            {
+                sang = value;
             }
         }
 
