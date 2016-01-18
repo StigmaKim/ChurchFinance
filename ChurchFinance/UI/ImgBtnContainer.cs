@@ -46,5 +46,17 @@ namespace UI
             curPoint = new Point(xLoc, yLoc);
 
         }
+
+        public void InputBtn(TitleBtn btn)
+        {
+            btn.Size = new Size((int)((float)Height*3.5), Height - (10));
+            btn.Location = new Point(curPoint.X, curPoint.Y);
+
+            Controls.Add(btn);
+
+            xLoc += (margin + btn.Size.Width);
+            curPoint = new Point(xLoc, 0);
+
+        }
     }
 }

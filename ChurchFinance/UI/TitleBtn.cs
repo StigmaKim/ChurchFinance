@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace UI
 {
-    public partial class ImageBtn : UserControl
+    public partial class TitleBtn : UserControl
     {
 
         #region Variable
@@ -40,7 +40,7 @@ namespace UI
         #endregion
 
 
-        public ImageBtn()
+        public TitleBtn()
         {
             InitializeComponent();
 
@@ -57,7 +57,7 @@ namespace UI
                     Image.FromFile(Environment.CurrentDirectory + "\\Image\\iCalendar.png")
                     , new Size(Width, Height)
                     );
-
+                
                 imgSz = img.Size;
             }
             catch(Exception ex)
@@ -83,14 +83,6 @@ namespace UI
             Paint += ImageBtn_Paint;
             // MouseDown 이벤트
             MouseDown += ImageBtn_MouseDown;
-            // MouseUp 이벤트
-            MouseUp += ImageBtn_MouseUp;
-            // MouseHover 이벤트 추가
-            MouseHover += ImageBtn_MouseHover;
-            // MouseLeave 이벤트 
-            MouseLeave += ImageBtn_MouseLeave;
-            // 사이즈 변경
-            Resize += ImageBtn_Resize;
         }
 
 
@@ -103,10 +95,8 @@ namespace UI
             try
             {
                 // 이미지 관련 작업
-                //Bitmap _img = new Bitmap(img, new Size((Width / 3) * 2, (Height / 3) * 2));
-                Bitmap _img = new Bitmap(img, new Size(Width - cut, Height - cut));
+                Bitmap _img = new Bitmap(img, new Size(this.Width - cut, this.Height - cut));
                 imgSz = _img.Size;
-                //imgLoc = new Point((Width / 2) - (imgSz.Width / 2), Height / 15);
                 imgLoc = new Point(cut, cut);
 
 
@@ -137,52 +127,10 @@ namespace UI
 
         #region 내부 이벤트들
 
-        private void ImageBtn_Resize(object sender, EventArgs e)
-        {
-            Invalidate();
-        }
-
-
         private void ImageBtn_MouseDown(object sender, MouseEventArgs e)
         {
             Invalidate();
-
-            img = new Bitmap(
-                    Image.FromFile(Environment.CurrentDirectory + "\\Image\\"+ ImgName + "-Mousedown.png")
-                    , new Size(Width, Height)
-                    );
         }
-
-
-        private void ImageBtn_MouseUp(object sender, MouseEventArgs e)
-        {
-            img = new Bitmap(
-                    Image.FromFile(Environment.CurrentDirectory + "\\Image\\" + ImgName + "-Mouseover.png")
-                    , new Size(Width, Height)
-                    );
-
-            Invalidate();
-        }
-
-        private void ImageBtn_MouseHover(object sender, EventArgs e)
-        {
-                img = new Bitmap(
-                        Image.FromFile(Environment.CurrentDirectory + "\\Image\\" + ImgName + "-Mouseover.png")
-                        , new Size(Width, Height)
-                        );
-                Invalidate();
-        }
-
-        private void ImageBtn_MouseLeave(object sender, EventArgs e)
-        {
-
-            img = new Bitmap(
-                    Image.FromFile(Environment.CurrentDirectory + "\\Image\\" + ImgName +".png")
-                    , new Size(Width, Height)
-                    );
-            Invalidate();
-        }
-
         #endregion
     }
 }

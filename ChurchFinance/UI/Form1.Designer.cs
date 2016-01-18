@@ -125,9 +125,9 @@
             // 
             // imgBtnContainer2
             // 
-            this.imgBtnContainer2.Location = new System.Drawing.Point(558, 13);
+            this.imgBtnContainer2.Location = new System.Drawing.Point(510, 13);
             this.imgBtnContainer2.Name = "imgBtnContainer2";
-            this.imgBtnContainer2.Size = new System.Drawing.Size(420, 97);
+            this.imgBtnContainer2.Size = new System.Drawing.Size(453, 97);
             this.imgBtnContainer2.TabIndex = 9;
             // 
             // imgBtnContainer1
@@ -135,7 +135,7 @@
             this.imgBtnContainer1.BackColor = System.Drawing.Color.White;
             this.imgBtnContainer1.Location = new System.Drawing.Point(13, 13);
             this.imgBtnContainer1.Name = "imgBtnContainer1";
-            this.imgBtnContainer1.Size = new System.Drawing.Size(539, 97);
+            this.imgBtnContainer1.Size = new System.Drawing.Size(448, 97);
             this.imgBtnContainer1.TabIndex = 2;
             // 
             // Form1

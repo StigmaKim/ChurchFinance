@@ -58,11 +58,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Budget.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Budget.Designer.cs">
+      <DependentUpon>Budget.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TitleBtn.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TitleBtn.Designer.cs">
+      <DependentUpon>TitleBtn.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageBtn.cs">
       <SubType>UserControl</SubType>
@@ -110,8 +122,14 @@
       <DependentUpon>SpendReport.cs</DependentUpon>
     </Compile>
     <Compile Include="WeekSpendPage.cs" />
+    <EmbeddedResource Include="Budget.resx">
+      <DependentUpon>Budget.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TitleBtn.resx">
+      <DependentUpon>TitleBtn.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ImageBtn.resx">
       <DependentUpon>ImageBtn.cs</DependentUpon>
