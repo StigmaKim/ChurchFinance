@@ -48,6 +48,7 @@ namespace UI
 
         WeekSpendPage WSP = null;
 
+        string currentCategory = null;
         Control currentTab = null;
         NeoTabPage currentWeekTab = null; 
 
@@ -74,9 +75,12 @@ namespace UI
             InitializeComponent();
             SQLite = new SQLite(); // DB Object
             cmd = SQLite.GetSQLCommand(); // Command Object
+            currentCategory = "Week";
+            button1.Visible = true;
+            button2.Visible = false;
 
             dateTimePicker1.ValueChanged += DateTimePicker1_ValueChanged;
-
+            
             neoTabWindow1.Renderer = NeoTabControlLibrary.AddInRendererManager.LoadRenderer("MarginBlueRendererVS2");
             neoTabWindow1.BackColor = Color.White;
 
@@ -97,13 +101,13 @@ namespace UI
 
             M_IncomeTab = new NeoTabPage();
             M_IncomeTab.Text = "재정 수입";
-            IncomeProgress ip = new IncomeProgress(IncomeProgress.DMode.income);
+            IncomeProgress ip = new IncomeProgress(IncomeProgress.DMode.income, button2);
             ip.Dock = DockStyle.Fill;
             M_IncomeTab.Controls.Add(ip);
 
             M_SpendingTab = new NeoTabPage();
             M_SpendingTab.Text = "재정 지출";
-            IncomeProgress sp = new IncomeProgress(IncomeProgress.DMode.spend);
+            IncomeProgress sp = new IncomeProgress(IncomeProgress.DMode.spend, button2);
             ip.Dock = DockStyle.Fill;
             M_SpendingTab.Controls.Add(sp);
             
@@ -212,6 +216,10 @@ namespace UI
         private void YearBtn_Click(object sender, EventArgs e)
         {
             neoTabWindow1.Controls.Clear();
+
+            currentCategory = "Year";
+            button1.Visible = false;
+            button2.Visible = true;
         }
 
         /// <summary>
@@ -226,6 +234,11 @@ namespace UI
             neoTabWindow1.Controls.Add(M_ReportTab);
             neoTabWindow1.Controls.Add(M_IncomeTab);
             neoTabWindow1.Controls.Add(M_SpendingTab);
+
+            currentCategory = "Month";
+            button1.Visible = false;
+            button2.Visible = true;
+            
         }
 
         /// <summary>
@@ -242,6 +255,9 @@ namespace UI
             neoTabWindow1.Controls.Add(W_SpendingTab);
             currentWeekTab = W_IncomeTab;
 
+            currentCategory = "Week";
+            button1.Visible = true;
+            button2.Visible = false;
         }
 
         #endregion 
