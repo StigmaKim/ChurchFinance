@@ -34,11 +34,12 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.imgBtnContainer1 = new UI.ImgBtnContainer();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
+            this.imgBtnContainer2 = new UI.ImgBtnContainer();
+            this.imgBtnContainer1 = new UI.ImgBtnContainer();
             ((System.ComponentModel.ISupportInitialize)(this.neoTabWindow1)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -93,14 +94,6 @@
             this.panel5.Size = new System.Drawing.Size(993, 2);
             this.panel5.TabIndex = 7;
             // 
-            // imgBtnContainer1
-            // 
-            this.imgBtnContainer1.BackColor = System.Drawing.SystemColors.Control;
-            this.imgBtnContainer1.Location = new System.Drawing.Point(13, 13);
-            this.imgBtnContainer1.Name = "imgBtnContainer1";
-            this.imgBtnContainer1.Size = new System.Drawing.Size(993, 97);
-            this.imgBtnContainer1.TabIndex = 2;
-            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.button2);
@@ -130,12 +123,28 @@
             this.button1.Text = "저 장";
             this.button1.UseVisualStyleBackColor = true;
             // 
+            // imgBtnContainer2
+            // 
+            this.imgBtnContainer2.Location = new System.Drawing.Point(558, 13);
+            this.imgBtnContainer2.Name = "imgBtnContainer2";
+            this.imgBtnContainer2.Size = new System.Drawing.Size(420, 97);
+            this.imgBtnContainer2.TabIndex = 9;
+            // 
+            // imgBtnContainer1
+            // 
+            this.imgBtnContainer1.BackColor = System.Drawing.Color.White;
+            this.imgBtnContainer1.Location = new System.Drawing.Point(13, 13);
+            this.imgBtnContainer1.Name = "imgBtnContainer1";
+            this.imgBtnContainer1.Size = new System.Drawing.Size(539, 97);
+            this.imgBtnContainer1.TabIndex = 2;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(990, 793);
+            this.Controls.Add(this.imgBtnContainer2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel3);
@@ -164,6 +173,7 @@
         private System.Windows.Forms.Button button1;
         private System.Drawing.Printing.PrintDocument printDocument1;
         public System.Windows.Forms.Button button2;
+        private ImgBtnContainer imgBtnContainer2;
     }
 }
 

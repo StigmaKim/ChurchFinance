@@ -65,13 +65,17 @@ namespace UI
         NeoTabPage M_IncomeTab;
         NeoTabPage M_SpendingTab;
 
+        SpendReport sr = null;
+        IncomeProgress ip = null;
+        IncomeProgress sp = null;
+
         // Year Tab
         NeoTabPage Y_IncomeTab;
         NeoTabPage Y_SpendingTab;
         
+
         public Form1()
         {
-            
             InitializeComponent();
             SQLite = new SQLite(); // DB Object
             cmd = SQLite.GetSQLCommand(); // Command Object
@@ -83,6 +87,9 @@ namespace UI
             
             neoTabWindow1.Renderer = NeoTabControlLibrary.AddInRendererManager.LoadRenderer("MarginBlueRendererVS2");
             neoTabWindow1.BackColor = Color.White;
+            imgBtnContainer1.BackColor = Color.White;
+            imgBtnContainer2.BackColor = Color.White;
+            button1.Click += Button1_Click;
 
             setImgBtn();
             setWeekTabPage();
@@ -92,25 +99,33 @@ namespace UI
 
             panel5.BackColor = Color.LightGray;
             panel2.BackColor = Color.LightGray;
-
+            
+            // Month
             M_ReportTab = new NeoTabPage();
             M_ReportTab.Text = "재정 보고";
-            SpendReport sr = new SpendReport();
+            sr = new SpendReport();
             sr.Dock = DockStyle.Fill;
             M_ReportTab.Controls.Add(sr);
 
             M_IncomeTab = new NeoTabPage();
             M_IncomeTab.Text = "재정 수입";
-            IncomeProgress ip = new IncomeProgress(IncomeProgress.DMode.income, button2);
+            ip = new IncomeProgress(IncomeProgress.DMode.income, button2);
             ip.Dock = DockStyle.Fill;
             M_IncomeTab.Controls.Add(ip);
 
             M_SpendingTab = new NeoTabPage();
             M_SpendingTab.Text = "재정 지출";
-            IncomeProgress sp = new IncomeProgress(IncomeProgress.DMode.spend, button2);
+            sp = new IncomeProgress(IncomeProgress.DMode.spend, button2);
             ip.Dock = DockStyle.Fill;
             M_SpendingTab.Controls.Add(sp);
-            
+
+
+            ip.Date = DateTime.Now;
+            sp.Date = DateTime.Now;
+            ip.setIncomeFromDB();
+            ip.setSpendFromDB();
+            sp.setSpendFromDB();
+            sp.setSpendFromDB();
         }
 
         private void NeoTabWindow1_SelectedIndexChanged(object sender, SelectedIndexChangedEventArgs e)
@@ -172,6 +187,13 @@ namespace UI
             W_IncomeTab.Controls.Add(_income_total);
             W_IncomeTab.Controls.Add(income_total);
             */
+
+            ip.Date = dateTimePicker1.Value;
+            sp.Date = dateTimePicker1.Value;
+            ip.setIncomeFromDB();
+            sp.setSpendFromDB();
+            sp.setSpendFromDB();
+            sp.setSpendFromDB();
         }
 
 
@@ -203,6 +225,8 @@ namespace UI
             yearBtn.str = "년 단위 정산";
             yearBtn.Click += YearBtn_Click;
             imgBtnContainer1.InputBtn(yearBtn);
+
+            //imgBtnContainer1.
 
         }
 
@@ -1367,8 +1391,8 @@ namespace UI
             }
         }
 
-       
-        private void button1_Click(object sender, EventArgs e)
+
+        private void Button1_Click(object sender, EventArgs e)
         {
             if (currentWeekTab == W_IncomeTab)
             {
@@ -1408,10 +1432,14 @@ namespace UI
                     SQLite.Execute(string.Format("insert into Offering_Interest (name, amount, date) values('{0}', {1}, '{2}')", _income_Interest.Rows[i].Cells[0].Value, _income_Interest.Rows[i].Cells[1].Value, ((DateTime)_income_Interest.Rows[i].Cells[2].Value).ToShortDateString()));
             }
             else if (currentWeekTab == W_SpendingTab)
-            {                
+            {
                 WSP.ButtonEvent();
             }
 
+            ip.setIncomeFromDB();
+            sp.setSpendFromDB();
+            sp.setSpendFromDB();
+            sp.setSpendFromDB();
         }
     }
 }
