@@ -75,6 +75,21 @@ namespace UI
             return ds;
         }
 
+        public int ExecuteSumQuery(string sql)
+        {
+            ConnectToDB();
+            cmd = GetSQLCommand();
+            cmd.CommandText = string.Format(sql);
+            if( cmd.ExecuteScalar() is DBNull )
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt32(cmd.ExecuteScalar());
+            }            
+        }
+
         public string DateTimeSQLite(DateTime datetime)
         {
             string dateTimeFormat = "{0}-{1}-{2} {3}:{4}:{5}.{6}";

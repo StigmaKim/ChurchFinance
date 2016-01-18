@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace UI
 {
@@ -49,6 +50,10 @@ namespace UI
         /// 차량헌금
         /// </summary>
         private int budgetCar;
+        /// <summary>
+        /// 절기
+        /// </summary>
+        private int budgetTerm;
         /// <summary>
         /// 기타헌금
         /// </summary>
@@ -143,6 +148,10 @@ namespace UI
         /// <summary>
         /// 차량헌금
         /// </summary>
+        private int term;
+        /// <summary>
+        /// 절기
+        /// </summary>
         private int car;
         /// <summary>
         /// 기타헌금
@@ -210,10 +219,24 @@ namespace UI
         /// </summary>
         private DateTime date;
         public DMode mode;
+        SQLite SQLite = null;
 
         #endregion
 
         #region get/set 메소드
+
+        public DateTime Date
+        {
+            get
+            {
+                return date;
+            }
+            set
+            {
+                date = value;
+                Invalidate();
+            }
+        }
 
         public int BudgetThanksOffering
         {
@@ -323,6 +346,20 @@ namespace UI
             set
             {
                 budgetCar = value;
+                Invalidate();
+            }
+        }
+
+        public int BudgetTerm
+        {
+            get
+            {
+                return budgetTerm;
+            }
+
+            set
+            {
+                budgetTerm = value;
                 Invalidate();
             }
         }
@@ -495,7 +532,7 @@ namespace UI
             }
         }
 
-        public int Region1
+        public int Region
         {
             get
             {
@@ -575,6 +612,20 @@ namespace UI
             set
             {
                 car = value;
+                Invalidate();
+            }
+        }
+
+        public int Term
+        {
+            get
+            {
+                return term;
+            }
+
+            set
+            {
+                term = value;
                 Invalidate();
             }
         }
@@ -733,7 +784,8 @@ namespace UI
         public IncomeProgress(DMode drawMode, Button button2)
         {
             InitializeComponent();
-            printDocument1.PrintPage += PrintDocument1_PrintPage;   
+            printDocument1.PrintPage += PrintDocument1_PrintPage;
+            SQLite = new SQLite();
 
             mode = drawMode;
 
@@ -756,18 +808,6 @@ namespace UI
             BudgetEtc = 10000000;
             BudgetIncome = 6000000;
             
-            // 진행 데이터 입력
-            ThanksOffering = 200000;
-            Sipil = 1200000;
-            Region1 = 4200000;
-            Build = 150000;
-            MissionWork = 600000;
-            Sungmi = 350000;
-            Saving = 1200000;
-            Car = 890000;
-            Income = 243000;
-            Etc = 300000;
-            Income = 358000;
 
             // 지출 예산 데이터 입력
             BudgetPray = 2900000;
@@ -788,13 +828,13 @@ namespace UI
             Manage = 3303980;
             Loan = 900410;
             Prepare = 8111000;
-
+            
             #endregion
 
             // 수입 합계
             budgetSum = BudgetThanksOffering + BudgetSipil + BudgetRegion + BudgetBuild + BudgetMissionWork + BudgetSungmi + BudgetSaving + BudgetCar + BudgetEtc
                 + BudgetIncome;
-            sum = ThanksOffering + Sipil + Region1 + Build + MissionWork + Sungmi + Saving + Car + Etc;
+            sum = ThanksOffering + Sipil + Region + Build + MissionWork + Sungmi + Saving + Car + Etc;
             
             // 지출 합계
             budgetSpendSum = BudgetPray + BudgetSpendMission + BudgetEdu + BudgetPerson + BudgetService + BudgetManage + BudgetLoan + BudgetPrepare;
@@ -814,7 +854,7 @@ namespace UI
             setViews();
             button2.Click += Button2_Click;
         }
-
+        
         private void Button2_Click(object sender, EventArgs e)
         {
             printDocument1.Print();
@@ -825,6 +865,60 @@ namespace UI
             Bitmap bm = new Bitmap(this.budgetView.Width, this.budgetView.Height);
             budgetView.DrawToBitmap(bm, new Rectangle(0, 0, this.budgetView.Width, this.budgetView.Height));
             e.Graphics.DrawImage(bm, 0, 0);
+        }
+
+        public void setIncomeFromDB()
+        {
+            /*
+            ThanksOffering = 200000;
+            Sipil = 1200000;
+            Region = 4200000;
+            Build = 150000;
+            MissionWork = 600000;
+            Sungmi = 350000;
+            Saving = 1200000;
+            Car = 890000;
+            Income = 243000;
+            Etc = 300000;
+            Income = 358000;
+            */
+
+            ////////////////////////////////////////
+            //Debug.WriteLine("Check Value : " + SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Thanks where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2") ))));
+
+            
+            ThanksOffering = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Thanks where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2") )));
+            Sipil = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_10 where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Region = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Cell where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Build = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Archi where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            MissionWork = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Mission where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Sungmi = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Rice where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Saving = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Help where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Car = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Car where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Term = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Term where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Etc = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Other where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Income = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Interest where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+
+            sum = ThanksOffering + Sipil + Region + Build + MissionWork + Sungmi + Saving + Car + Term + Etc + Income;
+
+            Invalidate();
+            
+        }
+
+        public void setSpendFromDB()
+        {
+            Pray = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Worship where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            SpendMission = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Mission where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Edu = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Edu where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Person = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Human where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Service = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Vol where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Manage = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Main where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Loan = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Loan where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Prepare = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Res where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+
+            spendSum = Pray + SpendMission + Edu + Person + Service + Manage + Loan + Prepare;
+
+            Invalidate();
         }
 
         /// <summary>
@@ -896,8 +990,8 @@ namespace UI
             budgetView.Rows[2].Cells[0].Value = "구역 헌금";
             budgetView.Rows[2].Cells[1].Value = BudgetRegion.ToString("n0") + "원";
             budgetView.Rows[2].Cells[2].Value = ((float)BudgetRegion / (float)budgetSum * 100).ToString("00.00") + " %";
-            budgetView.Rows[2].Cells[3].Value = Region1.ToString("n0") + "원";
-            budgetView.Rows[2].Cells[4].Value = ((float)Region1 / (float)BudgetRegion * 100).ToString("00.00") + " %";
+            budgetView.Rows[2].Cells[3].Value = Region.ToString("n0") + "원";
+            budgetView.Rows[2].Cells[4].Value = ((float)Region / (float)BudgetRegion * 100).ToString("00.00") + " %";
 
             // 건축 헌금
             budgetView.Rows[3].Cells[0].Value = "건축 헌금";
