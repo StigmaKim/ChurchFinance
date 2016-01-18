@@ -72,11 +72,22 @@ namespace UI
         // Year Tab
         NeoTabPage Y_IncomeTab;
         NeoTabPage Y_SpendingTab;
+
+        // Budget Tab
+        NeoTabPage B_Tab;
+
+        Budget Bp;
         
 
         public Form1()
         {
             InitializeComponent();
+            
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.StartPosition = FormStartPosition.CenterScreen;
+
             SQLite = new SQLite(); // DB Object
             cmd = SQLite.GetSQLCommand(); // Command Object
             currentCategory = "Week";
@@ -119,13 +130,21 @@ namespace UI
             ip.Dock = DockStyle.Fill;
             M_SpendingTab.Controls.Add(sp);
 
-
             ip.Date = DateTime.Now;
             sp.Date = DateTime.Now;
             ip.setIncomeFromDB();
             ip.setSpendFromDB();
             sp.setSpendFromDB();
             sp.setSpendFromDB();
+
+
+            // Budget
+            B_Tab = new NeoTabPage();
+            B_Tab.Text = "예산설정";
+            Bp = new Budget();
+            Bp.Dock = DockStyle.Fill;
+            B_Tab.Controls.Add(Bp);
+
         }
 
         private void NeoTabWindow1_SelectedIndexChanged(object sender, SelectedIndexChangedEventArgs e)
@@ -135,12 +154,6 @@ namespace UI
 
         private void DateTimePicker1_ValueChanged(object sender, EventArgs e) // 날짜 바뀔땐 항상 감사헌금 띄움
         {
-            /*
-            W_IncomeTab.Controls.Remove(currentTab);
-            W_IncomeTab.Controls.Remove(income);
-            W_IncomeTab.Controls.Remove(income_total);
-            W_IncomeTab.Controls.Remove(_income_total);
-            */
             W_IncomeTab.Controls.Add(_income_Thanks);
             W_IncomeTab.Controls.Add(_income_10);
             W_IncomeTab.Controls.Add(_income_Cell);
@@ -153,7 +166,7 @@ namespace UI
             W_IncomeTab.Controls.Add(_income_Other);
             W_IncomeTab.Controls.Add(_income_Interest);
 
-            // 값 변화있을때 Re Draw
+            // 날짜 바뀔때 Re Draw
             SetThanksDGV(2);
             Set10DGV(2);        
             SetCellDGV(2);       
@@ -181,12 +194,6 @@ namespace UI
             SetInputSumDGV();
             W_IncomeTab.Controls.Add(_income_Thanks);
             currentTab = _income_Thanks;
-            /*
-            W_IncomeTab.Controls.Add(_income_Thanks);
-            W_IncomeTab.Controls.Add(income);
-            W_IncomeTab.Controls.Add(_income_total);
-            W_IncomeTab.Controls.Add(income_total);
-            */
 
             ip.Date = dateTimePicker1.Value;
             sp.Date = dateTimePicker1.Value;
@@ -202,6 +209,9 @@ namespace UI
         /// </summary>
         private void setImgBtn()
         {
+
+            // imgBtnContainer1
+
             // 첫번째 아이콘 추가
             ImageBtn weekBtn = new ImageBtn();
             weekBtn.img = new Bitmap(Environment.CurrentDirectory + "\\Image\\Week.png");
@@ -226,11 +236,35 @@ namespace UI
             yearBtn.Click += YearBtn_Click;
             imgBtnContainer1.InputBtn(yearBtn);
 
-            //imgBtnContainer1.
+
+            // imgBtnContainer2
+
+            ImageBtn budgetBtn = new ImageBtn();
+            budgetBtn.img = new Bitmap(Environment.CurrentDirectory + "\\Image\\Budget.png");
+            budgetBtn.ImgName = "Budget";
+            budgetBtn.Click += BudgetBtn_Click;
+            imgBtnContainer2.InputBtn(budgetBtn);
+
+            TitleBtn LogoBtn = new TitleBtn();
+            LogoBtn.img = new Bitmap(Environment.CurrentDirectory + "\\Image\\Title.png");
+            LogoBtn.ImgName = "Title";
+            // LogoBtn.Click
+            imgBtnContainer2.InputBtn(LogoBtn);
 
         }
 
         #region WEEK MONTH YEAR CLICK EVENT
+
+
+        private void BudgetBtn_Click(object sender, EventArgs e)
+        {
+            neoTabWindow1.Controls.Clear();
+
+            neoTabWindow1.Controls.Add(B_Tab);
+            currentCategory = "Budget";
+            button1.Visible = true;
+            button2.Visible = false;
+        }
 
         /// <summary>
         /// Year 버튼 클릭 이벤트
@@ -416,20 +450,10 @@ namespace UI
             income.Columns[0].Name = "수 입";
             income.Columns[1].Name = "금 액";
             
-            //String[] rows = { "십일조", "4,300,200원" };
-            //income.Rows.Add(rows);
-
             for (int i = 0; i < income.Columns.Count; i++)
             {
                 income.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
-            /*
-            for(int i = 0;i < 20; i++)
-            {
-                String[] row = { " ", " " };
-                income.Rows.Add(row);
-            }
-            */
 
             // income_total ------------------------------
             income_total.Size = new Size(300, 26);
@@ -1186,7 +1210,7 @@ namespace UI
                     if (_income_Car.Rows[i].Cells[1].Value.ToString() != "")
                         sum += Convert.ToInt32(_income_Car.Rows[i].Cells[1].Value);
                 }
-                Sum_Help = sum;
+                Sum_Car = sum;
 
                 SQLite.CloseDB();
             }
@@ -1394,52 +1418,59 @@ namespace UI
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            if (currentWeekTab == W_IncomeTab)
+            if(currentCategory.Equals("Budget"))
             {
-                SQLite.Execute(string.Format("Delete From Offering_thanks where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
-                SQLite.Execute(string.Format("Delete From Offering_10 where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
-                SQLite.Execute(string.Format("Delete From Offering_Cell where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
-                SQLite.Execute(string.Format("Delete From Offering_Archi where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
-                SQLite.Execute(string.Format("Delete From Offering_Mission where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
-                SQLite.Execute(string.Format("Delete From Offering_Rice where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
-                SQLite.Execute(string.Format("Delete From Offering_Help where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
-                SQLite.Execute(string.Format("Delete From Offering_Car where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
-                SQLite.Execute(string.Format("Delete From Offering_Term where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
-                SQLite.Execute(string.Format("Delete From Offering_Other where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
-                SQLite.Execute(string.Format("Delete From Offering_Interest where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
-
-                for (int i = 0; i < _income_Thanks.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_thanks (name, amount, date) values('{0}', {1}, '{2}')", _income_Thanks.Rows[i].Cells[0].Value, _income_Thanks.Rows[i].Cells[1].Value, ((DateTime)_income_Thanks.Rows[i].Cells[2].Value).ToShortDateString()));
-                for (int i = 0; i < _income_10.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_10 (name, amount, date) values('{0}', {1}, '{2}')", _income_10.Rows[i].Cells[0].Value, _income_10.Rows[i].Cells[1].Value, ((DateTime)_income_10.Rows[i].Cells[2].Value).ToShortDateString()));
-                for (int i = 0; i < _income_Cell.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Cell (name, amount, date) values('{0}', {1}, '{2}')", _income_Cell.Rows[i].Cells[0].Value, _income_Cell.Rows[i].Cells[1].Value, ((DateTime)_income_Cell.Rows[i].Cells[2].Value).ToShortDateString()));
-                for (int i = 0; i < _income_Archi.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Archi (name, amount, date) values('{0}', {1}, '{2}')", _income_Archi.Rows[i].Cells[0].Value, _income_Archi.Rows[i].Cells[1].Value, ((DateTime)_income_Archi.Rows[i].Cells[2].Value).ToShortDateString()));
-                for (int i = 0; i < _income_Mission.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Mission (name, amount, date) values('{0}', {1}, '{2}')", _income_Mission.Rows[i].Cells[0].Value, _income_Mission.Rows[i].Cells[1].Value, ((DateTime)_income_Mission.Rows[i].Cells[2].Value).ToShortDateString()));
-                for (int i = 0; i < _income_Rice.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Rice (name, amount, date) values('{0}', {1}, '{2}')", _income_Rice.Rows[i].Cells[0].Value, _income_Rice.Rows[i].Cells[1].Value, ((DateTime)_income_Rice.Rows[i].Cells[2].Value).ToShortDateString()));
-                for (int i = 0; i < _income_Help.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Help (name, amount, date) values('{0}', {1}, '{2}')", _income_Help.Rows[i].Cells[0].Value, _income_Help.Rows[i].Cells[1].Value, ((DateTime)_income_Help.Rows[i].Cells[2].Value).ToShortDateString()));
-                for (int i = 0; i < _income_Car.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Car (name, amount, date) values('{0}', {1}, '{2}')", _income_Car.Rows[i].Cells[0].Value, _income_Car.Rows[i].Cells[1].Value, ((DateTime)_income_Car.Rows[i].Cells[2].Value).ToShortDateString()));
-                for (int i = 0; i < _income_Term.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Term (name, amount, date) values('{0}', {1}, '{2}')", _income_Term.Rows[i].Cells[0].Value, _income_Term.Rows[i].Cells[1].Value, ((DateTime)_income_Term.Rows[i].Cells[2].Value).ToShortDateString()));
-                for (int i = 0; i < _income_Help.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Other (name, amount, date) values('{0}', {1}, '{2}')", _income_Other.Rows[i].Cells[0].Value, _income_Other.Rows[i].Cells[1].Value, ((DateTime)_income_Other.Rows[i].Cells[2].Value).ToShortDateString()));
-                for (int i = 0; i < _income_Car.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Interest (name, amount, date) values('{0}', {1}, '{2}')", _income_Interest.Rows[i].Cells[0].Value, _income_Interest.Rows[i].Cells[1].Value, ((DateTime)_income_Interest.Rows[i].Cells[2].Value).ToShortDateString()));
+                Bp.ButtonEvent();
             }
-            else if (currentWeekTab == W_SpendingTab)
+            else
             {
-                WSP.ButtonEvent();
-            }
+                if (currentWeekTab == W_IncomeTab)
+                {
+                    SQLite.Execute(string.Format("Delete From Offering_thanks where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+                    SQLite.Execute(string.Format("Delete From Offering_10 where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+                    SQLite.Execute(string.Format("Delete From Offering_Cell where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+                    SQLite.Execute(string.Format("Delete From Offering_Archi where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+                    SQLite.Execute(string.Format("Delete From Offering_Mission where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+                    SQLite.Execute(string.Format("Delete From Offering_Rice where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+                    SQLite.Execute(string.Format("Delete From Offering_Help where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+                    SQLite.Execute(string.Format("Delete From Offering_Car where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+                    SQLite.Execute(string.Format("Delete From Offering_Term where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+                    SQLite.Execute(string.Format("Delete From Offering_Other where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+                    SQLite.Execute(string.Format("Delete From Offering_Interest where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
 
-            ip.setIncomeFromDB();
-            sp.setSpendFromDB();
-            sp.setSpendFromDB();
-            sp.setSpendFromDB();
+                    for (int i = 0; i < _income_Thanks.RowCount - 1; i++)
+                        SQLite.Execute(string.Format("insert into Offering_thanks (name, amount, date) values('{0}', {1}, '{2}')", _income_Thanks.Rows[i].Cells[0].Value, _income_Thanks.Rows[i].Cells[1].Value, ((DateTime)_income_Thanks.Rows[i].Cells[2].Value).ToShortDateString()));
+                    for (int i = 0; i < _income_10.RowCount - 1; i++)
+                        SQLite.Execute(string.Format("insert into Offering_10 (name, amount, date) values('{0}', {1}, '{2}')", _income_10.Rows[i].Cells[0].Value, _income_10.Rows[i].Cells[1].Value, ((DateTime)_income_10.Rows[i].Cells[2].Value).ToShortDateString()));
+                    for (int i = 0; i < _income_Cell.RowCount - 1; i++)
+                        SQLite.Execute(string.Format("insert into Offering_Cell (name, amount, date) values('{0}', {1}, '{2}')", _income_Cell.Rows[i].Cells[0].Value, _income_Cell.Rows[i].Cells[1].Value, ((DateTime)_income_Cell.Rows[i].Cells[2].Value).ToShortDateString()));
+                    for (int i = 0; i < _income_Archi.RowCount - 1; i++)
+                        SQLite.Execute(string.Format("insert into Offering_Archi (name, amount, date) values('{0}', {1}, '{2}')", _income_Archi.Rows[i].Cells[0].Value, _income_Archi.Rows[i].Cells[1].Value, ((DateTime)_income_Archi.Rows[i].Cells[2].Value).ToShortDateString()));
+                    for (int i = 0; i < _income_Mission.RowCount - 1; i++)
+                        SQLite.Execute(string.Format("insert into Offering_Mission (name, amount, date) values('{0}', {1}, '{2}')", _income_Mission.Rows[i].Cells[0].Value, _income_Mission.Rows[i].Cells[1].Value, ((DateTime)_income_Mission.Rows[i].Cells[2].Value).ToShortDateString()));
+                    for (int i = 0; i < _income_Rice.RowCount - 1; i++)
+                        SQLite.Execute(string.Format("insert into Offering_Rice (name, amount, date) values('{0}', {1}, '{2}')", _income_Rice.Rows[i].Cells[0].Value, _income_Rice.Rows[i].Cells[1].Value, ((DateTime)_income_Rice.Rows[i].Cells[2].Value).ToShortDateString()));
+                    for (int i = 0; i < _income_Help.RowCount - 1; i++)
+                        SQLite.Execute(string.Format("insert into Offering_Help (name, amount, date) values('{0}', {1}, '{2}')", _income_Help.Rows[i].Cells[0].Value, _income_Help.Rows[i].Cells[1].Value, ((DateTime)_income_Help.Rows[i].Cells[2].Value).ToShortDateString()));
+                    for (int i = 0; i < _income_Car.RowCount - 1; i++)
+                        SQLite.Execute(string.Format("insert into Offering_Car (name, amount, date) values('{0}', {1}, '{2}')", _income_Car.Rows[i].Cells[0].Value, _income_Car.Rows[i].Cells[1].Value, ((DateTime)_income_Car.Rows[i].Cells[2].Value).ToShortDateString()));
+                    for (int i = 0; i < _income_Term.RowCount - 1; i++)
+                        SQLite.Execute(string.Format("insert into Offering_Term (name, amount, date) values('{0}', {1}, '{2}')", _income_Term.Rows[i].Cells[0].Value, _income_Term.Rows[i].Cells[1].Value, ((DateTime)_income_Term.Rows[i].Cells[2].Value).ToShortDateString()));
+                    for (int i = 0; i < _income_Help.RowCount - 1; i++)
+                        SQLite.Execute(string.Format("insert into Offering_Other (name, amount, date) values('{0}', {1}, '{2}')", _income_Other.Rows[i].Cells[0].Value, _income_Other.Rows[i].Cells[1].Value, ((DateTime)_income_Other.Rows[i].Cells[2].Value).ToShortDateString()));
+                    for (int i = 0; i < _income_Car.RowCount - 1; i++)
+                        SQLite.Execute(string.Format("insert into Offering_Interest (name, amount, date) values('{0}', {1}, '{2}')", _income_Interest.Rows[i].Cells[0].Value, _income_Interest.Rows[i].Cells[1].Value, ((DateTime)_income_Interest.Rows[i].Cells[2].Value).ToShortDateString()));
+                }
+                else if (currentWeekTab == W_SpendingTab)
+                {
+                    WSP.ButtonEvent();
+                }
+
+                ip.setIncomeFromDB();
+                sp.setSpendFromDB();
+                sp.setSpendFromDB();
+                sp.setSpendFromDB();
+            }
         }
     }
 }

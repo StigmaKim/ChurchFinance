@@ -44,7 +44,7 @@ namespace UI
         {
             return new SQLiteCommand(m_dbConnection);
         }
-        public void Execute(string sql)
+        public int Execute(string sql)
         {
             ConnectToDB();
             cmd = GetSQLCommand();
@@ -57,22 +57,29 @@ namespace UI
             {
                 Debug.WriteLine("BUG!!!!!!!!!!!! " + e);
                 CloseDB();
-                return;
+                return 1;
             }
             CloseDB();
-            return;
+            return 0;
         }
 
         public DataSet ExecuteSelectQuery(string sql)
         {
             ConnectToDB();
-            cmd = GetSQLCommand();
-            cmd.CommandText = string.Format(sql);
-            SQLiteDataAdapter adapter = new SQLiteDataAdapter(cmd);
-            DataSet ds = new DataSet();
-            adapter.Fill(ds);
-
-            return ds;
+            DataSet ds;
+            try {
+                cmd = GetSQLCommand();
+                cmd.CommandText = string.Format(sql);
+                SQLiteDataAdapter adapter = new SQLiteDataAdapter(cmd);
+                ds = new DataSet();
+                adapter.Fill(ds);
+                CloseDB();
+                return ds;
+            }
+            catch( SQLiteException e) { 
+                CloseDB();
+                return new DataSet();
+            }
         }
 
         public int ExecuteSumQuery(string sql)
@@ -87,7 +94,8 @@ namespace UI
             else
             {
                 return Convert.ToInt32(cmd.ExecuteScalar());
-            }            
+            }
+            CloseDB();
         }
 
         public string DateTimeSQLite(DateTime datetime)
