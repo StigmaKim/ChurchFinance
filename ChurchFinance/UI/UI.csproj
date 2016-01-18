@@ -84,6 +84,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpendDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SpendDetail.Designer.cs">
+      <DependentUpon>SpendDetail.cs</DependentUpon>
+    </Compile>
     <Compile Include="SpendReportPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -125,6 +131,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="SpendDetail.resx">
+      <DependentUpon>SpendDetail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SpendReport.resx">
       <DependentUpon>SpendReport.cs</DependentUpon>
     </EmbeddedResource>

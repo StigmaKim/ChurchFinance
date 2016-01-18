@@ -19,7 +19,7 @@ namespace UI
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Mode mode = Mode.Test;
+            Mode mode = Mode.Regular;
 
             switch(mode)
             {
@@ -30,7 +30,6 @@ namespace UI
                     Application.Run(new TestForm());
                     break;
             }
-
         }
     }
 }
