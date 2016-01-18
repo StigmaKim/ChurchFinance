@@ -39,7 +39,7 @@
             this.DataView.Location = new System.Drawing.Point(19, 64);
             this.DataView.Name = "DataView";
             this.DataView.RowTemplate.Height = 23;
-            this.DataView.Size = new System.Drawing.Size(647, 501);
+            this.DataView.Size = new System.Drawing.Size(879, 501);
             this.DataView.TabIndex = 0;
             // 
             // label1
@@ -59,7 +59,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.DataView);
             this.Name = "SpendDetail";
-            this.Size = new System.Drawing.Size(794, 590);
+            this.Size = new System.Drawing.Size(1065, 590);
             ((System.ComponentModel.ISupportInitialize)(this.DataView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
