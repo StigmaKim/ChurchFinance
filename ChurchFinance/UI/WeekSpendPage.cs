@@ -60,6 +60,15 @@ namespace UI
 
         public void ButtonEvent()
         {
+            SQLite.Execute(string.Format("Delete From Spending_Worship where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+            SQLite.Execute(string.Format("Delete From Spending_Mission where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+            SQLite.Execute(string.Format("Delete From Spending_Edu where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+            SQLite.Execute(string.Format("Delete From Spending_Human where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+            SQLite.Execute(string.Format("Delete From Spending_Vol where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+            SQLite.Execute(string.Format("Delete From Spending_Main where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+            SQLite.Execute(string.Format("Delete From Spending_Loan where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+            SQLite.Execute(string.Format("Delete From Spending_Res where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+
             for (int i = 0; i < _spend_Worship.RowCount - 1; i++)
                 SQLite.Execute(string.Format("insert into Spending_Worship (name, amount, date) values('{0}', {1}, '{2}')", _spend_Worship.Rows[i].Cells[0].Value, _spend_Worship.Rows[i].Cells[1].Value, ((DateTime)_spend_Worship.Rows[i].Cells[2].Value).ToShortDateString()));
             for (int i = 0; i < _spend_Mission.RowCount - 1; i++)
@@ -869,13 +878,12 @@ namespace UI
                         SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "사택유지비", DateTime.Now.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "교회관리비", DateTime.Now.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "목회활동비", DateTime.Now.ToShortDateString(), 0));
-                        SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "사무비", DateTime.Now.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "수도광열비", DateTime.Now.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "통신비", DateTime.Now.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "차량관리비", DateTime.Now.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "상회비", DateTime.Now.ToShortDateString(), 0));
-                        SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "비품비", DateTime.Now.ToShortDateString(), 0));
-                        SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "기타공과잡비", DateTime.Now.ToShortDateString(), 0));
+                        SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "교회비품비", DateTime.Now.ToShortDateString(), 0));
+                        SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "기타지출", DateTime.Now.ToShortDateString(), 0));
 
                         ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Main where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                         _spend_Main.DataSource = ds.Tables[0];
@@ -891,14 +899,13 @@ namespace UI
                         SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "사택유지비", dateTimePicker1.Value.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "교회관리비", dateTimePicker1.Value.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "목회활동비", dateTimePicker1.Value.ToShortDateString(), 0));
-                        SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "사무비", dateTimePicker1.Value.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "수도광열비", dateTimePicker1.Value.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "통신비", dateTimePicker1.Value.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "차량관리비", dateTimePicker1.Value.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "차량구입비적립", dateTimePicker1.Value.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "상회비", dateTimePicker1.Value.ToShortDateString(), 0));
-                        SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "비품비", dateTimePicker1.Value.ToShortDateString(), 0));
-                        SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "기타공과잡비", dateTimePicker1.Value.ToShortDateString(), 0));
+                        SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "교회비품비", dateTimePicker1.Value.ToShortDateString(), 0));
+                        SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "기타지출", dateTimePicker1.Value.ToShortDateString(), 0));
 
                         ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Main where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                         _spend_Main.DataSource = ds.Tables[0];
