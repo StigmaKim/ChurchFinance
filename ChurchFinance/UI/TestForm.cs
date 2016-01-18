@@ -22,10 +22,7 @@ namespace UI
             InitializeComponent();
 
             neoTabWindow1.Renderer = AddInRendererManager.LoadRenderer("MarginBlueRendererVS2");
-
-            ip = new IncomeProgress(IncomeProgress.DMode.income, new Button());
-            ip.Dock = DockStyle.Fill;
-            neoTabPage1.Controls.Add(ip);
+            
             neoTabPage1.Text = "수 입";
             neoTabPage1.BackColor = Color.White;
         }

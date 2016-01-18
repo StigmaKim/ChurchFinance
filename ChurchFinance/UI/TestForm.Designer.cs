@@ -30,8 +30,10 @@
         {
             this.neoTabWindow1 = new NeoTabControlLibrary.NeoTabWindow();
             this.neoTabPage1 = new NeoTabControlLibrary.NeoTabPage();
+            this.spendDetail1 = new UI.SpendDetail();
             ((System.ComponentModel.ISupportInitialize)(this.neoTabWindow1)).BeginInit();
             this.neoTabWindow1.SuspendLayout();
+            this.neoTabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // neoTabWindow1
@@ -48,9 +50,18 @@
             // neoTabPage1
             // 
             this.neoTabPage1.BackColor = System.Drawing.Color.Transparent;
+            this.neoTabPage1.Controls.Add(this.spendDetail1);
             this.neoTabPage1.Name = "neoTabPage1";
             this.neoTabPage1.Text = "neoTabPage1";
             this.neoTabPage1.ToolTipText = "neoTabPage1";
+            // 
+            // spendDetail1
+            // 
+            this.spendDetail1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.spendDetail1.Location = new System.Drawing.Point(0, 0);
+            this.spendDetail1.Name = "spendDetail1";
+            this.spendDetail1.Size = new System.Drawing.Size(1012, 583);
+            this.spendDetail1.TabIndex = 0;
             // 
             // TestForm
             // 
@@ -64,6 +75,7 @@
             this.Text = "TestForm";
             ((System.ComponentModel.ISupportInitialize)(this.neoTabWindow1)).EndInit();
             this.neoTabWindow1.ResumeLayout(false);
+            this.neoTabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -72,5 +84,6 @@
 
         private NeoTabControlLibrary.NeoTabWindow neoTabWindow1;
         private NeoTabControlLibrary.NeoTabPage neoTabPage1;
+        private SpendDetail spendDetail1;
     }
 }
