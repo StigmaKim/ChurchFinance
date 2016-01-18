@@ -64,10 +64,12 @@ namespace UI
         NeoTabPage M_ReportTab;
         NeoTabPage M_IncomeTab;
         NeoTabPage M_SpendingTab;
+        NeoTabPage M_DetailTab;
 
         SpendReport sr = null;
         IncomeProgress ip = null;
         IncomeProgress sp = null;
+        SpendDetail sd = null;
 
         // Year Tab
         NeoTabPage Y_IncomeTab;
@@ -119,6 +121,12 @@ namespace UI
             ip.Dock = DockStyle.Fill;
             M_SpendingTab.Controls.Add(sp);
 
+            M_DetailTab = new NeoTabPage();
+            M_DetailTab.Text = "지출 세부항목";
+            M_DetailTab.AutoScroll = true;
+            sd = new SpendDetail();
+            sd.Dock = DockStyle.Fill;
+            M_DetailTab.Controls.Add(sd);
 
             ip.Date = DateTime.Now;
             sp.Date = DateTime.Now;
@@ -258,6 +266,7 @@ namespace UI
             neoTabWindow1.Controls.Add(M_ReportTab);
             neoTabWindow1.Controls.Add(M_IncomeTab);
             neoTabWindow1.Controls.Add(M_SpendingTab);
+            neoTabWindow1.Controls.Add(M_DetailTab);
 
             currentCategory = "Month";
             button1.Visible = false;

@@ -39,7 +39,7 @@
             this.DataView.Location = new System.Drawing.Point(19, 64);
             this.DataView.Name = "DataView";
             this.DataView.RowTemplate.Height = 23;
-            this.DataView.Size = new System.Drawing.Size(879, 501);
+            this.DataView.Size = new System.Drawing.Size(879, 434);
             this.DataView.TabIndex = 0;
             // 
             // label1

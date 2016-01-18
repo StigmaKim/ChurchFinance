@@ -13,6 +13,7 @@ namespace UI
 
     public partial class SpendDetail : UserControl
     {
+
         #region 변수 선언
 
         /// <summary>
@@ -335,6 +336,9 @@ namespace UI
 
         #endregion
 
+        /// <summary>
+        /// 생성자
+        /// </summary>
         public SpendDetail()
         {
             InitializeComponent();
@@ -454,7 +458,7 @@ namespace UI
 
             DataView.ReadOnly = true;
 
-            DataView.RowCount = 38;
+            DataView.RowCount = 37;
         }
 
         /// <summary>
