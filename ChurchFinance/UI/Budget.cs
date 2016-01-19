@@ -44,7 +44,9 @@ namespace UI
             SQLite = new SQLite();
 
             SetView();
+            Debug.WriteLine("Check here1");
             CreateTable();
+            Debug.WriteLine("Check here2");
             GetValues();
             SetRows();
             dgv.CellEndEdit += Dgv_CellEndEdit;

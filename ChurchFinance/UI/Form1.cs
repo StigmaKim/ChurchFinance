@@ -112,7 +112,15 @@ namespace UI
 
             panel5.BackColor = Color.LightGray;
             panel2.BackColor = Color.LightGray;
-            
+
+
+            // Budget
+            B_Tab = new NeoTabPage();
+            B_Tab.Text = "예산설정";
+            Bp = new Budget();
+            Bp.Dock = DockStyle.Fill;
+            B_Tab.Controls.Add(Bp);
+
             // Month
             M_ReportTab = new NeoTabPage();
             M_ReportTab.Text = "재정 보고";
@@ -131,13 +139,12 @@ namespace UI
             sp = new IncomeProgress(IncomeProgress.DMode.spend, button2);
             ip.Dock = DockStyle.Fill;
             M_SpendingTab.Controls.Add(sp);
-            
-            // Budget
-            B_Tab = new NeoTabPage();
-            B_Tab.Text = "예산설정";
-            Bp = new Budget();
-            Bp.Dock = DockStyle.Fill;
-            B_Tab.Controls.Add(Bp);
+
+            M_DetailTab = new NeoTabPage();
+            M_DetailTab.Text = "지출 세부 항목";
+            sd = new SpendDetail();
+            sd.Dock = DockStyle.Fill;
+            M_DetailTab.Controls.Add(sd);
 
             // IncomeProgress
             ip.Date = DateTime.Now;
