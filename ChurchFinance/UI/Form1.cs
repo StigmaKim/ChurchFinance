@@ -377,6 +377,8 @@ namespace UI
             W_IncomeTab.Controls.Remove(_income_Other);
             W_IncomeTab.Controls.Remove(_income_Interest);
 
+            _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Thanks);
+
             SetInputSumDGV(); // 최초 DGV 그리기. ( 수입 SUM )
             W_IncomeTab.Controls.Add(_income_Thanks);
             currentTab = _income_Thanks;
@@ -1136,7 +1138,6 @@ namespace UI
                         sum += Convert.ToInt32(ToNoComma(_income_Thanks.Rows[i].Cells[1].Value));
                                     
                 Sum_Thanks = sum;
-                _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Thanks);
                 
                 SQLite.CloseDB();
             }
@@ -1643,8 +1644,6 @@ namespace UI
             }
             else
             {
-            if (currentWeekTab == W_IncomeTab)
-            {
                 SQLite.Execute(string.Format("Delete From Offering_thanks where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
                 SQLite.Execute(string.Format("Delete From Offering_10 where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
                 SQLite.Execute(string.Format("Delete From Offering_Cell where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
@@ -1658,38 +1657,60 @@ namespace UI
                 SQLite.Execute(string.Format("Delete From Offering_Interest where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
 
                 for (int i = 0; i < _income_Thanks.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_thanks (name, amount, date) values('{0}', {1}, '{2}')", _income_Thanks.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Thanks.Rows[i].Cells[1].Value)), ((DateTime)_income_Thanks.Rows[i].Cells[2].Value).ToShortDateString()));
+                    if( _income_Thanks.Rows[i].Cells[1].Value.ToString() != "0")
+                        SQLite.Execute(string.Format("insert into Offering_thanks (name, amount, date) values('{0}', {1}, '{2}')", _income_Thanks.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Thanks.Rows[i].Cells[1].Value)), ((DateTime)_income_Thanks.Rows[i].Cells[2].Value).ToShortDateString()));
                 for (int i = 0; i < _income_10.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_10 (name, amount, date) values('{0}', {1}, '{2}')", _income_10.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_10.Rows[i].Cells[1].Value)), ((DateTime)_income_10.Rows[i].Cells[2].Value).ToShortDateString()));
+                        if (_income_10.Rows[i].Cells[1].Value.ToString() != "0")
+                            SQLite.Execute(string.Format("insert into Offering_10 (name, amount, date) values('{0}', {1}, '{2}')", _income_10.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_10.Rows[i].Cells[1].Value)), ((DateTime)_income_10.Rows[i].Cells[2].Value).ToShortDateString()));
                 for (int i = 0; i < _income_Cell.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Cell (name, amount, date) values('{0}', {1}, '{2}')", _income_Cell.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Cell.Rows[i].Cells[1].Value)), ((DateTime)_income_Cell.Rows[i].Cells[2].Value).ToShortDateString()));
+                        if (_income_Cell.Rows[i].Cells[1].Value.ToString() != "0")
+                            SQLite.Execute(string.Format("insert into Offering_Cell (name, amount, date) values('{0}', {1}, '{2}')", _income_Cell.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Cell.Rows[i].Cells[1].Value)), ((DateTime)_income_Cell.Rows[i].Cells[2].Value).ToShortDateString()));
                 for (int i = 0; i < _income_Archi.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Archi (name, amount, date) values('{0}', {1}, '{2}')", _income_Archi.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Archi.Rows[i].Cells[1].Value)), ((DateTime)_income_Archi.Rows[i].Cells[2].Value).ToShortDateString()));
+                        if (_income_Archi.Rows[i].Cells[1].Value.ToString() != "0")
+                            SQLite.Execute(string.Format("insert into Offering_Archi (name, amount, date) values('{0}', {1}, '{2}')", _income_Archi.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Archi.Rows[i].Cells[1].Value)), ((DateTime)_income_Archi.Rows[i].Cells[2].Value).ToShortDateString()));
                 for (int i = 0; i < _income_Mission.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Mission (name, amount, date) values('{0}', {1}, '{2}')", _income_Mission.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Mission.Rows[i].Cells[1].Value)), ((DateTime)_income_Mission.Rows[i].Cells[2].Value).ToShortDateString()));
+                        if (_income_Mission.Rows[i].Cells[1].Value.ToString() != "0")
+                            SQLite.Execute(string.Format("insert into Offering_Mission (name, amount, date) values('{0}', {1}, '{2}')", _income_Mission.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Mission.Rows[i].Cells[1].Value)), ((DateTime)_income_Mission.Rows[i].Cells[2].Value).ToShortDateString()));
                 for (int i = 0; i < _income_Rice.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Rice (name, amount, date) values('{0}', {1}, '{2}')", _income_Rice.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Rice.Rows[i].Cells[1].Value)), ((DateTime)_income_Rice.Rows[i].Cells[2].Value).ToShortDateString()));
+                        if (_income_Rice.Rows[i].Cells[1].Value.ToString() != "0")
+                            SQLite.Execute(string.Format("insert into Offering_Rice (name, amount, date) values('{0}', {1}, '{2}')", _income_Rice.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Rice.Rows[i].Cells[1].Value)), ((DateTime)_income_Rice.Rows[i].Cells[2].Value).ToShortDateString()));
                 for (int i = 0; i < _income_Help.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Help (name, amount, date) values('{0}', {1}, '{2}')", _income_Help.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Help.Rows[i].Cells[1].Value)), ((DateTime)_income_Help.Rows[i].Cells[2].Value).ToShortDateString()));
+                        if (_income_Help.Rows[i].Cells[1].Value.ToString() != "0")
+                            SQLite.Execute(string.Format("insert into Offering_Help (name, amount, date) values('{0}', {1}, '{2}')", _income_Help.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Help.Rows[i].Cells[1].Value)), ((DateTime)_income_Help.Rows[i].Cells[2].Value).ToShortDateString()));
                 for (int i = 0; i < _income_Car.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Car (name, amount, date) values('{0}', {1}, '{2}')", _income_Car.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Car.Rows[i].Cells[1].Value)), ((DateTime)_income_Car.Rows[i].Cells[2].Value).ToShortDateString()));
+                        if (_income_Car.Rows[i].Cells[1].Value.ToString() != "0")
+                            SQLite.Execute(string.Format("insert into Offering_Car (name, amount, date) values('{0}', {1}, '{2}')", _income_Car.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Car.Rows[i].Cells[1].Value)), ((DateTime)_income_Car.Rows[i].Cells[2].Value).ToShortDateString()));
                 for (int i = 0; i < _income_Term.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Term (name, amount, date) values('{0}', {1}, '{2}')", _income_Term.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Term.Rows[i].Cells[1].Value)), ((DateTime)_income_Term.Rows[i].Cells[2].Value).ToShortDateString()));
+                        if (_income_Term.Rows[i].Cells[1].Value.ToString() != "0")
+                            SQLite.Execute(string.Format("insert into Offering_Term (name, amount, date) values('{0}', {1}, '{2}')", _income_Term.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Term.Rows[i].Cells[1].Value)), ((DateTime)_income_Term.Rows[i].Cells[2].Value).ToShortDateString()));
                 for (int i = 0; i < _income_Other.RowCount - 1; i++)
-                        SQLite.Execute(string.Format("insert into Offering_Other (name, amount, date) values('{0}', {1}, '{2}')", _income_Other.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Other.Rows[i].Cells[1].Value)), ((DateTime)_income_Other.Rows[i].Cells[2].Value).ToShortDateString()));
+                        if (_income_Other.Rows[i].Cells[1].Value.ToString() != "0")
+                            SQLite.Execute(string.Format("insert into Offering_Other (name, amount, date) values('{0}', {1}, '{2}')", _income_Other.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Other.Rows[i].Cells[1].Value)), ((DateTime)_income_Other.Rows[i].Cells[2].Value).ToShortDateString()));
                 for (int i = 0; i < _income_Interest.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Interest (name, amount, date) values('{0}', {1}, '{2}')", _income_Interest.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Interest.Rows[i].Cells[1].Value)), ((DateTime)_income_Interest.Rows[i].Cells[2].Value).ToShortDateString()));
-            }
-            else if (currentWeekTab == W_SpendingTab)
-            {
-                WSP.ButtonEvent();
-            }
+                        if (_income_Interest.Rows[i].Cells[1].Value.ToString() != "0")
+                            SQLite.Execute(string.Format("insert into Offering_Interest (name, amount, date) values('{0}', {1}, '{2}')", _income_Interest.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Interest.Rows[i].Cells[1].Value)), ((DateTime)_income_Interest.Rows[i].Cells[2].Value).ToShortDateString()));
 
-            ip.setIncomeFromDB();
-            sp.setSpendFromDB();
-            sp.setSpendFromDB();
-            sp.setSpendFromDB();
+                SetThanksDGV(2);
+                Set10DGV(2);
+                SetCellDGV(2);
+                SetArchiDGV(2);
+                SetMissionDGV(2);
+                SetRiceDGV(2);
+                SetHelpDGV(2);
+                SetCarDGV(2);
+                SetTermDGV(2);
+                SetOtherDGV(2);
+                SetInterestDGV(2);
+
+                // 지출 저장 이벤트
+                WSP.ButtonEvent();
+
+                // 저장된 값에따른 IncomeProgress 그림
+                ip.setIncomeFromDB();
+                sp.setSpendFromDB();
+                sp.setSpendFromDB();
+                sp.setSpendFromDB();
+            }
         }
     }
-}
 }
