@@ -339,6 +339,7 @@ namespace UI
 
         public PrintDocument pd;
         private PageSettings pgSettings;
+        DateTime date;
 
         /// <summary>
         /// 생성자
@@ -439,6 +440,11 @@ namespace UI
             setView();
 
             Paint += SpendDetail_Paint;
+        }
+
+        public void SetDate(DateTime d)
+        {
+            date = d;
         }
 
         /// <summary>

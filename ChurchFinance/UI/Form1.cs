@@ -79,7 +79,8 @@ namespace UI
         NeoTabPage B_Tab;
 
         Budget Bp;
-        
+        int cnt = 0;
+
 
         public Form1()
         {
@@ -95,20 +96,19 @@ namespace UI
             currentCategory = "Week";
             button1.Visible = true;
             button2.Visible = false;
-
-            dateTimePicker1.ValueChanged += DateTimePicker1_ValueChanged;
+            
+            dateTimePicker1.CloseUp += DateTimePicker1_CloseUp;
             
             neoTabWindow1.Renderer = NeoTabControlLibrary.AddInRendererManager.LoadRenderer("MarginBlueRendererVS2");
             neoTabWindow1.BackColor = Color.White;
+            neoTabWindow1.SelectedIndexChanged += NeoTabWindow1_SelectedIndexChanged;
+
             imgBtnContainer1.BackColor = Color.White;
             imgBtnContainer2.BackColor = Color.White;
             button1.Click += Button1_Click;
 
             setImgBtn();
             setWeekTabPage();
-
-            neoTabWindow1.SelectedIndexChanged += NeoTabWindow1_SelectedIndexChanged;
-
 
             panel5.BackColor = Color.LightGray;
             panel2.BackColor = Color.LightGray;
@@ -155,13 +155,10 @@ namespace UI
             sp.setSpendFromDB();
         }
 
-        private void NeoTabWindow1_SelectedIndexChanged(object sender, SelectedIndexChangedEventArgs e)
+        private void DateTimePicker1_CloseUp(object sender, EventArgs e)
         {
-            currentWeekTab = e.TabPage;           
-        }
+            Debug.WriteLine("Date : " + dateTimePicker1.Value);
 
-        private void DateTimePicker1_ValueChanged(object sender, EventArgs e) // 날짜 바뀔땐 항상 감사헌금 띄움
-        {
             W_IncomeTab.Controls.Add(_income_Thanks);
             W_IncomeTab.Controls.Add(_income_10);
             W_IncomeTab.Controls.Add(_income_Cell);
@@ -174,13 +171,15 @@ namespace UI
             W_IncomeTab.Controls.Add(_income_Other);
             W_IncomeTab.Controls.Add(_income_Interest);
 
+            MakeSumValueZero();
+
             // 날짜 바뀔때 Re Draw
             SetThanksDGV(2);
-            Set10DGV(2);        
-            SetCellDGV(2);       
-            SetArchiDGV(2);      
-            SetMissionDGV(2);   
-            SetRiceDGV(2);  
+            Set10DGV(2);
+            SetCellDGV(2);
+            SetArchiDGV(2);
+            SetMissionDGV(2);
+            SetRiceDGV(2);
             SetHelpDGV(2);
             SetCarDGV(2);
             SetTermDGV(2);
@@ -202,16 +201,36 @@ namespace UI
             SetInputSumDGV();
             W_IncomeTab.Controls.Add(_income_Thanks);
             currentTab = _income_Thanks;
-
+            
+            // IncomeProgress
             ip.Date = dateTimePicker1.Value;
             sp.Date = dateTimePicker1.Value;
+            ip.titleInvalidate();
+            sp.titleInvalidate();
             ip.setIncomeFromDB();
             sp.setSpendFromDB();
             sp.setSpendFromDB();
             sp.setSpendFromDB();
         }
-
-
+        
+        private void MakeSumValueZero()
+        {
+            Sum_Thanks = 0;
+            Sum_10 = 0;
+            Sum_Cell = 0;
+            Sum_Archi = 0;
+            Sum_Mission = 0;
+            Sum_Rice = 0;
+            Sum_Help = 0;
+            Sum_Car = 0;
+            Sum_Term = 0;
+            Sum_Other = 0;
+            Sum_Interest = 0;
+        }
+        private void NeoTabWindow1_SelectedIndexChanged(object sender, SelectedIndexChangedEventArgs e)
+        {
+            currentWeekTab = e.TabPage;           
+        }
         /// <summary>
         /// 아이콘 설정
         /// </summary>
@@ -1119,7 +1138,8 @@ namespace UI
                         ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
                 else if (check == 2)
-                {   
+                {
+                    Debug.WriteLine("Date ::: " + dateTimePicker1.Value.ToShortDateString());
                     DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast ( amount as Text) as '금 액', date as '날 짜' from Offering_Thanks where date = '{0}' order by no asc", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
                     _income_Thanks.DataSource = ds.Tables[0];
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
