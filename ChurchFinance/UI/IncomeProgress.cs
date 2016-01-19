@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Drawing.Printing;
 
 namespace UI
 {
@@ -738,6 +739,9 @@ namespace UI
 
         #endregion
 
+        private PageSettings pgSettings;
+        private PrinterSettings prtSetting;
+
         public enum DMode
         {
             income,
@@ -838,6 +842,9 @@ namespace UI
 
             setViews();
             button2.Click += Button2_Click;
+
+            pgSettings = new PageSettings();
+
         }
         public void titleInvalidate()
         {
@@ -847,6 +854,9 @@ namespace UI
                 title.Text = date.Year + "년 " + date.Month + "월 재정 지출 명세서";
         }
 
+        /// <summary>
+        /// DataView 추가 (영훈)
+        /// </summary>
         private void setAdditionalView()
         {
             AdditionalView.Location = new Point(80, 392);
@@ -870,6 +880,9 @@ namespace UI
             AdditionalView.ClearSelection();
         }
 
+        /// <summary>
+        /// 합계 뷰 추가 (영훈)
+        /// </summary>
         private void setSumView()
         {
             SumView.Location = new Point(80, 465);
@@ -888,6 +901,7 @@ namespace UI
             SumView.RowHeadersDefaultCellStyle.Padding = new Padding(SumView.RowHeadersWidth);
         }
 
+
         private void SumView_SelectionChanged(object sender, EventArgs e)
         {
             SumView.ClearSelection();
@@ -897,20 +911,58 @@ namespace UI
 
         private void Button2_Click(object sender, EventArgs e)
         {
-            printDocument1.Print();
-            
+            PrintPreviewDialog dig = new PrintPreviewDialog();
+
+            dig.Document = printDocument1;
+
+            dig.ShowDialog();
+            //printDocument1.Print();
+
         }
 
         private void PrintDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
+            int curYPos = 150;
+            int margin = 50;
+
+            budgetView.RowHeadersVisible = false;
+            AdditionalView.RowHeadersVisible = false;
+            SumView.RowHeadersVisible = false;
+
+            // 문자 그리기
+            SizeF sz = e.Graphics.MeasureString(title.Text, new Font("Tahoma",20));
+            e.Graphics.DrawString(title.Text, new Font("Tahoma", 20), new SolidBrush(Color.Black), new Point((int)(pgSettings.PaperSize.Width / 2 - (sz.Width / 2)), curYPos));
 
             Bitmap bm = new Bitmap(this.budgetView.Width, this.budgetView.Height);
             budgetView.DrawToBitmap(bm, new Rectangle(0, 0, this.budgetView.Width, this.budgetView.Height));
-            e.Graphics.DrawImage(bm, 0, 0);
-            
+
+            curYPos += (int)sz.Height + 80;
+
+            // DataGridView 그리기
+            e.Graphics.DrawImage(bm, new Rectangle(margin, curYPos, pgSettings.PaperSize.Width - (margin * 2), this.budgetView.Height));
+
+            curYPos += bm.Size.Height + 15;
+
+            bm = new Bitmap(this.AdditionalView.Width, this.AdditionalView.Height);
+            AdditionalView.DrawToBitmap(bm, new Rectangle(0, 0, this.AdditionalView.Width, this.AdditionalView.Height));
+            e.Graphics.DrawImage(bm, new Rectangle(margin, curYPos, pgSettings.PaperSize.Width - (margin * 2), this.AdditionalView.Height));
+
+            curYPos += bm.Size.Height + 15;
+
+            bm = new Bitmap(this.SumView.Width, this.SumView.Height);
+            SumView.DrawToBitmap(bm, new Rectangle(0, 0, this.SumView.Width, this.SumView.Height));
+            e.Graphics.DrawImage(bm, new Rectangle(margin, curYPos, pgSettings.PaperSize.Width - (margin * 2), this.SumView.Height));
+
+            budgetView.RowHeadersVisible = true;
+            AdditionalView.RowHeadersVisible = true;
+            SumView.RowHeadersVisible = true;
         }
 
         #endregion
+
+        /// <summary>
+        /// DB 설정 (영훈)
+        /// </summary>
         public void setIncomeFromDB()
         {
             ThanksOffering = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Thanks where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));

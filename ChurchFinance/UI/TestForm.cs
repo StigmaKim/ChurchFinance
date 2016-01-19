@@ -34,10 +34,11 @@ namespace UI
             neoTabWindow1.Renderer = AddInRendererManager.LoadRenderer("MarginBlueRendererVS2");
 
             income = new IncomeProgress(IncomeProgress.DMode.income,button1);
+            income.Dock = DockStyle.Fill;
 
             neoTabPage1.Text = "수 입";
             neoTabPage1.BackColor = Color.White;
-            
+            neoTabPage1.Controls.Add(income);
         }
         
 
