@@ -337,8 +337,8 @@ namespace UI
 
         #endregion
 
-        PrintDocument pd;
-        PrintPreviewDialog ppd;
+        public PrintDocument pd;
+
         /// <summary>
         /// 생성자
         /// </summary>
@@ -476,10 +476,7 @@ namespace UI
             DataView.DrawToBitmap(bm, new Rectangle(new Point(0, 0), new Size(Width, Height)));
 
             e.Graphics.DrawImage(bm, new Point(0, 0));
-
-            ppd.Document = pd;
-
-            ppd.ShowDialog();
+            
 
         }
 

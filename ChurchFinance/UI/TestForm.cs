@@ -54,7 +54,7 @@ namespace UI
             PrintPreviewDialog dig = new PrintPreviewDialog();
             dig.ShowDialog();
 
-
+            //dig.Document = 
         }
     }
 }
