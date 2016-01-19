@@ -40,7 +40,6 @@ namespace UI
         
         Control currentTab = null;
         DateTimePicker dateTimePicker1 = null;
-        Button button1 = null;
         
         // DB 관련 
         SQLite SQLite = null;
@@ -84,7 +83,17 @@ namespace UI
             for (int i = 0; i < _spend_Loan.RowCount - 1; i++)
                 SQLite.Execute(string.Format("insert into Spending_Loan (name, amount, date) values('{0}', {1}, '{2}')", _spend_Loan.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_spend_Loan.Rows[i].Cells[1].Value)), ((DateTime)_spend_Loan.Rows[i].Cells[2].Value).ToShortDateString()));
             for (int i = 0; i < _spend_Res.RowCount - 1; i++)
-                SQLite.Execute(string.Format("insert into Spending_Res (name, amount, date) values('{0}', {1}, '{2}')", _spend_Res.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_spend_Res.Rows[i].Cells[1].Value)), ((DateTime)_spend_Res.Rows[i].Cells[2].Value).ToShortDateString()));
+                if (_spend_Res.Rows[i].Cells[1].Value.ToString() != "0")
+                    SQLite.Execute(string.Format("insert into Spending_Res (name, amount, date) values('{0}', {1}, '{2}')", _spend_Res.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_spend_Res.Rows[i].Cells[1].Value)), ((DateTime)_spend_Res.Rows[i].Cells[2].Value).ToShortDateString()));
+            
+            SetWorshipDGV(2);
+            SetMissionDGV(2);
+            SetEduDGV(2);
+            SetHumanDGV(2);
+            SetVolDGV(2);
+            SetMainDGV(2);
+            SetLoanDGV(2);
+            SetResDGV(2);
         }
         private void DateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
@@ -146,6 +155,8 @@ namespace UI
             W_SpendTab.Controls.Remove(_spend_Main);
             W_SpendTab.Controls.Remove(_spend_Loan);
             W_SpendTab.Controls.Remove(_spend_Res);
+
+            _spend_total.Rows[0].Cells[1].Value = ToComma(Sum_Worship);
 
             SetInputSumDGV(); // 최초 DGV 그리기. ( 수입 SUM )
             W_SpendTab.Controls.Add(_spend_Worship);
@@ -784,7 +795,6 @@ namespace UI
                         sum += Convert.ToInt32(ToNoComma(_spend_Worship.Rows[i].Cells[1].Value));
 
                 Sum_Worship = sum;
-                _spend_total.Rows[0].Cells[1].Value = ToComma(Sum_Worship);
 
                 SQLite.CloseDB();
             }
@@ -803,8 +813,11 @@ namespace UI
 
                 if (check == 1)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Mission where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Mission where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                     _spend_Mission.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
+
                     if (ds.Tables[0].Rows.Count == 0)
                     {
                         SQLite.Execute(string.Format("insert into Spending_Mission (name, date, amount) values ('{0}', '{1}', {2})", "선교비", DateTime.Now.ToShortDateString(), 0));
@@ -817,8 +830,11 @@ namespace UI
                 }
                 else if (check == 2)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Mission where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Mission where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                     _spend_Mission.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
+
                     if (ds.Tables[0].Rows.Count == 0)
                     {
                         SQLite.Execute(string.Format("insert into Spending_Mission (name, date, amount) values ('{0}', '{1}', {2})", "선교비", dateTimePicker1.Value.ToShortDateString(), 0));
@@ -839,7 +855,7 @@ namespace UI
                 int sum = 0;
                 for (int i = 0; i < _spend_Mission.RowCount - 1; i++)
                     if (_spend_Mission.Rows[i].Cells[1].Value.ToString() != "")
-                        sum += Convert.ToInt32(_spend_Mission.Rows[i].Cells[1].Value);
+                        sum += Convert.ToInt32(ToNoComma(_spend_Mission.Rows[i].Cells[1].Value));
 
                 Sum_Mission = sum;
 
@@ -860,7 +876,7 @@ namespace UI
 
                 if (check == 1)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Edu where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Edu where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                     _spend_Edu.DataSource = ds.Tables[0];
                     if (ds.Tables[0].Rows.Count == 0)
                     {
@@ -879,7 +895,7 @@ namespace UI
                 }
                 else if (check == 2)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Edu where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Edu where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                     _spend_Edu.DataSource = ds.Tables[0];
                     if (ds.Tables[0].Rows.Count == 0)
                     {
@@ -927,7 +943,7 @@ namespace UI
 
                 if (check == 1)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Human where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Human where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                     _spend_Human.DataSource = ds.Tables[0];
                     if (ds.Tables[0].Rows.Count == 0)
                     {
@@ -944,7 +960,7 @@ namespace UI
                 }
                 else if (check == 2)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Human where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Human where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                     _spend_Human.DataSource = ds.Tables[0];
                     if (ds.Tables[0].Rows.Count == 0)
                     {
@@ -990,7 +1006,7 @@ namespace UI
 
                 if (check == 1)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Vol where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Vol where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                     _spend_Vol.DataSource = ds.Tables[0];
                     if (ds.Tables[0].Rows.Count == 0)
                     {
@@ -1007,7 +1023,7 @@ namespace UI
                 }
                 else if (check == 2)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Vol where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Vol where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                     _spend_Vol.DataSource = ds.Tables[0];
                     if (ds.Tables[0].Rows.Count == 0)
                     {
@@ -1052,7 +1068,7 @@ namespace UI
 
                 if (check == 1)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Main where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Main where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                     _spend_Main.DataSource = ds.Tables[0];
                     if (ds.Tables[0].Rows.Count == 0)
                     {
@@ -1075,7 +1091,7 @@ namespace UI
                 }
                 else if (check == 2)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Main where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Main where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                     _spend_Main.DataSource = ds.Tables[0];
                     if (ds.Tables[0].Rows.Count == 0)
                     {
@@ -1127,7 +1143,7 @@ namespace UI
 
                 if (check == 1)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Loan where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Loan where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                     _spend_Loan.DataSource = ds.Tables[0];
                     if (ds.Tables[0].Rows.Count == 0)
                     {
@@ -1143,7 +1159,7 @@ namespace UI
                 }
                 else if (check == 2)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Loan where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Loan where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                     _spend_Loan.DataSource = ds.Tables[0];
                     if (ds.Tables[0].Rows.Count == 0)
                     {
@@ -1187,14 +1203,14 @@ namespace UI
 
                 if (check == 1)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Res where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Res where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                     _spend_Res.DataSource = ds.Tables[0];
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                         ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
                 else if (check == 2)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Res where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Res where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                     _spend_Res.DataSource = ds.Tables[0];
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                         ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
