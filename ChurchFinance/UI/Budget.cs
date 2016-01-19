@@ -54,24 +54,20 @@ namespace UI
 
         private void Dgv1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            for (int i = 0; i < dgv1.RowCount - 1; i++)
-            {
+            for (int i = 0; i < dgv1.RowCount - 3; i++)
                 dgv1.Rows[i].Cells[1].Value = ToComma(dgv1.Rows[i].Cells[1].Value);
-            }
 
             int sum = 0;
             for(int i = 0; i < 8; i ++)
                 sum += Convert.ToInt32(ToNoComma(dgv1.Rows[i].Cells[1].Value));
 
-            dgv1.Rows[9].Cells[1].Value = sum;
+            dgv1.Rows[9].Cells[1].Value = ToComma(sum);
         }
 
         private void Dgv_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             for( int i = 0; i < dgv.RowCount-1; i++)
-            {
                 dgv.Rows[i].Cells[1].Value = ToComma(dgv.Rows[i].Cells[1].Value);
-            }
             
             int sum = 0;
             for (int i = 0; i < 9; i++)
@@ -267,6 +263,7 @@ namespace UI
                 sum += Convert.ToInt32(dgv.Rows[i].Cells[1].Value);
             dgv.Rows[9].Cells[1].Value = sum;
             dgv.Rows[9].Height = 30;
+            dgv.Rows[9].ReadOnly = true;
 
             dgv1.Rows[0].Cells[0].Value = "예배비";
             dgv1.Rows[0].Cells[1].Value = Worship;
@@ -290,6 +287,8 @@ namespace UI
                 sum += Convert.ToInt32(dgv1.Rows[i].Cells[1].Value);
             dgv1.Rows[9].Cells[1].Value = sum;
             dgv1.Rows[9].Height = 30;
+            dgv1.Rows[8].ReadOnly = true;
+            dgv1.Rows[9].ReadOnly = true;
         }
 
         private void CreateTable()

@@ -131,16 +131,7 @@ namespace UI
             sp = new IncomeProgress(IncomeProgress.DMode.spend, button2);
             ip.Dock = DockStyle.Fill;
             M_SpendingTab.Controls.Add(sp);
-
-
-            ip.Date = DateTime.Now;
-            sp.Date = DateTime.Now;
-            ip.setIncomeFromDB();
-            ip.setSpendFromDB();
-            sp.setSpendFromDB();
-            sp.setSpendFromDB();
-
-
+            
             // Budget
             B_Tab = new NeoTabPage();
             B_Tab.Text = "예산설정";
@@ -148,6 +139,13 @@ namespace UI
             Bp.Dock = DockStyle.Fill;
             B_Tab.Controls.Add(Bp);
 
+            // IncomeProgress
+            ip.Date = DateTime.Now;
+            sp.Date = DateTime.Now;
+            ip.setIncomeFromDB();
+            ip.setSpendFromDB();
+            sp.setSpendFromDB();
+            sp.setSpendFromDB();
         }
 
         private void NeoTabWindow1_SelectedIndexChanged(object sender, SelectedIndexChangedEventArgs e)
