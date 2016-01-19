@@ -42,17 +42,17 @@
             // budgetView
             // 
             this.budgetView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.budgetView.Location = new System.Drawing.Point(25, 75);
+            this.budgetView.Location = new System.Drawing.Point(80, 50);
             this.budgetView.Name = "budgetView";
             this.budgetView.RowTemplate.Height = 23;
-            this.budgetView.Size = new System.Drawing.Size(880, 275);
+            this.budgetView.Size = new System.Drawing.Size(800, 332);
             this.budgetView.TabIndex = 0;
             // 
             // title
             // 
             this.title.AutoSize = true;
             this.title.Font = new System.Drawing.Font("Tahoma", 15F);
-            this.title.Location = new System.Drawing.Point(56, 25);
+            this.title.Location = new System.Drawing.Point(360, 10);
             this.title.Name = "title";
             this.title.Size = new System.Drawing.Size(64, 24);
             this.title.TabIndex = 1;
@@ -65,19 +65,19 @@
             // AdditionalView
             // 
             this.AdditionalView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.AdditionalView.Location = new System.Drawing.Point(252, 377);
+            this.AdditionalView.Location = new System.Drawing.Point(80, 392);
             this.AdditionalView.Name = "AdditionalView";
             this.AdditionalView.RowTemplate.Height = 23;
-            this.AdditionalView.Size = new System.Drawing.Size(240, 150);
+            this.AdditionalView.Size = new System.Drawing.Size(800, 63);
             this.AdditionalView.TabIndex = 2;
             // 
             // SumView
             // 
             this.SumView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.SumView.Location = new System.Drawing.Point(623, 423);
+            this.SumView.Location = new System.Drawing.Point(80, 465);
             this.SumView.Name = "SumView";
             this.SumView.RowTemplate.Height = 23;
-            this.SumView.Size = new System.Drawing.Size(240, 150);
+            this.SumView.Size = new System.Drawing.Size(800, 32);
             this.SumView.TabIndex = 3;
             // 
             // IncomeProgress

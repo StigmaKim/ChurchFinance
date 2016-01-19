@@ -859,8 +859,7 @@ namespace UI
         /// </summary>
         private void setAdditionalView()
         {
-            AdditionalView.Location = new Point(80, 392);
-            AdditionalView.Size = new Size(800, 63);
+            
             AdditionalView.ColumnCount = 5;
             AdditionalView.Font = new Font("Microsoft Sans Serif", 12);
             AdditionalView.RowTemplate.Height = 30;
@@ -939,19 +938,19 @@ namespace UI
             curYPos += (int)sz.Height + 80;
 
             // DataGridView 그리기
-            e.Graphics.DrawImage(bm, new Rectangle(margin, curYPos, pgSettings.PaperSize.Width - (margin * 2), this.budgetView.Height));
+            e.Graphics.DrawImage(bm, new Rectangle(margin, curYPos, pgSettings.PaperSize.Width - (margin + pgSettings.Margins.Right), this.budgetView.Height));
 
             curYPos += bm.Size.Height + 15;
 
             bm = new Bitmap(this.AdditionalView.Width, this.AdditionalView.Height);
             AdditionalView.DrawToBitmap(bm, new Rectangle(0, 0, this.AdditionalView.Width, this.AdditionalView.Height));
-            e.Graphics.DrawImage(bm, new Rectangle(margin, curYPos, pgSettings.PaperSize.Width - (margin * 2), this.AdditionalView.Height));
+            e.Graphics.DrawImage(bm, new Rectangle(margin, curYPos, pgSettings.PaperSize.Width - (margin + pgSettings.Margins.Right), this.AdditionalView.Height));
 
             curYPos += bm.Size.Height + 15;
 
             bm = new Bitmap(this.SumView.Width, this.SumView.Height);
             SumView.DrawToBitmap(bm, new Rectangle(0, 0, this.SumView.Width, this.SumView.Height));
-            e.Graphics.DrawImage(bm, new Rectangle(margin, curYPos, pgSettings.PaperSize.Width - (margin * 2), this.SumView.Height));
+            e.Graphics.DrawImage(bm, new Rectangle(margin, curYPos, pgSettings.PaperSize.Width - (margin + pgSettings.Margins.Right), this.SumView.Height));
 
             budgetView.RowHeadersVisible = true;
             AdditionalView.RowHeadersVisible = true;
