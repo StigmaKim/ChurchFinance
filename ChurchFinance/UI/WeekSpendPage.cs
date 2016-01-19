@@ -285,6 +285,7 @@ namespace UI
             _spend_Worship.ColumnHeadersHeight = 30;
             _spend_Worship.Font = new Font("Microsoft Sans Serif", 12);
             _spend_Worship.RowTemplate.Height = 30;
+            _spend_Worship.AllowUserToAddRows = false;
 
             // _spend_Mission ----------------------------------
             _spend_Mission.Size = new Size(600, 392);
@@ -295,6 +296,7 @@ namespace UI
             _spend_Mission.ColumnHeadersHeight = 30;
             _spend_Mission.Font = new Font("Microsoft Sans Serif", 12);
             _spend_Mission.RowTemplate.Height = 30;
+            _spend_Mission.AllowUserToAddRows = false;
 
             // _spend_Edu ----------------------------------
             _spend_Edu.Size = new Size(600, 392);
@@ -305,6 +307,7 @@ namespace UI
             _spend_Edu.ColumnHeadersHeight = 30;
             _spend_Edu.Font = new Font("Microsoft Sans Serif", 12);
             _spend_Edu.RowTemplate.Height = 30;
+            _spend_Edu.AllowUserToAddRows = false;
 
             // _spend_Human ----------------------------------
             _spend_Human.Size = new Size(600, 392);
@@ -315,6 +318,7 @@ namespace UI
             _spend_Human.ColumnHeadersHeight = 30;
             _spend_Human.Font = new Font("Microsoft Sans Serif", 12);
             _spend_Human.RowTemplate.Height = 30;
+            _spend_Human.AllowUserToAddRows = false;
 
             // _spend_Vol ----------------------------------
             _spend_Vol.Size = new Size(600, 392);
@@ -325,6 +329,7 @@ namespace UI
             _spend_Vol.ColumnHeadersHeight = 30;
             _spend_Vol.Font = new Font("Microsoft Sans Serif", 12);
             _spend_Vol.RowTemplate.Height = 30;
+            _spend_Vol.AllowUserToAddRows = false;
 
             // _spend_Main ----------------------------------
             _spend_Main.Size = new Size(600, 392);
@@ -335,6 +340,7 @@ namespace UI
             _spend_Main.ColumnHeadersHeight = 30;
             _spend_Main.Font = new Font("Microsoft Sans Serif", 12);
             _spend_Main.RowTemplate.Height = 30;
+            _spend_Main.AllowUserToAddRows = false;
 
             // _spend_Loan ----------------------------------
             _spend_Loan.Size = new Size(600, 392);
@@ -345,6 +351,7 @@ namespace UI
             _spend_Loan.ColumnHeadersHeight = 30;
             _spend_Loan.Font = new Font("Microsoft Sans Serif", 12);
             _spend_Loan.RowTemplate.Height = 30;
+            _spend_Loan.AllowUserToAddRows = false;
 
             // _spend_Res ----------------------------------
             _spend_Res.Size = new Size(600, 392);
@@ -826,7 +833,7 @@ namespace UI
                         ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Mission where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                         _spend_Mission.DataSource = ds.Tables[0];
                     }
-                    _spend_Worship.Columns[0].ReadOnly = true;
+                    _spend_Mission.Columns[0].ReadOnly = true;
                 }
                 else if (check == 2)
                 {
@@ -843,7 +850,7 @@ namespace UI
                         ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Mission where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                         _spend_Mission.DataSource = ds.Tables[0];
                     }
-                    _spend_Worship.Columns[0].ReadOnly = true;
+                    _spend_Mission.Columns[0].ReadOnly = true;
                 }
 
                 for (int i = 0; i < _spend_Mission.Columns.Count; i++)
@@ -891,7 +898,7 @@ namespace UI
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                         ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
-                    _spend_Worship.Columns[0].ReadOnly = true;
+                    _spend_Edu.Columns[0].ReadOnly = true;
                 }
                 else if (check == 2)
                 {
@@ -910,7 +917,7 @@ namespace UI
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                         ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
-                    _spend_Worship.Columns[0].ReadOnly = true;
+                    _spend_Edu.Columns[0].ReadOnly = true;
                 }
 
                 for (int i = 0; i < _spend_Edu.Columns.Count; i++)
@@ -956,7 +963,7 @@ namespace UI
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                         ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
-                    _spend_Worship.Columns[0].ReadOnly = true;
+                    _spend_Human.Columns[0].ReadOnly = true;
                 }
                 else if (check == 2)
                 {
@@ -973,7 +980,7 @@ namespace UI
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                         ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
-                    _spend_Worship.Columns[0].ReadOnly = true;
+                    _spend_Human.Columns[0].ReadOnly = true;
                 }
 
                 for (int i = 0; i < _spend_Human.Columns.Count; i++)
@@ -1019,7 +1026,7 @@ namespace UI
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                         ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
-                    _spend_Worship.Columns[0].ReadOnly = true;
+                    _spend_Vol.Columns[0].ReadOnly = true;
                 }
                 else if (check == 2)
                 {
@@ -1036,7 +1043,7 @@ namespace UI
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                         ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
-                    _spend_Worship.Columns[0].ReadOnly = true;
+                    _spend_Vol.Columns[0].ReadOnly = true;
                 }
 
                 for (int i = 0; i < _spend_Vol.Columns.Count; i++)
@@ -1087,7 +1094,7 @@ namespace UI
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                         ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
-                    _spend_Worship.Columns[0].ReadOnly = true;
+                    _spend_Main.Columns[0].ReadOnly = true;
                 }
                 else if (check == 2)
                 {
@@ -1111,7 +1118,7 @@ namespace UI
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                         ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
-                    _spend_Worship.Columns[0].ReadOnly = true;
+                    _spend_Main.Columns[0].ReadOnly = true;
                 }
 
                 for (int i = 0; i < _spend_Main.Columns.Count; i++)
@@ -1155,7 +1162,6 @@ namespace UI
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                         ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
-                    _spend_Worship.Columns[0].ReadOnly = true;
                 }
                 else if (check == 2)
                 {
@@ -1171,7 +1177,6 @@ namespace UI
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                         ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
-                    _spend_Worship.Columns[0].ReadOnly = true;
                 }
 
                 for (int i = 0; i < _spend_Loan.Columns.Count; i++)

@@ -87,8 +87,9 @@ namespace UI
             dgv.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.ColumnCount = 2;
             dgv.RowTemplate.Height = 30;
-            dgv.RowCount = 10;
+            dgv.RowCount = 11;
             dgv.Font = new Font("Microsoft Sans Serif", 12);
+            dgv.AllowUserToAddRows = false;
 
             dgv.CellFormatting += Dgv_CellFormatting;
             dgv.EditingControlShowing += Dgv_EditingControlShowing;
@@ -110,8 +111,9 @@ namespace UI
             dgv1.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv1.ColumnCount = 2;
             dgv1.RowTemplate.Height = 30;
-            dgv1.RowCount = 10;
+            dgv1.RowCount = 11;
             dgv1.Font = new Font("Microsoft Sans Serif", 12);
+            dgv1.AllowUserToAddRows = false;
 
             dgv1.CellFormatting += Dgv1_CellFormatting;
             dgv1.EditingControlShowing += Dgv1_EditingControlShowing;
