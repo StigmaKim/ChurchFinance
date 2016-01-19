@@ -849,13 +849,21 @@ namespace UI
             AdditionalView.Font = new Font("Microsoft Sans Serif", 12);
             AdditionalView.RowTemplate.Height = 30;
             AdditionalView.ReadOnly = true;
-            AdditionalView.RowCount = 2;
-            AdditionalView.SelectionChanged += SumView_SelectionChanged;
+            AdditionalView.RowCount = 3;
+            AdditionalView.SelectionChanged += AdditionalView_SelectionChanged;
             AdditionalView.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             AdditionalView.ColumnHeadersVisible = false;
+            AdditionalView.AllowUserToAddRows = false;
             for (int i = 0; i < AdditionalView.ColumnCount; i++)
                 AdditionalView.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            AdditionalView.RowHeadersDefaultCellStyle.Padding = new Padding(AdditionalView.RowHeadersWidth);
         }
+
+        private void AdditionalView_SelectionChanged(object sender, EventArgs e)
+        {
+            AdditionalView.ClearSelection();
+        }
+
         private void setSumView()
         {
             SumView.Location = new Point(80, 465);
@@ -864,17 +872,19 @@ namespace UI
             SumView.Font = new Font("Microsoft Sans Serif", 12);
             SumView.RowTemplate.Height = 30;
             SumView.ReadOnly = true;
-            SumView.RowCount = 1;
+            SumView.RowCount = 2;
             SumView.SelectionChanged += SumView_SelectionChanged;
             SumView.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             SumView.ColumnHeadersVisible = false;
+            SumView.AllowUserToAddRows = false;
             for (int i = 0; i < SumView.ColumnCount; i++)
                 SumView.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            SumView.RowHeadersDefaultCellStyle.Padding = new Padding(SumView.RowHeadersWidth);
         }
 
         private void SumView_SelectionChanged(object sender, EventArgs e)
         {
-            AdditionalView.ClearSelection();
+            SumView.ClearSelection();
         }
 
         #region 프린터 부분
@@ -955,6 +965,7 @@ namespace UI
             budgetView.Columns[2].HeaderText = "구성비";
             budgetView.Columns[3].HeaderText = "금액";
             budgetView.Columns[4].HeaderText = "진도비";
+            budgetView.AllowUserToAddRows = false;
 
             for (int i = 0; i < budgetView.ColumnCount; i++)
                 budgetView.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -964,6 +975,7 @@ namespace UI
 
             budgetView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             budgetView.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            budgetView.RowHeadersDefaultCellStyle.Padding = new Padding(budgetView.RowHeadersWidth);
 
             if (mode == DMode.income)
             {
