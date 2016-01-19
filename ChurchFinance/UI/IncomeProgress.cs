@@ -940,7 +940,7 @@ namespace UI
                 curYPos += (int)sz.Height + 80;
 
                 // DataGridView 그리기
-                e.Graphics.DrawImage(bm, new Rectangle(pgSettings.Margins.Right / 2, curYPos, pgSettings.PaperSize.Width - (((pgSettings.Margins.Left / 2) + pgSettings.Margins.Right), this.budgetView.Height));
+                e.Graphics.DrawImage(bm, new Rectangle(pgSettings.Margins.Right / 2, curYPos, pgSettings.PaperSize.Width - ((pgSettings.Margins.Left / 2) + pgSettings.Margins.Right), this.budgetView.Height));
 
                 curYPos += bm.Size.Height + 15;
 
@@ -952,7 +952,7 @@ namespace UI
 
                 bm = new Bitmap(this.SumView.Width, this.SumView.Height);
                 SumView.DrawToBitmap(bm, new Rectangle(0, 0, this.SumView.Width, this.SumView.Height));
-                e.Graphics.DrawImage(bm, new Rectangle(pgSettings.Margins.Right / 2, curYPos, pgSettings.PaperSize.Width - (((pgSettings.Margins.Left / 2) + pgSettings.Margins.Right), this.SumView.Height));
+                e.Graphics.DrawImage(bm, new Rectangle(pgSettings.Margins.Right / 2, curYPos, pgSettings.PaperSize.Width - ((pgSettings.Margins.Left / 2) + pgSettings.Margins.Right), this.SumView.Height));
 
                 budgetView.RowHeadersVisible = true;
                 AdditionalView.RowHeadersVisible = true;

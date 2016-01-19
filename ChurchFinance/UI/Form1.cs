@@ -107,12 +107,8 @@ namespace UI
             imgBtnContainer2.BackColor = Color.White;
             button1.Click += Button1_Click;
 
-            setImgBtn();
-            setWeekTabPage();
-
             panel5.BackColor = Color.LightGray;
             panel2.BackColor = Color.LightGray;
-
 
             // Budget
             B_Tab = new NeoTabPage();
@@ -120,6 +116,10 @@ namespace UI
             Bp = new Budget();
             Bp.Dock = DockStyle.Fill;
             B_Tab.Controls.Add(Bp);
+
+            // Week
+            W_IncomeTab = new NeoTabPage();
+            W_SpendingTab = new NeoTabPage();
 
             // Month
             M_ReportTab = new NeoTabPage();
@@ -145,6 +145,15 @@ namespace UI
             sd = new SpendDetail();
             sd.Dock = DockStyle.Fill;
             M_DetailTab.Controls.Add(sd);
+
+            // Add NewTabPage To NewTabWindows
+            neoTabWindow1.Controls.Add(W_IncomeTab);
+            neoTabWindow1.Controls.Add(W_SpendingTab);
+            neoTabWindow1.Controls.Add(B_Tab);
+            B_Tab.Hide();
+
+            setImgBtn();
+            setWeekTabPage();
 
             // IncomeProgress
             ip.Date = DateTime.Now;
@@ -351,8 +360,6 @@ namespace UI
         
         private void setWeekTabPage()
         {
-            W_IncomeTab = new NeoTabPage();
-            W_SpendingTab = new NeoTabPage();
 
             W_IncomeTab.Text = "수 입";
             W_IncomeTab.BackColor = Color.White;
@@ -361,8 +368,8 @@ namespace UI
             W_SpendingTab.BackColor = Color.White;
             W_SpendingTab.AutoScroll = true;
 
-            neoTabWindow1.Controls.Add(W_IncomeTab);
-            neoTabWindow1.Controls.Add(W_SpendingTab);
+            //neoTabWindow1.Controls.Add(W_IncomeTab);
+            //neoTabWindow1.Controls.Add(W_SpendingTab);
 
             // Spend Area
             WSP = new WeekSpendPage(W_SpendingTab, dateTimePicker1);
