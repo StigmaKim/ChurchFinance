@@ -821,10 +821,10 @@ namespace UI
             spendSum = Pray + SpendMission + Edu + Person + Service + Manage + Loan + Prepare;
 
             title.Location = new Point(360, 10);
+            titleInvalidate();
 
             if (mode == DMode.income)
             {
-                title.Text = date.Year + "년 " + date.Month + "월 재정 수입 명세서";
                 AdditionalView.Visible = true;
                 SumView.Visible = true;
                 setAdditionalView();
@@ -832,13 +832,19 @@ namespace UI
             }
             else if (mode == DMode.spend)
             {
-                title.Text = date.Year + "년 " + date.Month + "월 재정 지출 명세서";
                 AdditionalView.Visible = false;
                 SumView.Visible = false;
             }
 
             setViews();
             button2.Click += Button2_Click;
+        }
+        public void titleInvalidate()
+        {
+            if (mode == DMode.income)
+                title.Text = date.Year + "년 " + date.Month + "월 재정 수입 명세서";
+            else if (mode == DMode.spend)
+                title.Text = date.Year + "년 " + date.Month + "월 재정 지출 명세서";
         }
 
         private void setAdditionalView()
@@ -923,7 +929,6 @@ namespace UI
             total = ThanksOffering + Sipil + Region + Build + MissionWork + Sungmi + Saving + Car + Term + Etc + Income;
 
             Invalidate();
-
         }
 
         public void setSpendFromDB()
