@@ -33,8 +33,19 @@ namespace UI
             
             neoTabPage1.Text = "수 입";
             neoTabPage1.BackColor = Color.White;
-            
+
+            spendDetail1.pd.PrintPage += Pd_PrintPage;
         }
+
+        private void Pd_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            Bitmap tapBM = new Bitmap(spendDetail1.Width,spendDetail1.Height);
+
+            spendDetail1.DataView.DrawToBitmap(tapBM, new Rectangle(new Point(0, 0), new Size(Width, Height)));
+
+            e.Graphics.DrawImage(tapBM, new Point(5, 5));
+        }
+        
 
         // 인쇄 버튼
         private void button1_Click(object sender, EventArgs e)
@@ -52,6 +63,9 @@ namespace UI
         private void preViewBtn_Click(object sender, EventArgs e)
         {
             PrintPreviewDialog dig = new PrintPreviewDialog();
+
+            dig.Document = spendDetail1.pd;
+
             dig.ShowDialog();
 
             //dig.Document = 

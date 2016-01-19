@@ -465,20 +465,9 @@ namespace UI
 
             pd = new PrintDocument();
             
-            pd.PrintPage += Pd_PrintPage;
             
         }
-
-        private void Pd_PrintPage(object sender, PrintPageEventArgs e)
-        {
-
-            Bitmap bm = null;
-            DataView.DrawToBitmap(bm, new Rectangle(new Point(0, 0), new Size(Width, Height)));
-
-            e.Graphics.DrawImage(bm, new Point(0, 0));
-            
-
-        }
+        
 
         /// <summary>
         /// Data Input
