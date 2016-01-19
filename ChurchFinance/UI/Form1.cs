@@ -383,6 +383,44 @@ namespace UI
             currentWeekTab = W_IncomeTab;
         }
 
+        private static string ToNoComma(TextBox tb)
+        {
+            string[] a = tb.Text.Split(',');
+            string temp = "";
+            for (int i = 0; i < a.Length; i++)
+            {
+                temp += a[i];
+            }
+            return temp;
+        }
+        private static string ToNoComma(object tb)
+        {
+            string[] a = tb.ToString().Split(',');
+            string temp = "";
+            for (int i = 0; i < a.Length; i++)
+            {
+                temp += a[i];
+            }
+            return temp;
+        }
+        private static string ToComma(object str)
+        {
+            string s;
+            try
+            {
+                s = String.Format("{0:N0}", Convert.ToInt32(str));
+            }
+            catch (FormatException e)
+            {
+                return str.ToString();
+            }
+            catch (InvalidCastException e)
+            {
+                return "0";
+            }
+            return s;
+        }
+
         private void CreateTable()
         {
             SQLite.Execute(string.Format("create table Offering_Thanks " +
@@ -428,8 +466,7 @@ namespace UI
             _income_Term = new DataGridView();
             _income_Other = new DataGridView();
             _income_Interest = new DataGridView();
-
-
+            
             _income_Thanks.CellEndEdit += _income_Thanks_CellEndEdit;
             _income_10.CellEndEdit += _income_10_CellEndEdit;
             _income_Cell.CellEndEdit += _income_Cell_CellEndEdit;
@@ -441,133 +478,202 @@ namespace UI
             _income_Term.CellEndEdit += _income_Term_CellEndEdit;
             _income_Other.CellEndEdit += _income_Other_CellEndEdit;
             _income_Interest.CellEndEdit += _income_Interest_CellEndEdit;
+
+            _income_Thanks.EditingControlShowing += _income_Thanks_EditingControlShowing;
+            _income_10.EditingControlShowing += _income_10_EditingControlShowing;
+            _income_Cell.EditingControlShowing += _income_Cell_EditingControlShowing;
+            _income_Archi.EditingControlShowing += _income_Archi_EditingControlShowing;
+            _income_Mission.EditingControlShowing += _income_Mission_EditingControlShowing;
+            _income_Rice.EditingControlShowing += _income_Rice_EditingControlShowing;
+            _income_Help.EditingControlShowing += _income_Help_EditingControlShowing;
+            _income_Car.EditingControlShowing += _income_Car_EditingControlShowing;
+            _income_Term.EditingControlShowing += _income_Term_EditingControlShowing;
+            _income_Other.EditingControlShowing += _income_Other_EditingControlShowing;
+            _income_Interest.EditingControlShowing += _income_Interest_EditingControlShowing;
             
             income.CellMouseDown += Income_CellMouseDown;
-
 
             #endregion
 
             #region DGV 옵션 1
             // income ---------------------------------------
-            income.Size = new Size(300, 400);
+            income.Size = new Size(300, 392);
             income.Location = new Point(20, 20);
+            income.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            income.ColumnHeadersHeight = 30;
             income.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             income.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            income.Font = new Font("Microsoft Sans Serif", 12);
+            income.RowTemplate.Height = 30;
             income.ColumnCount = 2;
             income.ReadOnly = true;
+            income.AllowUserToAddRows = false;
 
             income.Columns[0].Name = "수 입";
             income.Columns[1].Name = "금 액";
             
             for (int i = 0; i < income.Columns.Count; i++)
-            {
                 income.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            }
+
+            for (int i = 0; i < income.ColumnCount ; i++)
+                income.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
             // income_total ------------------------------
-            income_total.Size = new Size(300, 26);
+            income_total.Size = new Size(300, 31);
             income_total.Location = new Point(20, 425);
             income_total.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             income_total.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            income_total.ColumnHeadersVisible = false;
+            income_total.Font = new Font("Microsoft Sans Serif", 12);
+            income_total.RowTemplate.Height = 30;
             income_total.ColumnCount = 2;
             income_total.ReadOnly = true;
+            income_total.ColumnHeadersVisible = false;
+            income_total.SelectionChanged += Income_total_SelectionChanged;
+            income_total.RowCount = 2;
+            income_total.AllowUserToAddRows = false;
+            income_total.RowHeadersDefaultCellStyle.Padding = new Padding(income_total.RowHeadersWidth);
 
             income_total.Rows[0].Cells[0].Value = "Total";
 
             for (int i = 0; i < income_total.Columns.Count; i++)
-            {
                 income_total.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            }
 
             // _income_total -------------------------------
-            _income_total.Size = new Size(600, 26);
+            _income_total.Size = new Size(600, 31);
             _income_total.Location = new Point(350, 425);
             _income_total.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             _income_total.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            _income_total.Font = new Font("Microsoft Sans Serif", 12);
+            _income_total.RowTemplate.Height = 30;
             _income_total.ColumnHeadersVisible = false;
             _income_total.ColumnCount = 3;
             _income_total.ReadOnly = true;
+            _income_total.SelectionChanged += _income_total_SelectionChanged;
+            _income_total.RowCount = 2;
+            _income_total.AllowUserToAddRows = false;
+            _income_total.RowHeadersDefaultCellStyle.Padding = new Padding(_income_total.RowHeadersWidth);
 
             _income_total.Rows[0].Cells[0].Value = "Total";
             _income_total.Rows[0].Cells[1].Value = "";
             _income_total.Rows[0].Cells[2].Value = "";
 
             for (int i = 0; i < _income_total.Columns.Count; i++)
-            {
                 _income_total.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            }
 
             #endregion
 
-            
+
             #region DGV 옵션 2
 
             // _income_Thanks ----------------------------------
-            _income_Thanks.Size = new Size(600, 400);
+            _income_Thanks.Size = new Size(600, 392);
             _income_Thanks.Location = new Point(350, 20);
             _income_Thanks.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             _income_Thanks.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                        
+            _income_Thanks.RowTemplate.Height = 30;
+            _income_Thanks.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            _income_Thanks.ColumnHeadersHeight = 30;
+            _income_Thanks.Font = new Font("Microsoft Sans Serif", 12);
+
             // _income_10 ----------------------------------
-            _income_10.Size = new Size(600, 400);
+            _income_10.Size = new Size(600, 392);
             _income_10.Location = new Point(350, 20);
             _income_10.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             _income_10.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            _income_10.RowTemplate.Height = 30;
+            _income_10.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            _income_10.ColumnHeadersHeight = 30;
+            _income_10.Font = new Font("Microsoft Sans Serif", 12);
 
             // _income_Cell ----------------------------------
-            _income_Cell.Size = new Size(600, 400);
+            _income_Cell.Size = new Size(600, 392);
             _income_Cell.Location = new Point(350, 20);
             _income_Cell.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             _income_Cell.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            _income_Cell.RowTemplate.Height = 30;
+            _income_Cell.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            _income_Cell.ColumnHeadersHeight = 30;
+            _income_Cell.Font = new Font("Microsoft Sans Serif", 12);
 
             // _income_Archi ----------------------------------
-            _income_Archi.Size = new Size(600, 400);
+            _income_Archi.Size = new Size(600, 392);
             _income_Archi.Location = new Point(350, 20);
             _income_Archi.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             _income_Archi.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            _income_Archi.RowTemplate.Height = 30;
+            _income_Archi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            _income_Archi.ColumnHeadersHeight = 30;
+            _income_Archi.Font = new Font("Microsoft Sans Serif", 12);
 
             // _income_Mission ----------------------------------
-            _income_Mission.Size = new Size(600, 400);
+            _income_Mission.Size = new Size(600, 392);
             _income_Mission.Location = new Point(350, 20);
             _income_Mission.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             _income_Mission.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            _income_Mission.RowTemplate.Height = 30;
+            _income_Mission.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            _income_Mission.ColumnHeadersHeight = 30;
+            _income_Mission.Font = new Font("Microsoft Sans Serif", 12);
 
             // _income_Rice ----------------------------------
-            _income_Rice.Size = new Size(600, 400);
+            _income_Rice.Size = new Size(600, 392);
             _income_Rice.Location = new Point(350, 20);
             _income_Rice.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             _income_Rice.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            _income_Rice.RowTemplate.Height = 30;
+            _income_Rice.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            _income_Rice.ColumnHeadersHeight = 30;
+            _income_Rice.Font = new Font("Microsoft Sans Serif", 12);
 
             // _income_Help ----------------------------------
-            _income_Help.Size = new Size(600, 400);
+            _income_Help.Size = new Size(600, 392);
             _income_Help.Location = new Point(350, 20);
             _income_Help.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             _income_Help.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            _income_Help.RowTemplate.Height = 30;
+            _income_Help.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            _income_Help.ColumnHeadersHeight = 30;
+            _income_Help.Font = new Font("Microsoft Sans Serif", 12);
 
             // _income_Car ----------------------------------
-            _income_Car.Size = new Size(600, 400);
+            _income_Car.Size = new Size(600, 392);
             _income_Car.Location = new Point(350, 20);
             _income_Car.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             _income_Car.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            _income_Car.RowTemplate.Height = 30;
+            _income_Car.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            _income_Car.ColumnHeadersHeight = 30;
+            _income_Car.Font = new Font("Microsoft Sans Serif", 12);
 
             // _income_Term ----------------------------------
-            _income_Term.Size = new Size(600, 400);
+            _income_Term.Size = new Size(600, 392);
             _income_Term.Location = new Point(350, 20);
             _income_Term.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             _income_Term.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            _income_Term.RowTemplate.Height = 30;
+            _income_Term.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            _income_Term.ColumnHeadersHeight = 30;
+            _income_Term.Font = new Font("Microsoft Sans Serif", 12);
 
             // _income_Other ----------------------------------
-            _income_Other.Size = new Size(600, 400);
+            _income_Other.Size = new Size(600, 392);
             _income_Other.Location = new Point(350, 20);
             _income_Other.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             _income_Other.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            _income_Other.RowTemplate.Height = 30;
+            _income_Other.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            _income_Other.ColumnHeadersHeight = 30;
+            _income_Other.Font = new Font("Microsoft Sans Serif", 12);
 
             // _income_Interest ----------------------------------
-            _income_Interest.Size = new Size(600, 400);
+            _income_Interest.Size = new Size(600, 392);
             _income_Interest.Location = new Point(350, 20);
             _income_Interest.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             _income_Interest.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            _income_Interest.RowTemplate.Height = 30;
+            _income_Interest.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            _income_Interest.ColumnHeadersHeight = 30;
+            _income_Interest.Font = new Font("Microsoft Sans Serif", 12);
             #endregion
 
             // Draw DGVS --------------------------------------------------
@@ -591,74 +697,153 @@ namespace UI
             
         }
 
+        #region EditingControlShowing
+        private void _income_Thanks_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            TextBox tb = e.Control as TextBox;
+            tb.Text = ToNoComma(tb);
+        }
 
+        private void _income_10_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            TextBox tb = e.Control as TextBox;
+            tb.Text = ToNoComma(tb);
+        }
+
+        private void _income_Cell_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            TextBox tb = e.Control as TextBox;
+            tb.Text = ToNoComma(tb);
+        }
+
+        private void _income_Archi_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            TextBox tb = e.Control as TextBox;
+            tb.Text = ToNoComma(tb);
+        }
+
+        private void _income_Mission_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            TextBox tb = e.Control as TextBox;
+            tb.Text = ToNoComma(tb);
+        }
+
+        private void _income_Rice_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            TextBox tb = e.Control as TextBox;
+            tb.Text = ToNoComma(tb);
+        }
+
+        private void _income_Help_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            TextBox tb = e.Control as TextBox;
+            tb.Text = ToNoComma(tb);
+        }
+
+        private void _income_Car_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            TextBox tb = e.Control as TextBox;
+            tb.Text = ToNoComma(tb);
+        }
+
+        private void _income_Term_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            TextBox tb = e.Control as TextBox;
+            tb.Text = ToNoComma(tb);
+        }
+
+        private void _income_Other_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            TextBox tb = e.Control as TextBox;
+            tb.Text = ToNoComma(tb);
+        }
+
+        private void _income_Interest_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            TextBox tb = e.Control as TextBox;
+            tb.Text = ToNoComma(tb);
+        }
+        #endregion
+
+        #region SelectionChanged
+        private void _income_total_SelectionChanged(object sender, EventArgs e)
+        {
+            _income_total.ClearSelection();
+        }
+
+        private void Income_total_SelectionChanged(object sender, EventArgs e)
+        {
+            income_total.ClearSelection();
+        }
+        #endregion
 
         private void Income_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            Debug.WriteLine("Rows : " + e.RowIndex);
-            W_IncomeTab.Controls.Remove(currentTab);
-
-            switch (e.RowIndex)
+            if( e.RowIndex != -1 && e.RowIndex != 11)
             {
-                case 0:
-                    W_IncomeTab.Controls.Add(_income_Thanks);
-                    _income_total.Rows[0].Cells[1].Value = Sum_Thanks;
-                    currentTab = _income_Thanks;
-                    break;
-                case 1:
-                    W_IncomeTab.Controls.Add(_income_10);
-                    _income_total.Rows[0].Cells[1].Value = Sum_10;
-                    currentTab = _income_10;
-                    break;
-                case 2:
-                    W_IncomeTab.Controls.Add(_income_Cell);
-                    _income_total.Rows[0].Cells[1].Value = Sum_Cell;
-                    currentTab = _income_Cell;
-                    break;
-                case 3:
-                    W_IncomeTab.Controls.Add(_income_Archi);
-                    _income_total.Rows[0].Cells[1].Value = Sum_Archi;
-                    currentTab = _income_Archi;
-                    break;
-                case 4:
-                    W_IncomeTab.Controls.Add(_income_Mission);
-                    _income_total.Rows[0].Cells[1].Value = Sum_Mission;
-                    currentTab = _income_Mission;
-                    break;
-                case 5:
-                    W_IncomeTab.Controls.Add(_income_Rice);
-                    _income_total.Rows[0].Cells[1].Value = Sum_Rice;
-                    currentTab = _income_Rice;
-                    break;
-                case 6:
-                    W_IncomeTab.Controls.Add(_income_Help);
-                    _income_total.Rows[0].Cells[1].Value = Sum_Help;
-                    currentTab = _income_Help;
-                    break;
-                case 7:
-                    W_IncomeTab.Controls.Add(_income_Car);
-                    _income_total.Rows[0].Cells[1].Value = Sum_Car;
-                    currentTab = _income_Car;
-                    break;
-                case 8:
-                    W_IncomeTab.Controls.Add(_income_Term);
-                    _income_total.Rows[0].Cells[1].Value = Sum_Term;
-                    currentTab = _income_Term;
-                    break;
-                case 9:
-                    W_IncomeTab.Controls.Add(_income_Other);
-                    _income_total.Rows[0].Cells[1].Value = Sum_Other;
-                    currentTab = _income_Other;
-                    break;
-                case 10:
-                    W_IncomeTab.Controls.Add(_income_Interest);
-                    _income_total.Rows[0].Cells[1].Value = Sum_Interest;
-                    currentTab = _income_Interest;
-                    break;
+                W_IncomeTab.Controls.Remove(currentTab);
+                switch (e.RowIndex)
+                {
+                    case 0:
+                        W_IncomeTab.Controls.Add(_income_Thanks);
+                        _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Thanks);
+                        currentTab = _income_Thanks;
+                        break;
+                    case 1:
+                        W_IncomeTab.Controls.Add(_income_10);
+                        _income_total.Rows[0].Cells[1].Value = ToComma(Sum_10);
+                        currentTab = _income_10;
+                        break;
+                    case 2:
+                        W_IncomeTab.Controls.Add(_income_Cell);
+                        _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Cell);
+                        currentTab = _income_Cell;
+                        break;
+                    case 3:
+                        W_IncomeTab.Controls.Add(_income_Archi);
+                        _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Archi);
+                        currentTab = _income_Archi;
+                        break;
+                    case 4:
+                        W_IncomeTab.Controls.Add(_income_Mission);
+                        _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Mission);
+                        currentTab = _income_Mission;
+                        break;
+                    case 5:
+                        W_IncomeTab.Controls.Add(_income_Rice);
+                        _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Rice);
+                        currentTab = _income_Rice;
+                        break;
+                    case 6:
+                        W_IncomeTab.Controls.Add(_income_Help);
+                        _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Help);
+                        currentTab = _income_Help;
+                        break;
+                    case 7:
+                        W_IncomeTab.Controls.Add(_income_Car);
+                        _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Car);
+                        currentTab = _income_Car;
+                        break;
+                    case 8:
+                        W_IncomeTab.Controls.Add(_income_Term);
+                        _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Term);
+                        currentTab = _income_Term;
+                        break;
+                    case 9:
+                        W_IncomeTab.Controls.Add(_income_Other);
+                        _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Other);
+                        currentTab = _income_Other;
+                        break;
+                    case 10:
+                        W_IncomeTab.Controls.Add(_income_Interest);
+                        _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Interest);
+                        currentTab = _income_Interest;
+                        break;
+                }
             }
         }
-        
-        #region 에딧 이벤트
+
+        #region CellEndEdit
 
         private void _income_Thanks_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
@@ -666,15 +851,18 @@ namespace UI
             if (_income_Thanks.Rows[e.RowIndex].Cells[2].Value.ToString() == "")
                 _income_Thanks.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
 
-            // Set Sumation.
-            int sum = 0;
+            // Make Comma type
             for (int i = 0; i < _income_Thanks.RowCount - 1; i++)
-            {
+                _income_Thanks.Rows[i].Cells[1].Value = ToComma(_income_Thanks.Rows[i].Cells[1].Value);
+
+                // Set Sumation.
+                int sum = 0;
+            for (int i = 0; i < _income_Thanks.RowCount - 1; i++)
                 if (_income_Thanks.Rows[i].Cells[1].Value.ToString() != "")
-                    sum += Convert.ToInt32(_income_Thanks.Rows[i].Cells[1].Value);
-            }
+                    sum += Convert.ToInt32(ToNoComma(_income_Thanks.Rows[i].Cells[1].Value));
+
             Sum_Thanks = sum;
-            _income_total.Rows[0].Cells[1].Value = Sum_Thanks;
+            _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Thanks);
 
             SetInputSumDGV();
             SQLite.CloseDB();
@@ -686,15 +874,18 @@ namespace UI
             if (_income_10.Rows[e.RowIndex].Cells[2].Value.ToString() == "")
                 _income_10.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
 
+            // Make Comma type
+            for (int i = 0; i < _income_10.RowCount - 1; i++)
+                _income_10.Rows[i].Cells[1].Value = ToComma(_income_10.Rows[i].Cells[1].Value);
+
             // Set Sumation.
             int sum = 0;
             for (int i = 0; i < _income_10.RowCount - 1; i++)
-            {
                 if (_income_10.Rows[i].Cells[1].Value.ToString() != "")
-                    sum += Convert.ToInt32(_income_10.Rows[i].Cells[1].Value);
-            }
+                    sum += Convert.ToInt32(ToNoComma(_income_10.Rows[i].Cells[1].Value));
+
             Sum_10 = sum;
-            _income_total.Rows[0].Cells[1].Value = Sum_10;
+            _income_total.Rows[0].Cells[1].Value = ToComma(Sum_10);
 
             SetInputSumDGV();
             SQLite.CloseDB();
@@ -706,16 +897,18 @@ namespace UI
             if (_income_Cell.Rows[e.RowIndex].Cells[2].Value.ToString() == "")
                 _income_Cell.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
 
+            // Make Comma type
+            for (int i = 0; i < _income_Cell.RowCount - 1; i++)
+                _income_Cell.Rows[i].Cells[1].Value = ToComma(_income_Cell.Rows[i].Cells[1].Value);
+
             // Set Sumation.
             int sum = 0;
             for (int i = 0; i < _income_Cell.RowCount - 1; i++)
-            {
-                //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                 if (_income_Cell.Rows[i].Cells[1].Value.ToString() != "")
-                    sum += Convert.ToInt32(_income_Cell.Rows[i].Cells[1].Value);
-            }
+                    sum += Convert.ToInt32(ToNoComma(_income_Cell.Rows[i].Cells[1].Value));
+
             Sum_Cell = sum;
-            _income_total.Rows[0].Cells[1].Value = Sum_Cell;
+            _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Cell);
 
             SetInputSumDGV();
             SQLite.CloseDB();
@@ -727,16 +920,19 @@ namespace UI
             if (_income_Archi.Rows[e.RowIndex].Cells[2].Value.ToString() == "")
                 _income_Archi.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
 
+            // Make Comma type
+            for (int i = 0; i < _income_Archi.RowCount - 1; i++)
+                _income_Archi.Rows[i].Cells[1].Value = ToComma(_income_Archi.Rows[i].Cells[1].Value);
+
             // Set Sumation.
             int sum = 0;
             for (int i = 0; i < _income_Archi.RowCount - 1; i++)
-            {
                 //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                 if (_income_Archi.Rows[i].Cells[1].Value.ToString() != "")
-                    sum += Convert.ToInt32(_income_Archi.Rows[i].Cells[1].Value);
-            }
+                    sum += Convert.ToInt32(ToNoComma(_income_Archi.Rows[i].Cells[1].Value));
+
             Sum_Archi = sum;
-            _income_total.Rows[0].Cells[1].Value = Sum_Archi;
+            _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Archi);
 
             SetInputSumDGV();
             SQLite.CloseDB();
@@ -748,16 +944,18 @@ namespace UI
             if (_income_Mission.Rows[e.RowIndex].Cells[2].Value.ToString() == "")
                 _income_Mission.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
 
+            // Make Comma type
+            for (int i = 0; i < _income_Mission.RowCount - 1; i++)
+                _income_Mission.Rows[i].Cells[1].Value = ToComma(_income_Mission.Rows[i].Cells[1].Value);
+
             // Set Sumation.
             int sum = 0;
             for (int i = 0; i < _income_Mission.RowCount - 1; i++)
-            {
-                //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                 if (_income_Mission.Rows[i].Cells[1].Value.ToString() != "")
-                    sum += Convert.ToInt32(_income_Mission.Rows[i].Cells[1].Value);
-            }
+                    sum += Convert.ToInt32(ToNoComma(_income_Mission.Rows[i].Cells[1].Value));
+
             Sum_Mission = sum;
-            _income_total.Rows[0].Cells[1].Value = Sum_Mission;
+            _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Mission);
 
             SetInputSumDGV();
             SQLite.CloseDB();
@@ -769,16 +967,18 @@ namespace UI
             if (_income_Rice.Rows[e.RowIndex].Cells[2].Value.ToString() == "")
                 _income_Rice.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
 
+            // Make Comma type
+            for (int i = 0; i < _income_Rice.RowCount - 1; i++)
+                _income_Rice.Rows[i].Cells[1].Value = ToComma(_income_Rice.Rows[i].Cells[1].Value);
+
             // Set Sumation.
             int sum = 0;
             for (int i = 0; i < _income_Rice.RowCount - 1; i++)
-            {
-                //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                 if (_income_Rice.Rows[i].Cells[1].Value.ToString() != "")
-                    sum += Convert.ToInt32(_income_Rice.Rows[i].Cells[1].Value);
-            }
+                    sum += Convert.ToInt32(ToNoComma(_income_Rice.Rows[i].Cells[1].Value));
+
             Sum_Rice = sum;
-            _income_total.Rows[0].Cells[1].Value = Sum_Rice;
+            _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Rice);
 
             SetInputSumDGV();
             SQLite.CloseDB();
@@ -790,16 +990,18 @@ namespace UI
             if (_income_Help.Rows[e.RowIndex].Cells[2].Value.ToString() == "")
                 _income_Help.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
 
+            // Make Comma type
+            for (int i = 0; i < _income_Help.RowCount - 1; i++)
+                _income_Help.Rows[i].Cells[1].Value = ToComma(_income_Help.Rows[i].Cells[1].Value);
+
             // Set Sumation.
             int sum = 0;
             for (int i = 0; i < _income_Help.RowCount - 1; i++)
-            {
-                //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                 if (_income_Help.Rows[i].Cells[1].Value.ToString() != "")
-                    sum += Convert.ToInt32(_income_Help.Rows[i].Cells[1].Value);
-            }
+                    sum += Convert.ToInt32(ToNoComma(_income_Help.Rows[i].Cells[1].Value));
+
             Sum_Help = sum;
-            _income_total.Rows[0].Cells[1].Value = Sum_Help;
+            _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Help);
 
             SetInputSumDGV();
             SQLite.CloseDB();
@@ -811,16 +1013,18 @@ namespace UI
             if (_income_Car.Rows[e.RowIndex].Cells[2].Value.ToString() == "")
                 _income_Car.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
 
+            // Make Comma type
+            for (int i = 0; i < _income_Car.RowCount - 1; i++)
+                _income_Car.Rows[i].Cells[1].Value = ToComma(_income_Car.Rows[i].Cells[1].Value);
+
             // Set Sumation.
             int sum = 0;
             for (int i = 0; i < _income_Car.RowCount - 1; i++)
-            {
-                //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                 if (_income_Car.Rows[i].Cells[1].Value.ToString() != "")
-                    sum += Convert.ToInt32(_income_Car.Rows[i].Cells[1].Value);
-            }
+                    sum += Convert.ToInt32(ToNoComma(_income_Car.Rows[i].Cells[1].Value));
+
             Sum_Car = sum;
-            _income_total.Rows[0].Cells[1].Value = Sum_Car;
+            _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Car);
 
             SetInputSumDGV();
             SQLite.CloseDB();
@@ -832,16 +1036,18 @@ namespace UI
             if (_income_Term.Rows[e.RowIndex].Cells[2].Value.ToString() == "")
                 _income_Term.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
 
+            // Make Comma type
+            for (int i = 0; i < _income_Term.RowCount - 1; i++)
+                _income_Term.Rows[i].Cells[1].Value = ToComma(_income_Term.Rows[i].Cells[1].Value);
+
             // Set Sumation.
             int sum = 0;
             for (int i = 0; i < _income_Term.RowCount - 1; i++)
-            {
-                //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                 if (_income_Term.Rows[i].Cells[1].Value.ToString() != "")
-                    sum += Convert.ToInt32(_income_Term.Rows[i].Cells[1].Value);
-            }
+                    sum += Convert.ToInt32(ToNoComma(_income_Term.Rows[i].Cells[1].Value));
+
             Sum_Term = sum;
-            _income_total.Rows[0].Cells[1].Value = Sum_Term;
+            _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Term);
 
             SetInputSumDGV();
             SQLite.CloseDB();
@@ -853,16 +1059,18 @@ namespace UI
             if (_income_Other.Rows[e.RowIndex].Cells[2].Value.ToString() == "")
                 _income_Other.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
 
+            // Make Comma type
+            for (int i = 0; i < _income_Other.RowCount - 1; i++)
+                _income_Other.Rows[i].Cells[1].Value = ToComma(_income_Other.Rows[i].Cells[1].Value);
+
             // Set Sumation.
             int sum = 0;
             for (int i = 0; i < _income_Other.RowCount - 1; i++)
-            {
-                //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                 if (_income_Other.Rows[i].Cells[1].Value.ToString() != "")
-                    sum += Convert.ToInt32(_income_Other.Rows[i].Cells[1].Value);
-            }
+                    sum += Convert.ToInt32(ToNoComma(_income_Other.Rows[i].Cells[1].Value));
+
             Sum_Other = sum;
-            _income_total.Rows[0].Cells[1].Value = Sum_Other;
+            _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Other);
 
             SetInputSumDGV();
             SQLite.CloseDB();
@@ -874,16 +1082,18 @@ namespace UI
             if (_income_Interest.Rows[e.RowIndex].Cells[2].Value.ToString() == "")
                 _income_Interest.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
 
+            // Make Comma type
+            for (int i = 0; i < _income_Interest.RowCount - 1; i++)
+                _income_Interest.Rows[i].Cells[1].Value = ToComma(_income_Interest.Rows[i].Cells[1].Value);
+
             // Set Sumation.
             int sum = 0;
             for (int i = 0; i < _income_Interest.RowCount - 1; i++)
-            {
-                //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                 if (_income_Interest.Rows[i].Cells[1].Value.ToString() != "")
-                    sum += Convert.ToInt32(_income_Interest.Rows[i].Cells[1].Value);
-            }
+                    sum += Convert.ToInt32(ToNoComma(_income_Interest.Rows[i].Cells[1].Value));
+
             Sum_Interest = sum;
-            _income_total.Rows[0].Cells[1].Value = Sum_Interest;
+            _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Interest);
 
             SetInputSumDGV();
             SQLite.CloseDB();
@@ -901,41 +1111,32 @@ namespace UI
 
                 if (check == 1)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Thanks where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast( amount as TEXT ) as '금 액', date as '날 짜' from Offering_Thanks where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                     _income_Thanks.DataSource = ds.Tables[0];
-                    Debug.WriteLine("Value :: " + _income_Thanks.Rows[0].Cells[1].Value);
+                    for ( int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
                 else if (check == 2)
-                {
-                    Debug.WriteLine("Test :: " + check);
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Thanks where date = '{0}' order by no asc", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
-                    Debug.WriteLine("Date : " + dateTimePicker1.Value.ToShortDateString());
+                {   
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast ( amount as Text) as '금 액', date as '날 짜' from Offering_Thanks where date = '{0}' order by no asc", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
                     _income_Thanks.DataSource = ds.Tables[0];
-                    Debug.WriteLine("Value :: " + _income_Thanks.Rows[0].Cells[1].Value);
-
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
                 
                 for (int i = 0; i< _income_Thanks.Columns.Count; i++)
-                {
                     _income_Thanks.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                }
-                
+                for (int i = 0; i < _income_Thanks.ColumnCount; i++)
+                    _income_Thanks.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+
                 // Set Sumation.
                 int sum = 0;
                 for (int i = 0; i < _income_Thanks.RowCount - 1; i++)
-                {
-                    //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                     if (_income_Thanks.Rows[i].Cells[1].Value.ToString() != "")
-                    {
-                        Debug.WriteLine("value : " + Convert.ToInt32(_income_Thanks.Rows[i].Cells[1].Value));
-                        sum += Convert.ToInt32(_income_Thanks.Rows[i].Cells[1].Value);
-                    }
-                        
-                }
+                        sum += Convert.ToInt32(ToNoComma(_income_Thanks.Rows[i].Cells[1].Value));
                                     
                 Sum_Thanks = sum;
-                Debug.WriteLine("Sum Thanks : " + Sum_Thanks);
-                _income_total.Rows[0].Cells[1].Value = Sum_Thanks;
+                _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Thanks);
                 
                 SQLite.CloseDB();
             }
@@ -954,28 +1155,29 @@ namespace UI
 
                 if (check == 1)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_10 where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as'금 액', date as '날 짜' from Offering_10 where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                     _income_10.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
                 else if (check == 2)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_10 where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as'금 액', date as '날 짜' from Offering_10 where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                     _income_10.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
 
                 for (int i = 0; i < _income_10.Columns.Count; i++)
-                {
                     _income_10.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                }
+                for (int i = 0; i < _income_10.ColumnCount; i++)
+                    _income_10.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
                 // Set Sumation.
                 int sum = 0;
                 for (int i = 0; i < _income_10.RowCount - 1; i++)
-                {
-                    //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                     if (_income_10.Rows[i].Cells[1].Value.ToString() != "")
-                        sum += Convert.ToInt32(_income_10.Rows[i].Cells[1].Value);
-                }
+                        sum += Convert.ToInt32(ToNoComma(_income_10.Rows[i].Cells[1].Value));
                 Sum_10 = sum;
 
                 SQLite.CloseDB();
@@ -995,28 +1197,29 @@ namespace UI
 
                 if (check == 1)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Cell where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as'금 액', date as '날 짜' from Offering_Cell where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                     _income_Cell.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
                 else if (check == 2)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Cell where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as '금 액', date as '날 짜' from Offering_Cell where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                     _income_Cell.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
 
                 for (int i = 0; i < _income_Cell.Columns.Count; i++)
-                {
                     _income_Cell.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                }
+                for (int i = 0; i < _income_Cell.ColumnCount; i++)
+                    _income_Cell.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
                 // Set Sumation.
                 int sum = 0;
                 for (int i = 0; i < _income_Cell.RowCount - 1; i++)
-                {
-                    //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                     if (_income_Cell.Rows[i].Cells[1].Value.ToString() != "")
-                        sum += Convert.ToInt32(_income_Cell.Rows[i].Cells[1].Value);
-                }
+                        sum += Convert.ToInt32(ToNoComma(_income_Cell.Rows[i].Cells[1].Value));
                 Sum_Cell = sum;
                 
                 SQLite.CloseDB();
@@ -1036,28 +1239,29 @@ namespace UI
 
                 if (check == 1)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Archi where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as '금 액', date as '날 짜' from Offering_Archi where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                     _income_Archi.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
                 else if (check == 2)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Archi where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as '금 액', date as '날 짜' from Offering_Archi where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                     _income_Archi.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
 
                 for (int i = 0; i < _income_Archi.Columns.Count; i++)
-                {
                     _income_Archi.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                }
+                for (int i = 0; i < _income_Archi.ColumnCount; i++)
+                    _income_Archi.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
                 // Set Sumation.
                 int sum = 0;
                 for (int i = 0; i < _income_Archi.RowCount - 1; i++)
-                {
-                    //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                     if (_income_Archi.Rows[i].Cells[1].Value.ToString() != "")
-                        sum += Convert.ToInt32(_income_Archi.Rows[i].Cells[1].Value);
-                }
+                        sum += Convert.ToInt32(ToNoComma(_income_Archi.Rows[i].Cells[1].Value));
                 Sum_Archi = sum;
                 
                 SQLite.CloseDB();
@@ -1077,28 +1281,29 @@ namespace UI
 
                 if (check == 1)
                 { 
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Mission where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as '금 액', date as '날 짜' from Offering_Mission where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                     _income_Mission.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
                 else if (check == 2)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Mission where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as '금 액', date as '날 짜' from Offering_Mission where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                     _income_Mission.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
 
                 for (int i = 0; i < _income_Mission.Columns.Count; i++)
-                {
                     _income_Mission.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                }
+                for (int i = 0; i < _income_Mission.ColumnCount; i++)
+                    _income_Mission.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
                 // Set Sumation.
                 int sum = 0;
                 for (int i = 0; i < _income_Mission.RowCount - 1; i++)
-                {
-                    //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                     if (_income_Mission.Rows[i].Cells[1].Value.ToString() != "")
-                        sum += Convert.ToInt32(_income_Mission.Rows[i].Cells[1].Value);
-                }
+                        sum += Convert.ToInt32(ToNoComma(_income_Mission.Rows[i].Cells[1].Value));
                 Sum_Mission = sum;
                 
                 SQLite.CloseDB();
@@ -1117,28 +1322,29 @@ namespace UI
 
                 if (check == 1)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Rice where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as '금 액', date as '날 짜' from Offering_Rice where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                     _income_Rice.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
                 else if (check == 2)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Rice where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as '금 액', date as '날 짜' from Offering_Rice where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                     _income_Rice.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
 
                 for (int i = 0; i < _income_Rice.Columns.Count; i++)
-                {
                     _income_Rice.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                }
+                for (int i = 0; i < _income_Rice.ColumnCount; i++)
+                    _income_Rice.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
                 // Set Sumation.
                 int sum = 0;
                 for (int i = 0; i < _income_Rice.RowCount - 1; i++)
-                {
-                    //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                     if (_income_Rice.Rows[i].Cells[1].Value.ToString() != "")
-                        sum += Convert.ToInt32(_income_Rice.Rows[i].Cells[1].Value);
-                }
+                        sum += Convert.ToInt32(ToNoComma(_income_Rice.Rows[i].Cells[1].Value));
                 Sum_Rice = sum;
                 
                 SQLite.CloseDB();
@@ -1157,28 +1363,29 @@ namespace UI
 
                 if (check == 1)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Help where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as '금 액', date as '날 짜' from Offering_Help where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                     _income_Help.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
                 else if (check == 2)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Help where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as '금 액', date as '날 짜' from Offering_Help where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                     _income_Help.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
 
                 for (int i = 0; i < _income_Help.Columns.Count; i++)
-                {
                     _income_Help.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                }
+                for (int i = 0; i < _income_Help.ColumnCount; i++)
+                    _income_Help.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
                 // Set Sumation.
                 int sum = 0;
                 for (int i = 0; i < _income_Help.RowCount - 1; i++)
-                {
-                    //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                     if (_income_Help.Rows[i].Cells[1].Value.ToString() != "")
-                        sum += Convert.ToInt32(_income_Help.Rows[i].Cells[1].Value);
-                }
+                        sum += Convert.ToInt32(ToNoComma(_income_Help.Rows[i].Cells[1].Value));
                 Sum_Help = sum;
                 
                 SQLite.CloseDB();
@@ -1197,28 +1404,29 @@ namespace UI
 
                 if (check == 1)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Car where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as '금 액', date as '날 짜' from Offering_Car where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                     _income_Car.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
                 else if (check == 2)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Car where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as '금 액', date as '날 짜' from Offering_Car where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                     _income_Car.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
 
                 for (int i = 0; i < _income_Car.Columns.Count; i++)
-                {
                     _income_Car.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                }
+                for (int i = 0; i < _income_Car.ColumnCount; i++)
+                    _income_Car.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
                 // Set Sumation.
                 int sum = 0;
                 for (int i = 0; i < _income_Car.RowCount - 1; i++)
-                {
-                    //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                     if (_income_Car.Rows[i].Cells[1].Value.ToString() != "")
-                        sum += Convert.ToInt32(_income_Car.Rows[i].Cells[1].Value);
-                }
+                        sum += Convert.ToInt32(ToNoComma(_income_Car.Rows[i].Cells[1].Value));
                 Sum_Car = sum;
 
                 SQLite.CloseDB();
@@ -1238,28 +1446,29 @@ namespace UI
 
                 if (check == 1)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Term where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as'금 액', date as '날 짜' from Offering_Term where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                     _income_Term.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
                 else if (check == 2)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Term where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as '금 액', date as '날 짜' from Offering_Term where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                     _income_Term.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
 
                 for (int i = 0; i < _income_Term.Columns.Count; i++)
-                {
                     _income_Term.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                }
+                for (int i = 0; i < _income_Term.ColumnCount; i++)
+                    _income_Term.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
                 // Set Sumation.
                 int sum = 0;
                 for (int i = 0; i < _income_Term.RowCount - 1; i++)
-                {
-                    //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                     if (_income_Term.Rows[i].Cells[1].Value.ToString() != "")
-                        sum += Convert.ToInt32(_income_Term.Rows[i].Cells[1].Value);
-                }
+                        sum += Convert.ToInt32(ToNoComma(_income_Term.Rows[i].Cells[1].Value));
                 Sum_Term = sum;
 
                 SQLite.CloseDB();
@@ -1278,28 +1487,29 @@ namespace UI
 
                 if (check == 1)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Other where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as'금 액', date as '날 짜' from Offering_Other where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                     _income_Other.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
                 else if (check == 2)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Other where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as '금 액', date as '날 짜' from Offering_Other where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                     _income_Other.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
 
                 for (int i = 0; i < _income_Other.Columns.Count; i++)
-                {
                     _income_Other.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                }
+                for (int i = 0; i < _income_Other.ColumnCount; i++)
+                    _income_Other.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
                 // Set Sumation.
                 int sum = 0;
                 for (int i = 0; i < _income_Other.RowCount - 1; i++)
-                {
-                    //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                     if (_income_Other.Rows[i].Cells[1].Value.ToString() != "")
-                        sum += Convert.ToInt32(_income_Other.Rows[i].Cells[1].Value);
-                }
+                        sum += Convert.ToInt32(ToNoComma(_income_Other.Rows[i].Cells[1].Value));
                 Sum_Other = sum;
                 
                 SQLite.CloseDB();
@@ -1318,28 +1528,29 @@ namespace UI
 
                 if (check == 1)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Interest where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as '금 액', date as '날 짜' from Offering_Interest where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                     _income_Interest.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
                 else if (check == 2)
                 {
-                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', amount as '금 액', date as '날 짜' from Offering_Interest where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                    DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select name as '이 름', cast (amount as Text) as '금 액', date as '날 짜' from Offering_Interest where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                     _income_Interest.DataSource = ds.Tables[0];
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        ds.Tables[0].Rows[i]["금 액"] = ToComma(ds.Tables[0].Rows[i]["금 액"].ToString());
                 }
 
                 for (int i = 0; i < _income_Interest.Columns.Count; i++)
-                {
                     _income_Interest.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                }
+                for (int i = 0; i < _income_Interest.ColumnCount; i++)
+                    _income_Interest.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
                 // Set Sumation.
                 int sum = 0;
                 for (int i = 0; i < _income_Interest.RowCount - 1; i++)
-                {
-                    //Debug.WriteLine("Cell 0 : " + _income.Rows[0].Cells[0].Value);
                     if (_income_Interest.Rows[i].Cells[1].Value.ToString() != "")
-                        sum += Convert.ToInt32(_income_Interest.Rows[i].Cells[1].Value);
-                }
+                        sum += Convert.ToInt32(ToNoComma(_income_Interest.Rows[i].Cells[1].Value));
                 Sum_Interest = sum;
 
                 SQLite.CloseDB();
@@ -1361,47 +1572,47 @@ namespace UI
                 income.Rows.Clear();
 
                 // 감사헌금
-                String[] a = { "감사헌금", Sum_Thanks.ToString() };
+                String[] a = { "감사헌금", ToComma(Sum_Thanks.ToString()) };
                 income.Rows.Add(a);
 
                 // 십일조
-                string[] b = {  "십일조", Sum_10.ToString() };
+                string[] b = {  "십일조", ToComma(Sum_10.ToString()) };
                 income.Rows.Add(b);
 
                 // 구역헌금
-                string[] c = { "구역헌금", Sum_Cell.ToString() };
+                string[] c = { "구역헌금", ToComma(Sum_Cell.ToString()) };
                 income.Rows.Add(c);
 
                 // 건축헌금
-                string[] d = { "건축헌금", Sum_Archi.ToString() };
+                string[] d = { "건축헌금", ToComma(Sum_Archi.ToString()) };
                 income.Rows.Add(d);
 
                 // 선교헌금
-                string[] e = { "선교헌금", Sum_Mission.ToString() };
+                string[] e = { "선교헌금", ToComma(Sum_Mission.ToString()) };
                 income.Rows.Add(e);
 
                 // 성미헌금
-                string[] f = { "성미헌금", Sum_Rice.ToString() };
+                string[] f = { "성미헌금", ToComma(Sum_Rice.ToString()) };
                 income.Rows.Add(f);
 
                 // 구제헌금
-                string[] g = { "구제헌금", Sum_Help.ToString() };
+                string[] g = { "구제헌금", ToComma(Sum_Help.ToString() )};
                 income.Rows.Add(g);
 
                 // 차량헌금
-                string[] h = { "차량헌금", Sum_Car.ToString() };
+                string[] h = { "차량헌금", ToComma(Sum_Car.ToString()) };
                 income.Rows.Add(h);
 
                 // 절기헌금
-                string[] n = { "절기헌금", Sum_Term.ToString() };
+                string[] n = { "절기헌금", ToComma(Sum_Term.ToString() )};
                 income.Rows.Add(n);
 
                 // 기타헌금
-                string[] k = { "기타수입", Sum_Other.ToString() };
+                string[] k = { "기타수입", ToComma(Sum_Other.ToString()) };
                 income.Rows.Add(k);
 
                 // 이자수입
-                string[] j = { "이자수입", Sum_Interest.ToString() };
+                string[] j = { "이자수입", ToComma(Sum_Interest.ToString()) };
                 income.Rows.Add(j);
 
 
@@ -1409,12 +1620,11 @@ namespace UI
                 int sumn = 0;
                 for (int i = 0; i < income.RowCount-1; i++)
                 {
-                    //Debug.WriteLine("Cell 0 : " + income.Rows[0].Cells[1].Value);
                     if (income.Rows[i].Cells[1].Value.ToString() != "")
-                        sumn += Convert.ToInt32(income.Rows[i].Cells[1].Value);
+                        sumn += Convert.ToInt32(ToNoComma(income.Rows[i].Cells[1].Value));
                 }
 
-                income_total.Rows[0].Cells[1].Value = sumn;
+                income_total.Rows[0].Cells[1].Value = ToComma(sumn);
                 SQLite.CloseDB();
             }
             catch( SQLiteException e)
@@ -1448,27 +1658,27 @@ namespace UI
                 SQLite.Execute(string.Format("Delete From Offering_Interest where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
 
                 for (int i = 0; i < _income_Thanks.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_thanks (name, amount, date) values('{0}', {1}, '{2}')", _income_Thanks.Rows[i].Cells[0].Value, _income_Thanks.Rows[i].Cells[1].Value, ((DateTime)_income_Thanks.Rows[i].Cells[2].Value).ToShortDateString()));
+                    SQLite.Execute(string.Format("insert into Offering_thanks (name, amount, date) values('{0}', {1}, '{2}')", _income_Thanks.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Thanks.Rows[i].Cells[1].Value)), ((DateTime)_income_Thanks.Rows[i].Cells[2].Value).ToShortDateString()));
                 for (int i = 0; i < _income_10.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_10 (name, amount, date) values('{0}', {1}, '{2}')", _income_10.Rows[i].Cells[0].Value, _income_10.Rows[i].Cells[1].Value, ((DateTime)_income_10.Rows[i].Cells[2].Value).ToShortDateString()));
+                    SQLite.Execute(string.Format("insert into Offering_10 (name, amount, date) values('{0}', {1}, '{2}')", _income_10.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_10.Rows[i].Cells[1].Value)), ((DateTime)_income_10.Rows[i].Cells[2].Value).ToShortDateString()));
                 for (int i = 0; i < _income_Cell.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Cell (name, amount, date) values('{0}', {1}, '{2}')", _income_Cell.Rows[i].Cells[0].Value, _income_Cell.Rows[i].Cells[1].Value, ((DateTime)_income_Cell.Rows[i].Cells[2].Value).ToShortDateString()));
+                    SQLite.Execute(string.Format("insert into Offering_Cell (name, amount, date) values('{0}', {1}, '{2}')", _income_Cell.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Cell.Rows[i].Cells[1].Value)), ((DateTime)_income_Cell.Rows[i].Cells[2].Value).ToShortDateString()));
                 for (int i = 0; i < _income_Archi.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Archi (name, amount, date) values('{0}', {1}, '{2}')", _income_Archi.Rows[i].Cells[0].Value, _income_Archi.Rows[i].Cells[1].Value, ((DateTime)_income_Archi.Rows[i].Cells[2].Value).ToShortDateString()));
+                    SQLite.Execute(string.Format("insert into Offering_Archi (name, amount, date) values('{0}', {1}, '{2}')", _income_Archi.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Archi.Rows[i].Cells[1].Value)), ((DateTime)_income_Archi.Rows[i].Cells[2].Value).ToShortDateString()));
                 for (int i = 0; i < _income_Mission.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Mission (name, amount, date) values('{0}', {1}, '{2}')", _income_Mission.Rows[i].Cells[0].Value, _income_Mission.Rows[i].Cells[1].Value, ((DateTime)_income_Mission.Rows[i].Cells[2].Value).ToShortDateString()));
+                    SQLite.Execute(string.Format("insert into Offering_Mission (name, amount, date) values('{0}', {1}, '{2}')", _income_Mission.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Mission.Rows[i].Cells[1].Value)), ((DateTime)_income_Mission.Rows[i].Cells[2].Value).ToShortDateString()));
                 for (int i = 0; i < _income_Rice.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Rice (name, amount, date) values('{0}', {1}, '{2}')", _income_Rice.Rows[i].Cells[0].Value, _income_Rice.Rows[i].Cells[1].Value, ((DateTime)_income_Rice.Rows[i].Cells[2].Value).ToShortDateString()));
+                    SQLite.Execute(string.Format("insert into Offering_Rice (name, amount, date) values('{0}', {1}, '{2}')", _income_Rice.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Rice.Rows[i].Cells[1].Value)), ((DateTime)_income_Rice.Rows[i].Cells[2].Value).ToShortDateString()));
                 for (int i = 0; i < _income_Help.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Help (name, amount, date) values('{0}', {1}, '{2}')", _income_Help.Rows[i].Cells[0].Value, _income_Help.Rows[i].Cells[1].Value, ((DateTime)_income_Help.Rows[i].Cells[2].Value).ToShortDateString()));
+                    SQLite.Execute(string.Format("insert into Offering_Help (name, amount, date) values('{0}', {1}, '{2}')", _income_Help.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Help.Rows[i].Cells[1].Value)), ((DateTime)_income_Help.Rows[i].Cells[2].Value).ToShortDateString()));
                 for (int i = 0; i < _income_Car.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Car (name, amount, date) values('{0}', {1}, '{2}')", _income_Car.Rows[i].Cells[0].Value, _income_Car.Rows[i].Cells[1].Value, ((DateTime)_income_Car.Rows[i].Cells[2].Value).ToShortDateString()));
+                    SQLite.Execute(string.Format("insert into Offering_Car (name, amount, date) values('{0}', {1}, '{2}')", _income_Car.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Car.Rows[i].Cells[1].Value)), ((DateTime)_income_Car.Rows[i].Cells[2].Value).ToShortDateString()));
                 for (int i = 0; i < _income_Term.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Term (name, amount, date) values('{0}', {1}, '{2}')", _income_Term.Rows[i].Cells[0].Value, _income_Term.Rows[i].Cells[1].Value, ((DateTime)_income_Term.Rows[i].Cells[2].Value).ToShortDateString()));
-                for (int i = 0; i < _income_Help.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Other (name, amount, date) values('{0}', {1}, '{2}')", _income_Other.Rows[i].Cells[0].Value, _income_Other.Rows[i].Cells[1].Value, ((DateTime)_income_Other.Rows[i].Cells[2].Value).ToShortDateString()));
-                for (int i = 0; i < _income_Car.RowCount - 1; i++)
-                    SQLite.Execute(string.Format("insert into Offering_Interest (name, amount, date) values('{0}', {1}, '{2}')", _income_Interest.Rows[i].Cells[0].Value, _income_Interest.Rows[i].Cells[1].Value, ((DateTime)_income_Interest.Rows[i].Cells[2].Value).ToShortDateString()));
+                    SQLite.Execute(string.Format("insert into Offering_Term (name, amount, date) values('{0}', {1}, '{2}')", _income_Term.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Term.Rows[i].Cells[1].Value)), ((DateTime)_income_Term.Rows[i].Cells[2].Value).ToShortDateString()));
+                for (int i = 0; i < _income_Other.RowCount - 1; i++)
+                        SQLite.Execute(string.Format("insert into Offering_Other (name, amount, date) values('{0}', {1}, '{2}')", _income_Other.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Other.Rows[i].Cells[1].Value)), ((DateTime)_income_Other.Rows[i].Cells[2].Value).ToShortDateString()));
+                for (int i = 0; i < _income_Interest.RowCount - 1; i++)
+                    SQLite.Execute(string.Format("insert into Offering_Interest (name, amount, date) values('{0}', {1}, '{2}')", _income_Interest.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_income_Interest.Rows[i].Cells[1].Value)), ((DateTime)_income_Interest.Rows[i].Cells[2].Value).ToShortDateString()));
             }
             else if (currentWeekTab == W_SpendingTab)
             {
