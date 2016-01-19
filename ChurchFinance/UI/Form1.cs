@@ -158,7 +158,7 @@ namespace UI
         private void DateTimePicker1_CloseUp(object sender, EventArgs e)
         {
             Debug.WriteLine("Date : " + dateTimePicker1.Value);
-
+            /*
             W_IncomeTab.Controls.Add(_income_Thanks);
             W_IncomeTab.Controls.Add(_income_10);
             W_IncomeTab.Controls.Add(_income_Cell);
@@ -170,9 +170,7 @@ namespace UI
             W_IncomeTab.Controls.Add(_income_Term);
             W_IncomeTab.Controls.Add(_income_Other);
             W_IncomeTab.Controls.Add(_income_Interest);
-
-            MakeSumValueZero();
-
+            */
             // 날짜 바뀔때 Re Draw
             SetThanksDGV(2);
             Set10DGV(2);
@@ -185,7 +183,7 @@ namespace UI
             SetTermDGV(2);
             SetOtherDGV(2);
             SetInterestDGV(2);
-
+            /*
             W_IncomeTab.Controls.Remove(_income_Thanks);
             W_IncomeTab.Controls.Remove(_income_10);
             W_IncomeTab.Controls.Remove(_income_Cell);
@@ -197,11 +195,11 @@ namespace UI
             W_IncomeTab.Controls.Remove(_income_Term);
             W_IncomeTab.Controls.Remove(_income_Other);
             W_IncomeTab.Controls.Remove(_income_Interest);
-
+            */
             SetInputSumDGV();
             W_IncomeTab.Controls.Add(_income_Thanks);
             currentTab = _income_Thanks;
-            
+            Invalidate();
             // IncomeProgress
             ip.Date = dateTimePicker1.Value;
             sp.Date = dateTimePicker1.Value;
@@ -281,8 +279,6 @@ namespace UI
         }
 
         #region WEEK MONTH YEAR CLICK EVENT
-
-
         private void BudgetBtn_Click(object sender, EventArgs e)
         {
             neoTabWindow1.Controls.Clear();
@@ -345,7 +341,6 @@ namespace UI
             button1.Visible = true;
             button2.Visible = false;
         }
-
         #endregion 
         
         private void setWeekTabPage()
@@ -582,8 +577,7 @@ namespace UI
                 _income_total.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             #endregion
-
-
+            
             #region DGV 옵션 2
 
             // _income_Thanks ----------------------------------

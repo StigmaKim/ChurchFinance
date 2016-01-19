@@ -922,7 +922,7 @@ namespace UI
         private void PrintDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
             int curYPos = 150;
-            int margin = 50;
+            int margin = 20;
 
             budgetView.RowHeadersVisible = false;
             AdditionalView.RowHeadersVisible = false;
