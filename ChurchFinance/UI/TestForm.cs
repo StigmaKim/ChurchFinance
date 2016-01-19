@@ -33,7 +33,7 @@ namespace UI
 
             neoTabWindow1.Renderer = AddInRendererManager.LoadRenderer("MarginBlueRendererVS2");
 
-            income = new IncomeProgress(IncomeProgress.DMode.income,button1);
+            income = new IncomeProgress(IncomeProgress.DMode.spend,button1);
             income.Dock = DockStyle.Fill;
 
             neoTabPage1.Text = "수 입";
