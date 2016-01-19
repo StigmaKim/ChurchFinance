@@ -157,20 +157,6 @@ namespace UI
 
         private void DateTimePicker1_CloseUp(object sender, EventArgs e)
         {
-            Debug.WriteLine("Date : " + dateTimePicker1.Value);
-            /*
-            W_IncomeTab.Controls.Add(_income_Thanks);
-            W_IncomeTab.Controls.Add(_income_10);
-            W_IncomeTab.Controls.Add(_income_Cell);
-            W_IncomeTab.Controls.Add(_income_Archi);
-            W_IncomeTab.Controls.Add(_income_Mission);
-            W_IncomeTab.Controls.Add(_income_Rice);
-            W_IncomeTab.Controls.Add(_income_Help);
-            W_IncomeTab.Controls.Add(_income_Car);
-            W_IncomeTab.Controls.Add(_income_Term);
-            W_IncomeTab.Controls.Add(_income_Other);
-            W_IncomeTab.Controls.Add(_income_Interest);
-            */
             // 날짜 바뀔때 Re Draw
             SetThanksDGV(2);
             Set10DGV(2);
@@ -183,23 +169,12 @@ namespace UI
             SetTermDGV(2);
             SetOtherDGV(2);
             SetInterestDGV(2);
-            /*
-            W_IncomeTab.Controls.Remove(_income_Thanks);
-            W_IncomeTab.Controls.Remove(_income_10);
-            W_IncomeTab.Controls.Remove(_income_Cell);
-            W_IncomeTab.Controls.Remove(_income_Archi);
-            W_IncomeTab.Controls.Remove(_income_Mission);
-            W_IncomeTab.Controls.Remove(_income_Rice);
-            W_IncomeTab.Controls.Remove(_income_Help);
-            W_IncomeTab.Controls.Remove(_income_Car);
-            W_IncomeTab.Controls.Remove(_income_Term);
-            W_IncomeTab.Controls.Remove(_income_Other);
-            W_IncomeTab.Controls.Remove(_income_Interest);
-            */
+            
             SetInputSumDGV();
-            W_IncomeTab.Controls.Add(_income_Thanks);
+            currentTab.Hide();
+            _income_Thanks.Show();
             currentTab = _income_Thanks;
-            Invalidate();
+
             // IncomeProgress
             ip.Date = dateTimePicker1.Value;
             sp.Date = dateTimePicker1.Value;
@@ -278,12 +253,38 @@ namespace UI
 
         }
 
+        private void HideCurrentCategory(string str)
+        {
+            if( str == "Budget")
+            {
+                B_Tab.Hide();
+            }
+            else if( str == "Week")
+            {
+                W_IncomeTab.Hide();
+                W_SpendingTab.Hide();
+            }
+            else if( str == "Month")
+            {
+                M_ReportTab.Hide();
+                M_IncomeTab.Hide();
+                M_SpendingTab.Hide();
+                M_DetailTab.Hide();
+            }
+            else if( str == "Year")
+            {
+
+            }
+                
+        }
+
         #region WEEK MONTH YEAR CLICK EVENT
         private void BudgetBtn_Click(object sender, EventArgs e)
         {
-            neoTabWindow1.Controls.Clear();
-
-            neoTabWindow1.Controls.Add(B_Tab);
+            //neoTabWindow1.Controls.Clear();
+            //neoTabWindow1.Controls.Add(B_Tab);
+            HideCurrentCategory(currentCategory);
+            B_Tab.Show();
             currentCategory = "Budget";
             button1.Visible = true;
             button2.Visible = false;
@@ -296,7 +297,8 @@ namespace UI
         /// <param name="e"></param>
         private void YearBtn_Click(object sender, EventArgs e)
         {
-            neoTabWindow1.Controls.Clear();
+            //neoTabWindow1.Controls.Clear();
+            HideCurrentCategory(currentCategory);
 
             currentCategory = "Year";
             button1.Visible = false;
@@ -310,17 +312,20 @@ namespace UI
         /// <param name="e"></param>
         private void MonthBtn_Click(object sender, EventArgs e)
         {
-            neoTabWindow1.Controls.Clear();
+            //neoTabWindow1.Controls.Clear();
 
-            neoTabWindow1.Controls.Add(M_ReportTab);
-            neoTabWindow1.Controls.Add(M_IncomeTab);
-            neoTabWindow1.Controls.Add(M_SpendingTab);
-            neoTabWindow1.Controls.Add(M_DetailTab);
-
+            //neoTabWindow1.Controls.Add(M_ReportTab);
+            //neoTabWindow1.Controls.Add(M_IncomeTab);
+            //neoTabWindow1.Controls.Add(M_SpendingTab);
+            //neoTabWindow1.Controls.Add(M_DetailTab);
+            HideCurrentCategory(currentCategory);
+            M_ReportTab.Show();
+            M_IncomeTab.Show();
+            M_SpendingTab.Show();
+            M_DetailTab.Show();
             currentCategory = "Month";
             button1.Visible = false;
             button2.Visible = true;
-            
         }
 
         /// <summary>
@@ -330,12 +335,13 @@ namespace UI
         /// <param name="e"></param>
         private void WeekBtn_Click(object sender, EventArgs e)
         {
-            // Tab 다 지우고 새로 넣기
-            neoTabWindow1.Controls.Clear();
-
-            neoTabWindow1.Controls.Add(W_IncomeTab);
-            neoTabWindow1.Controls.Add(W_SpendingTab);
-            currentWeekTab = W_IncomeTab;
+            //neoTabWindow1.Controls.Clear();
+            //neoTabWindow1.Controls.Add(W_IncomeTab);
+            //neoTabWindow1.Controls.Add(W_SpendingTab);
+            //currentWeekTab = W_IncomeTab;
+            HideCurrentCategory(currentCategory);
+            W_IncomeTab.Show();
+            W_SpendingTab.Show();
 
             currentCategory = "Week";
             button1.Visible = true;
@@ -379,22 +385,10 @@ namespace UI
             SetOtherDGV(1);
             SetInterestDGV(1);
 
-            W_IncomeTab.Controls.Remove(_income_Thanks);
-            W_IncomeTab.Controls.Remove(_income_10);
-            W_IncomeTab.Controls.Remove(_income_Cell);
-            W_IncomeTab.Controls.Remove(_income_Archi);
-            W_IncomeTab.Controls.Remove(_income_Mission);
-            W_IncomeTab.Controls.Remove(_income_Rice);
-            W_IncomeTab.Controls.Remove(_income_Help);
-            W_IncomeTab.Controls.Remove(_income_Car);
-            W_IncomeTab.Controls.Remove(_income_Term);
-            W_IncomeTab.Controls.Remove(_income_Other);
-            W_IncomeTab.Controls.Remove(_income_Interest);
-
             _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Thanks);
 
             SetInputSumDGV(); // 최초 DGV 그리기. ( 수입 SUM )
-            W_IncomeTab.Controls.Add(_income_Thanks);
+
             currentTab = _income_Thanks;
             currentWeekTab = W_IncomeTab;
         }
@@ -696,6 +690,8 @@ namespace UI
             W_IncomeTab.Controls.Add(income);
 
             W_IncomeTab.Controls.Add(_income_Thanks);
+            currentTab = _income_Thanks;
+            
             W_IncomeTab.Controls.Add(_income_10);
             W_IncomeTab.Controls.Add(_income_Cell);
             W_IncomeTab.Controls.Add(_income_Archi);
@@ -706,6 +702,17 @@ namespace UI
             W_IncomeTab.Controls.Add(_income_Term);
             W_IncomeTab.Controls.Add(_income_Other);
             W_IncomeTab.Controls.Add(_income_Interest);
+
+            _income_10.Hide();
+            _income_Cell.Hide();
+            _income_Archi.Hide();
+            _income_Mission.Hide();
+            _income_Rice.Hide();
+            _income_Help.Hide();
+            _income_Car.Hide();
+            _income_Term.Hide();
+            _income_Other.Hide();
+            _income_Interest.Hide();
 
             W_IncomeTab.Controls.Add(income_total);
             W_IncomeTab.Controls.Add(_income_total);
@@ -796,61 +803,61 @@ namespace UI
         {
             if( e.RowIndex != -1 && e.RowIndex != 11)
             {
-                W_IncomeTab.Controls.Remove(currentTab);
+                currentTab.Hide();
                 switch (e.RowIndex)
                 {
                     case 0:
-                        W_IncomeTab.Controls.Add(_income_Thanks);
+                        _income_Thanks.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Thanks);
                         currentTab = _income_Thanks;
                         break;
                     case 1:
-                        W_IncomeTab.Controls.Add(_income_10);
+                        _income_10.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_10);
                         currentTab = _income_10;
                         break;
                     case 2:
-                        W_IncomeTab.Controls.Add(_income_Cell);
+                        _income_Cell.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Cell);
                         currentTab = _income_Cell;
                         break;
                     case 3:
-                        W_IncomeTab.Controls.Add(_income_Archi);
+                        _income_Archi.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Archi);
                         currentTab = _income_Archi;
                         break;
                     case 4:
-                        W_IncomeTab.Controls.Add(_income_Mission);
+                        _income_Mission.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Mission);
                         currentTab = _income_Mission;
                         break;
                     case 5:
-                        W_IncomeTab.Controls.Add(_income_Rice);
+                        _income_Rice.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Rice);
                         currentTab = _income_Rice;
                         break;
                     case 6:
-                        W_IncomeTab.Controls.Add(_income_Help);
+                        _income_Help.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Help);
                         currentTab = _income_Help;
                         break;
                     case 7:
-                        W_IncomeTab.Controls.Add(_income_Car);
+                        _income_Car.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Car);
                         currentTab = _income_Car;
                         break;
                     case 8:
-                        W_IncomeTab.Controls.Add(_income_Term);
+                        _income_Term.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Term);
                         currentTab = _income_Term;
                         break;
                     case 9:
-                        W_IncomeTab.Controls.Add(_income_Other);
+                        _income_Other.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Other);
                         currentTab = _income_Other;
                         break;
                     case 10:
-                        W_IncomeTab.Controls.Add(_income_Interest);
+                        _income_Interest.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Interest);
                         currentTab = _income_Interest;
                         break;
@@ -1195,6 +1202,7 @@ namespace UI
                         sum += Convert.ToInt32(ToNoComma(_income_10.Rows[i].Cells[1].Value));
                 Sum_10 = sum;
 
+                W_IncomeTab.Invalidate();
                 SQLite.CloseDB();
             }
             catch (SQLiteException e)
@@ -1585,6 +1593,8 @@ namespace UI
             {
                 SQLite.ConnectToDB();
                 income.Rows.Clear();
+
+
 
                 // 감사헌금
                 String[] a = { "감사헌금", ToComma(Sum_Thanks.ToString()) };
