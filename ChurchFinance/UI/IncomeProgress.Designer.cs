@@ -90,7 +90,7 @@
             this.Controls.Add(this.title);
             this.Controls.Add(this.budgetView);
             this.Name = "IncomeProgress";
-            this.Size = new System.Drawing.Size(1048, 555);
+            this.Size = new System.Drawing.Size(1048, 565);
             ((System.ComponentModel.ISupportInitialize)(this.budgetView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.AdditionalView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SumView)).EndInit();

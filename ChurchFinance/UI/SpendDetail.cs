@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Printing;
 
 namespace UI
 {
@@ -336,6 +337,8 @@ namespace UI
 
         #endregion
 
+        PrintDocument pd;
+        PrintPreviewDialog ppd;
         /// <summary>
         /// 생성자
         /// </summary>
@@ -459,6 +462,25 @@ namespace UI
             DataView.ReadOnly = true;
 
             DataView.RowCount = 37;
+
+            pd = new PrintDocument();
+            
+            pd.PrintPage += Pd_PrintPage;
+            
+        }
+
+        private void Pd_PrintPage(object sender, PrintPageEventArgs e)
+        {
+
+            Bitmap bm = null;
+            DataView.DrawToBitmap(bm, new Rectangle(new Point(0, 0), new Size(Width, Height)));
+
+            e.Graphics.DrawImage(bm, new Point(0, 0));
+
+            ppd.Document = pd;
+
+            ppd.ShowDialog();
+
         }
 
         /// <summary>

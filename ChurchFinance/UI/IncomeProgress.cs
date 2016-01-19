@@ -877,18 +877,24 @@ namespace UI
             AdditionalView.ClearSelection();
         }
 
+        #region 프린터 부분
+
         private void Button2_Click(object sender, EventArgs e)
         {
             printDocument1.Print();
+            
         }
 
         private void PrintDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
+
             Bitmap bm = new Bitmap(this.budgetView.Width, this.budgetView.Height);
             budgetView.DrawToBitmap(bm, new Rectangle(0, 0, this.budgetView.Width, this.budgetView.Height));
             e.Graphics.DrawImage(bm, 0, 0);
+            
         }
 
+        #endregion
         public void setIncomeFromDB()
         {
             ThanksOffering = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Thanks where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
