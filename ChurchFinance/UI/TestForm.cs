@@ -21,6 +21,8 @@ namespace UI
         private PageSettings pgSettings;
         private PrinterSettings prtSetting;
 
+        private IncomeProgress income;
+
         public TestForm()
         {
             InitializeComponent();
@@ -30,20 +32,12 @@ namespace UI
             prtSetting = new PrinterSettings();
 
             neoTabWindow1.Renderer = AddInRendererManager.LoadRenderer("MarginBlueRendererVS2");
-            
+
+            income = new IncomeProgress(IncomeProgress.DMode.income,button1);
+
             neoTabPage1.Text = "수 입";
             neoTabPage1.BackColor = Color.White;
-
-            spendDetail1.pd.PrintPage += Pd_PrintPage;
-        }
-
-        private void Pd_PrintPage(object sender, PrintPageEventArgs e)
-        {
-            Bitmap tapBM = new Bitmap(spendDetail1.Width,spendDetail1.Height);
-
-            spendDetail1.DataView.DrawToBitmap(tapBM, new Rectangle(new Point(0, 0), new Size(Width, Height)));
-
-            e.Graphics.DrawImage(tapBM, new Point(5, 5));
+            
         }
         
 
@@ -64,9 +58,9 @@ namespace UI
         {
             PrintPreviewDialog dig = new PrintPreviewDialog();
 
-            dig.Document = spendDetail1.pd;
+            //dig.Document = spendDetail1.pd;
 
-            dig.ShowDialog();
+            //dig.ShowDialog();
 
             //dig.Document = 
         }

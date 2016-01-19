@@ -338,6 +338,7 @@ namespace UI
         #endregion
 
         public PrintDocument pd;
+        private PageSettings pgSettings;
 
         /// <summary>
         /// 생성자
@@ -463,11 +464,36 @@ namespace UI
 
             DataView.RowCount = 37;
 
+            // 프린트 관련 변수 및 이벤트 연결
             pd = new PrintDocument();
-            
-            
+            pgSettings = new PageSettings();
+            pd.PrintPage += Pd_PrintPage;
         }
         
+        /// <summary>
+        /// 프린트 출력
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Pd_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            Bitmap tapBM = new Bitmap(pgSettings.PaperSize.Width, pgSettings.PaperSize.Height);
+
+            // 사이즈 임시 저장
+            Size tempSz = DataView.Size;
+
+            // 높이에 맞는 사이즈 설정
+            DataView.Size = new Size(tempSz.Width, 875);
+
+            System.Diagnostics.Debug.WriteLine(pgSettings.PaperSize.Height);
+
+            DataView.DrawToBitmap(tapBM, new Rectangle(new Point(0, 0), new Size(pgSettings.PaperSize.Width, pgSettings.PaperSize.Height)));
+
+            e.Graphics.DrawImage(tapBM, new Point(5, 5));
+
+            DataView.Size = tempSz;
+        }
+
 
         /// <summary>
         /// Data Input
