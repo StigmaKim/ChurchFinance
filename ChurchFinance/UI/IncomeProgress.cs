@@ -760,13 +760,48 @@ namespace UI
             mode = drawMode;
 
             Paint += IncomeProgress_Paint;
-
-            #region 예시 데이터 입력 (실제 사용시에는 제거)
-
+            
             date = DateTime.Now;
+            
+            title.Location = new Point(360, 10);
+            titleInvalidate();
+
+            if (mode == DMode.income)
+            {
+                AdditionalView.Visible = true;
+                SumView.Visible = true;
+                setAdditionalView();
+                setSumView();
+            }
+            else if (mode == DMode.spend)
+            {
+                AdditionalView.Visible = false;
+                SumView.Visible = false;
+            }
+
+            setViews();
+            button2.Click += Button2_Click;
+
+            pgSettings = new PageSettings();
+
+        }
+        public void titleInvalidate()
+        {
+            if (mode == DMode.income)
+                title.Text = date.Year + "년 " + date.Month + "월 재정 수입 명세서";
+            else if (mode == DMode.spend)
+                title.Text = date.Year + "년 " + date.Month + "월 재정 지출 명세서";
+        }
+
+        /// <summary>
+        /// DataView 추가 (영훈)
+        /// </summary>
+        
+        public void setBudgetFromDB()
+        {
             // 예산 데이터 입력
             DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Budget"));
-            if(ds.Tables[0].Rows.Count == 0)
+            if (ds.Tables[0].Rows.Count == 0)
             {
                 BudgetThanksOffering = 0;
                 BudgetSipil = 0;
@@ -801,7 +836,7 @@ namespace UI
                 BudgetCar = Convert.ToInt32(ds.Tables[0].Rows[7]["amount"].ToString());
                 BudgetTerm = Convert.ToInt32(ds.Tables[0].Rows[8]["amount"].ToString());
 
-
+                
                 // 지출 예산 데이터 입력
                 BudgetPray = Convert.ToInt32(ds.Tables[0].Rows[9]["amount"].ToString());
                 BudgetSpendMission = Convert.ToInt32(ds.Tables[0].Rows[10]["amount"].ToString());
@@ -811,10 +846,8 @@ namespace UI
                 BudgetManage = Convert.ToInt32(ds.Tables[0].Rows[14]["amount"].ToString());
                 BudgetLoan = Convert.ToInt32(ds.Tables[0].Rows[15]["amount"].ToString());
                 BudgetPrepare = Convert.ToInt32(ds.Tables[0].Rows[16]["amount"].ToString());
+                
             }
-            
-
-            #endregion
 
             // 수입 합계
             budgetSum = BudgetThanksOffering + BudgetSipil + BudgetRegion + BudgetBuild + BudgetMissionWork + BudgetSungmi + BudgetSaving + BudgetCar + BudgetTerm;
@@ -823,40 +856,8 @@ namespace UI
             // 지출 합계
             budgetSpendSum = BudgetPray + BudgetSpendMission + BudgetEdu + BudgetPerson + BudgetService + BudgetManage + BudgetLoan + BudgetPrepare;
             spendSum = Pray + SpendMission + Edu + Person + Service + Manage + Loan + Prepare;
-
-            title.Location = new Point(360, 10);
-            titleInvalidate();
-
-            if (mode == DMode.income)
-            {
-                AdditionalView.Visible = true;
-                SumView.Visible = true;
-                setAdditionalView();
-                setSumView();
-            }
-            else if (mode == DMode.spend)
-            {
-                AdditionalView.Visible = false;
-                SumView.Visible = false;
-            }
-
-            setViews();
-            button2.Click += Button2_Click;
-
-            pgSettings = new PageSettings();
-
-        }
-        public void titleInvalidate()
-        {
-            if (mode == DMode.income)
-                title.Text = date.Year + "년 " + date.Month + "월 재정 수입 명세서";
-            else if (mode == DMode.spend)
-                title.Text = date.Year + "년 " + date.Month + "월 재정 지출 명세서";
         }
 
-        /// <summary>
-        /// DataView 추가 (영훈)
-        /// </summary>
         private void setAdditionalView()
         {
             
@@ -960,9 +961,12 @@ namespace UI
             }
             else if(mode == DMode.spend)
             {
+
                 int curYPos = 150;
                 int margin = 20;
 
+                budgetView.RowHeadersVisible = false;
+                
                 // 문자 그리기
                 SizeF sz = e.Graphics.MeasureString(title.Text, new Font("Tahoma", 20));
                 e.Graphics.DrawString(title.Text, new Font("Tahoma", 20), new SolidBrush(Color.Black), new Point((int)(pgSettings.PaperSize.Width / 2 - (sz.Width / 2)), curYPos));
@@ -977,7 +981,9 @@ namespace UI
 
                 curYPos += bm.Size.Height + 15;
                 
-
+                budgetView.RowHeadersVisible = true;
+                AdditionalView.RowHeadersVisible = true;
+                SumView.RowHeadersVisible = true;
             }
         }
 
@@ -1084,7 +1090,10 @@ namespace UI
             // 감사 헌금
             budgetView.Rows[0].Cells[0].Value = "감사 헌금";
             budgetView.Rows[0].Cells[1].Value = BudgetThanksOffering.ToString("n0") + " 원";
-            budgetView.Rows[0].Cells[2].Value = ((float)BudgetThanksOffering / (float)budgetSum * 100).ToString("0.00") + " %";
+            if (ThanksOffering == 0 || BudgetThanksOffering == 0)
+                budgetView.Rows[0].Cells[2].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[0].Cells[2].Value = ((float)BudgetThanksOffering / (float)budgetSum * 100).ToString("0.00") + " %";
             budgetView.Rows[0].Cells[3].Value = ThanksOffering.ToString("n0") + " 원";
             if (ThanksOffering == 0 || BudgetThanksOffering == 0)
                 budgetView.Rows[0].Cells[4].Value = 0.ToString("0.00") + " %";
@@ -1094,7 +1103,10 @@ namespace UI
             // 십일조
             budgetView.Rows[1].Cells[0].Value = "십일조";
             budgetView.Rows[1].Cells[1].Value = BudgetSipil.ToString("n0") + " 원";
-            budgetView.Rows[1].Cells[2].Value = ((float)BudgetSipil / (float)budgetSum * 100).ToString("0.00") + " %";
+            if (ThanksOffering == 0 || BudgetThanksOffering == 0)
+                budgetView.Rows[1].Cells[2].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[1].Cells[2].Value = ((float)BudgetSipil / (float)budgetSum * 100).ToString("0.00") + " %";
             budgetView.Rows[1].Cells[3].Value = Sipil.ToString("n0") + " 원";
             if (Sipil == 0 || BudgetSipil == 0)
                 budgetView.Rows[1].Cells[4].Value = 0.ToString("0.00") + " %";
@@ -1104,7 +1116,10 @@ namespace UI
             // 구역 헌금
             budgetView.Rows[2].Cells[0].Value = "구역 헌금";
             budgetView.Rows[2].Cells[1].Value = BudgetRegion.ToString("n0") + " 원";
-            budgetView.Rows[2].Cells[2].Value = ((float)BudgetRegion / (float)budgetSum * 100).ToString("0.00") + " %";
+            if (ThanksOffering == 0 || BudgetThanksOffering == 0)
+                budgetView.Rows[2].Cells[2].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[2].Cells[2].Value = ((float)BudgetRegion / (float)budgetSum * 100).ToString("0.00") + " %";
             budgetView.Rows[2].Cells[3].Value = Region.ToString("n0") + " 원";
             if (Region == 0 || BudgetRegion == 0)
                 budgetView.Rows[2].Cells[4].Value = 0.ToString("0.00") + " %";
@@ -1114,7 +1129,10 @@ namespace UI
             // 건축 헌금
             budgetView.Rows[3].Cells[0].Value = "건축 헌금";
             budgetView.Rows[3].Cells[1].Value = BudgetBuild.ToString("n0") + " 원";
-            budgetView.Rows[3].Cells[2].Value = ((float)BudgetBuild / (float)budgetSum * 100).ToString("0.00") + " %";
+            if (ThanksOffering == 0 || BudgetThanksOffering == 0)
+                budgetView.Rows[3].Cells[2].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[3].Cells[2].Value = ((float)BudgetBuild / (float)budgetSum * 100).ToString("0.00") + " %";
             budgetView.Rows[3].Cells[3].Value = MissionWork.ToString("n0") + " 원";
             if (Build == 0 || BudgetBuild == 0)
                 budgetView.Rows[3].Cells[4].Value = 0.ToString("0.00") + " %";
@@ -1124,7 +1142,10 @@ namespace UI
             // 선교 헌금
             budgetView.Rows[4].Cells[0].Value = "선교 헌금";
             budgetView.Rows[4].Cells[1].Value = BudgetMissionWork.ToString("n0") + " 원";
-            budgetView.Rows[4].Cells[2].Value = ((float)BudgetMissionWork / (float)budgetSum * 100).ToString("0.00") + " %";
+            if (ThanksOffering == 0 || BudgetThanksOffering == 0)
+                budgetView.Rows[4].Cells[2].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[4].Cells[2].Value = ((float)BudgetMissionWork / (float)budgetSum * 100).ToString("0.00") + " %";
             budgetView.Rows[4].Cells[3].Value = MissionWork.ToString("n0") + " 원";
             if (MissionWork == 0 || BudgetMissionWork == 0)
                 budgetView.Rows[4].Cells[4].Value = 0.ToString("0.00") + " %";
@@ -1134,7 +1155,10 @@ namespace UI
             // 성미 헌금
             budgetView.Rows[5].Cells[0].Value = "성미 헌금";
             budgetView.Rows[5].Cells[1].Value = BudgetSungmi.ToString("n0") + " 원";
-            budgetView.Rows[5].Cells[2].Value = ((float)BudgetSungmi / (float)budgetSum * 100).ToString("0.00") + " %";
+            if (ThanksOffering == 0 || BudgetThanksOffering == 0)
+                budgetView.Rows[5].Cells[2].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[5].Cells[2].Value = ((float)BudgetSungmi / (float)budgetSum * 100).ToString("0.00") + " %";
             budgetView.Rows[5].Cells[3].Value = Sungmi.ToString("n0") + " 원";
             if (Sungmi == 0 || BudgetSungmi == 0)
                 budgetView.Rows[5].Cells[4].Value = 0.ToString("0.00") + " %";
@@ -1144,7 +1168,10 @@ namespace UI
             // 구제 헌금
             budgetView.Rows[6].Cells[0].Value = "구제 헌금";
             budgetView.Rows[6].Cells[1].Value = BudgetSaving.ToString("n0") + " 원";
-            budgetView.Rows[6].Cells[2].Value = ((float)BudgetSaving / (float)budgetSum * 100).ToString("0.00") + " %";
+            if (ThanksOffering == 0 || BudgetThanksOffering == 0)
+                budgetView.Rows[6].Cells[2].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[6].Cells[2].Value = ((float)BudgetSaving / (float)budgetSum * 100).ToString("0.00") + " %";
             budgetView.Rows[6].Cells[3].Value = Saving.ToString("n0") + " 원";
             if (Saving == 0 || BudgetSaving == 0)
                 budgetView.Rows[6].Cells[4].Value = 0.ToString("0.00") + " %";
@@ -1154,7 +1181,10 @@ namespace UI
             // 차량 헌금
             budgetView.Rows[7].Cells[0].Value = "차량 헌금";
             budgetView.Rows[7].Cells[1].Value = BudgetCar.ToString("n0") + " 원";
-            budgetView.Rows[7].Cells[2].Value = ((float)BudgetCar / (float)budgetSum * 100).ToString("0.00") + " %";
+            if (ThanksOffering == 0 || BudgetThanksOffering == 0)
+                budgetView.Rows[7].Cells[2].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[7].Cells[2].Value = ((float)BudgetCar / (float)budgetSum * 100).ToString("0.00") + " %";
             budgetView.Rows[7].Cells[3].Value = Car.ToString("n0") + " 원";
             if (Car == 0 || BudgetCar == 0)
                 budgetView.Rows[7].Cells[4].Value = 0.ToString("0.00") + " %";
@@ -1164,19 +1194,23 @@ namespace UI
             // 절기 헌금
             budgetView.Rows[8].Cells[0].Value = "절기 헌금";
             budgetView.Rows[8].Cells[1].Value = BudgetTerm.ToString("n0") + " 원";
-            budgetView.Rows[8].Cells[2].Value = ((float)BudgetTerm / (float)budgetSum * 100).ToString("0.00") + " %";
+            if (ThanksOffering == 0 || BudgetThanksOffering == 0)
+                budgetView.Rows[8].Cells[2].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[8].Cells[2].Value = ((float)BudgetTerm / (float)budgetSum * 100).ToString("0.00") + " %";
             budgetView.Rows[8].Cells[3].Value = Term.ToString("n0") + " 원";
             if (Car == 0 || BudgetTerm == 0)
                 budgetView.Rows[8].Cells[4].Value = 0.ToString("0.00") + " %";
             else
                 budgetView.Rows[8].Cells[4].Value = ((float)Term / (float)BudgetTerm * 100).ToString("0.00") + " %";
-
-
-
+            
             // 예산합계
             budgetView.Rows[9].Cells[0].Value = "합계";
             budgetView.Rows[9].Cells[1].Value = budgetSum.ToString("n0") + " 원";
-            budgetView.Rows[9].Cells[2].Value = ((float)budgetSum / (float)budgetSum * 100).ToString("0.00") + " %";
+            if (ThanksOffering == 0 || BudgetThanksOffering == 0)
+                budgetView.Rows[9].Cells[2].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[9].Cells[2].Value = ((float)budgetSum / (float)budgetSum * 100).ToString("0.00") + " %";
             budgetView.Rows[9].Cells[3].Value = sum.ToString("n0") + " 원";
             budgetView.Rows[9].Height = 30;
             if (sum == 0 || budgetSum == 0)
@@ -1198,9 +1232,6 @@ namespace UI
             SumView.Rows[0].Cells[0].Value = "합계";
             SumView.Rows[0].Cells[3].Value = total.ToString("n0") + " 원";
             SumView.Rows[0].Height = 30;
-
-
-
         }
         
         #endregion
@@ -1215,66 +1246,121 @@ namespace UI
             // 예배비
             budgetView.Rows[0].Cells[0].Value = "예배비";
             budgetView.Rows[0].Cells[1].Value = BudgetPray.ToString("n0") + " 원";
-            budgetView.Rows[0].Cells[2].Value = ((float)BudgetPray / (float)budgetSpendSum * 100).ToString("0.00") + " %";
+            if (Pray == 0 || BudgetPray == 0)
+                budgetView.Rows[0].Cells[2].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[0].Cells[2].Value = ((float)BudgetPray / (float)budgetSpendSum * 100).ToString("0.00") + " %";
             budgetView.Rows[0].Cells[3].Value = Pray.ToString("n0") + " 원";
-            budgetView.Rows[0].Cells[4].Value = ((float)Pray / (float)BudgetPray * 100).ToString("0.00") + " %";
+            if (Pray == 0 || BudgetPray == 0)
+                budgetView.Rows[0].Cells[4].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[0].Cells[4].Value = ((float)Pray / (float)BudgetPray * 100).ToString("0.00") + " %";
 
             // 선교비
             budgetView.Rows[1].Cells[0].Value = "선교비";
             budgetView.Rows[1].Cells[1].Value = BudgetSpendMission.ToString("n0") + " 원";
-            budgetView.Rows[1].Cells[2].Value = ((float)BudgetSpendMission / (float)budgetSpendSum * 100).ToString("0.00") + " %";
+            if (Pray == 0 || BudgetPray == 0)
+                budgetView.Rows[1].Cells[2].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[1].Cells[2].Value = ((float)BudgetSpendMission / (float)budgetSpendSum * 100).ToString("0.00") + " %";
             budgetView.Rows[1].Cells[3].Value = SpendMission.ToString("n0") + " 원";
-            budgetView.Rows[1].Cells[4].Value = ((float)SpendMission / (float)BudgetSpendMission * 100).ToString("0.00") + " %";
+            if (SpendMission == 0 || BudgetSpendMission == 0)
+                budgetView.Rows[1].Cells[4].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[1].Cells[4].Value = ((float)SpendMission / (float)BudgetSpendMission * 100).ToString("0.00") + " %";
+
 
             // 교육비
             budgetView.Rows[2].Cells[0].Value = "교육비";
             budgetView.Rows[2].Cells[1].Value = BudgetEdu.ToString("n0") + " 원";
-            budgetView.Rows[2].Cells[2].Value = ((float)BudgetEdu / (float)budgetSpendSum * 100).ToString("0.00") + " %";
+            if (Pray == 0 || BudgetPray == 0)
+                budgetView.Rows[2].Cells[2].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[2].Cells[2].Value = ((float)BudgetEdu / (float)budgetSpendSum * 100).ToString("0.00") + " %";
             budgetView.Rows[2].Cells[3].Value = Edu.ToString("n0") + " 원";
-            budgetView.Rows[2].Cells[4].Value = ((float)Edu / (float)BudgetEdu * 100).ToString("0.00") + " %";
+            if (Edu == 0 || BudgetEdu == 0)
+                budgetView.Rows[2].Cells[4].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[2].Cells[4].Value = ((float)Edu / (float)BudgetEdu * 100).ToString("0.00") + " %";
 
             // 인건비
             budgetView.Rows[3].Cells[0].Value = "인건비";
             budgetView.Rows[3].Cells[1].Value = BudgetPerson.ToString("n0") + " 원";
-            budgetView.Rows[3].Cells[2].Value = ((float)BudgetPerson / (float)budgetSpendSum * 100).ToString("0.00") + " %";
+            if (Pray == 0 || BudgetPray == 0)
+                budgetView.Rows[3].Cells[2].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[3].Cells[2].Value = ((float)BudgetPerson / (float)budgetSpendSum * 100).ToString("0.00") + " %";
             budgetView.Rows[3].Cells[3].Value = Person.ToString("n0") + " 원";
-            budgetView.Rows[3].Cells[4].Value = ((float)Person / (float)BudgetPerson * 100).ToString("0.00") + " %";
+            if (Person == 0 || BudgetPerson == 0)
+                budgetView.Rows[3].Cells[4].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[3].Cells[4].Value = ((float)Person / (float)BudgetPerson * 100).ToString("0.00") + " %";
 
             // 봉사비
             budgetView.Rows[4].Cells[0].Value = "봉사비";
             budgetView.Rows[4].Cells[1].Value = BudgetService.ToString("n0") + " 원";
-            budgetView.Rows[4].Cells[2].Value = ((float)BudgetService / (float)budgetSpendSum * 100).ToString("0.00") + " %";
+            if (Pray == 0 || BudgetPray == 0)
+                budgetView.Rows[4].Cells[2].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[4].Cells[2].Value = ((float)BudgetService / (float)budgetSpendSum * 100).ToString("0.00") + " %";
             budgetView.Rows[4].Cells[3].Value = Service.ToString("n0") + " 원";
-            budgetView.Rows[4].Cells[4].Value = ((float)Service / (float)BudgetService * 100).ToString("0.00") + " %";
+            if (Service == 0 || BudgetService == 0)
+                budgetView.Rows[4].Cells[4].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[4].Cells[4].Value = ((float)Service / (float)BudgetService * 100).ToString("0.00") + " %";
 
             // 운영 관리비
             budgetView.Rows[5].Cells[0].Value = "운영 관리비";
             budgetView.Rows[5].Cells[1].Value = BudgetManage.ToString("n0") + " 원";
-            budgetView.Rows[5].Cells[2].Value = ((float)BudgetManage / (float)budgetSpendSum * 100).ToString("0.00") + " %";
+            if (Pray == 0 || BudgetPray == 0)
+                budgetView.Rows[5].Cells[2].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[5].Cells[2].Value = ((float)BudgetManage / (float)budgetSpendSum * 100).ToString("0.00") + " %";
             budgetView.Rows[5].Cells[3].Value = Manage.ToString("n0") + " 원";
-            budgetView.Rows[5].Cells[4].Value = ((float)Manage / (float)BudgetManage * 100).ToString("0.00") + " %";
+            if (Manage == 0 || BudgetManage == 0)
+                budgetView.Rows[5].Cells[4].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[5].Cells[4].Value = ((float)Manage / (float)BudgetManage * 100).ToString("0.00") + " %";
 
             // 대출 관련비
             budgetView.Rows[6].Cells[0].Value = "대출 관련비";
             budgetView.Rows[6].Cells[1].Value = BudgetLoan.ToString("n0") + " 원";
-            budgetView.Rows[6].Cells[2].Value = ((float)BudgetLoan / (float)budgetSpendSum * 100).ToString("0.00") + " %";
+            if (Pray == 0 || BudgetPray == 0)
+                budgetView.Rows[6].Cells[2].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[6].Cells[2].Value = ((float)BudgetLoan / (float)budgetSpendSum * 100).ToString("0.00") + " %";
             budgetView.Rows[6].Cells[3].Value = Loan.ToString("n0") + " 원";
-            budgetView.Rows[6].Cells[4].Value = ((float)Loan / (float)BudgetLoan * 100).ToString("0.00") + " %";
+            if (Loan == 0 || BudgetLoan == 0)
+                budgetView.Rows[6].Cells[4].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[6].Cells[4].Value = ((float)Loan / (float)BudgetLoan * 100).ToString("0.00") + " %";
 
             // 예비비
             budgetView.Rows[7].Cells[0].Value = "예비비";
             budgetView.Rows[7].Cells[1].Value = BudgetPrepare.ToString("n0") + " 원";
-            budgetView.Rows[7].Cells[2].Value = ((float)BudgetPrepare / (float)budgetSpendSum * 100).ToString("0.00") + " %";
+            if (Pray == 0 || BudgetPray == 0)
+                budgetView.Rows[7].Cells[2].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[7].Cells[2].Value = ((float)BudgetPrepare / (float)budgetSpendSum * 100).ToString("0.00") + " %";
             budgetView.Rows[7].Cells[3].Value = Prepare.ToString("n0") + " 원";
-            budgetView.Rows[7].Cells[4].Value = ((float)Prepare / (float)BudgetPrepare * 100).ToString("0.00") + " %";
+            if (Prepare == 0 || BudgetPrepare == 0)
+                budgetView.Rows[7].Cells[4].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[7].Cells[4].Value = ((float)Prepare / (float)BudgetPrepare * 100).ToString("0.00") + " %";
 
             // 합계
             budgetView.Rows[8].Cells[0].Value = "합계";
             budgetView.Rows[8].Cells[1].Value = budgetSpendSum.ToString("n0") + " 원";
-            budgetView.Rows[8].Cells[2].Value = ((float)budgetSpendSum / (float)budgetSpendSum * 100).ToString("0.00") + " %";
+            if (Pray == 0 || BudgetPray == 0)
+                budgetView.Rows[8].Cells[2].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[8].Cells[2].Value = ((float)budgetSpendSum / (float)budgetSpendSum * 100).ToString("0.00") + " %";
             budgetView.Rows[8].Cells[3].Value = spendSum.ToString("n0") + " 원";
             budgetView.Rows[8].Height = 30;
-            budgetView.Rows[8].Cells[4].Value = ((float)spendSum / (float)budgetSpendSum * 100).ToString("0.00") + " %";
+            if (spendSum == 0 || budgetSpendSum == 0)
+                budgetView.Rows[8].Cells[4].Value = 0.ToString("0.00") + " %";
+            else
+                budgetView.Rows[8].Cells[4].Value = ((float)spendSum / (float)budgetSpendSum * 100).ToString("0.00") + " %";
         }
 
         #endregion

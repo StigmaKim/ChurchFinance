@@ -12,7 +12,7 @@ using System.Data;
 
 namespace UI
 {
-    class WeekSpendPage
+    class WeekSpendPage : UserControl
     {
         NeoTabPage W_SpendTab = null;
 
@@ -54,7 +54,26 @@ namespace UI
             cmd = SQLite.GetSQLCommand(); // Command Object
 
             dateTimePicker1 = dtp;
-            dateTimePicker1.ValueChanged += DateTimePicker1_ValueChanged;
+            dateTimePicker1.CloseUp += DateTimePicker1_CloseUp;
+        }
+
+        private void DateTimePicker1_CloseUp(object sender, EventArgs e)
+        {
+            SetWorshipDGV(2);
+            SetMissionDGV(2);
+            SetEduDGV(2);
+            SetHumanDGV(2);
+            SetVolDGV(2);
+            SetMainDGV(2);
+            SetLoanDGV(2);
+            SetResDGV(2);
+
+            SetInputSumDGV();
+            Debug.WriteLine("HHHHHHHHHHHHHHHHHHHHHH");
+
+            W_SpendTab.Controls.Add(_spend_Worship);
+            currentTab = _spend_Worship;
+            W_SpendTab.Invalidate();
         }
 
         public void ButtonEvent()
@@ -68,21 +87,21 @@ namespace UI
             SQLite.Execute(string.Format("Delete From Spending_Loan where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
             SQLite.Execute(string.Format("Delete From Spending_Res where date = '{0}'", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
 
-            for (int i = 0; i < _spend_Worship.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Worship.RowCount; i++)
                 SQLite.Execute(string.Format("insert into Spending_Worship (name, amount, date) values('{0}', {1}, '{2}')", _spend_Worship.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_spend_Worship.Rows[i].Cells[1].Value)), ((DateTime)_spend_Worship.Rows[i].Cells[2].Value).ToShortDateString()));
-            for (int i = 0; i < _spend_Mission.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Mission.RowCount; i++)
                 SQLite.Execute(string.Format("insert into Spending_Mission (name, amount, date) values('{0}', {1}, '{2}')", _spend_Mission.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_spend_Mission.Rows[i].Cells[1].Value)), ((DateTime)_spend_Mission.Rows[i].Cells[2].Value).ToShortDateString()));
-            for (int i = 0; i < _spend_Edu.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Edu.RowCount; i++)
                 SQLite.Execute(string.Format("insert into Spending_Edu (name, amount, date) values('{0}', {1}, '{2}')", _spend_Edu.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_spend_Edu.Rows[i].Cells[1].Value)), ((DateTime)_spend_Edu.Rows[i].Cells[2].Value).ToShortDateString()));
-            for (int i = 0; i < _spend_Human.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Human.RowCount; i++)
                 SQLite.Execute(string.Format("insert into Spending_Human (name, amount, date) values('{0}', {1}, '{2}')", _spend_Human.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_spend_Human.Rows[i].Cells[1].Value)), ((DateTime)_spend_Human.Rows[i].Cells[2].Value).ToShortDateString()));
-            for (int i = 0; i < _spend_Vol.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Vol.RowCount; i++)
                 SQLite.Execute(string.Format("insert into Spending_Vol (name, amount, date) values('{0}', {1}, '{2}')", _spend_Vol.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_spend_Vol.Rows[i].Cells[1].Value)), ((DateTime)_spend_Vol.Rows[i].Cells[2].Value).ToShortDateString()));
-            for (int i = 0; i < _spend_Main.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Main.RowCount; i++)
                 SQLite.Execute(string.Format("insert into Spending_Main (name, amount, date) values('{0}', {1}, '{2}')", _spend_Main.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_spend_Main.Rows[i].Cells[1].Value)), ((DateTime)_spend_Main.Rows[i].Cells[2].Value).ToShortDateString()));
-            for (int i = 0; i < _spend_Loan.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Loan.RowCount; i++)
                 SQLite.Execute(string.Format("insert into Spending_Loan (name, amount, date) values('{0}', {1}, '{2}')", _spend_Loan.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_spend_Loan.Rows[i].Cells[1].Value)), ((DateTime)_spend_Loan.Rows[i].Cells[2].Value).ToShortDateString()));
-            for (int i = 0; i < _spend_Res.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Res.RowCount-1; i++)
                 if (_spend_Res.Rows[i].Cells[1].Value.ToString() != "0")
                     SQLite.Execute(string.Format("insert into Spending_Res (name, amount, date) values('{0}', {1}, '{2}')", _spend_Res.Rows[i].Cells[0].Value, Convert.ToInt32(ToNoComma(_spend_Res.Rows[i].Cells[1].Value)), ((DateTime)_spend_Res.Rows[i].Cells[2].Value).ToShortDateString()));
             
@@ -94,41 +113,6 @@ namespace UI
             SetMainDGV(2);
             SetLoanDGV(2);
             SetResDGV(2);
-        }
-        private void DateTimePicker1_ValueChanged(object sender, EventArgs e)
-        {
-            W_SpendTab.Controls.Add(_spend_Worship);
-            W_SpendTab.Controls.Add(_spend_Mission);
-            W_SpendTab.Controls.Add(_spend_Edu);
-            W_SpendTab.Controls.Add(_spend_Human);
-            W_SpendTab.Controls.Add(_spend_Vol);
-            W_SpendTab.Controls.Add(_spend_Main);
-            W_SpendTab.Controls.Add(_spend_Loan);
-            W_SpendTab.Controls.Add(_spend_Res);
-
-            // 날짜변화시
-            SetWorshipDGV(2);
-            SetMissionDGV(2);
-            SetEduDGV(2);
-            SetHumanDGV(2);
-            SetVolDGV(2);
-            SetMainDGV(2);
-            SetLoanDGV(2);
-            SetResDGV(2);
-
-            W_SpendTab.Controls.Remove(_spend_Worship);
-            W_SpendTab.Controls.Remove(_spend_Mission);
-            W_SpendTab.Controls.Remove(_spend_Edu);
-            W_SpendTab.Controls.Remove(_spend_Human);
-            W_SpendTab.Controls.Remove(_spend_Vol);
-            W_SpendTab.Controls.Remove(_spend_Main);
-            W_SpendTab.Controls.Remove(_spend_Loan);
-            W_SpendTab.Controls.Remove(_spend_Res);
-
-            SetInputSumDGV();
-
-            W_SpendTab.Controls.Add(_spend_Worship);
-            currentTab = _spend_Worship;
         }
         
         public void WeekSpendPageStart()
@@ -147,21 +131,11 @@ namespace UI
             SetLoanDGV(1);
             SetResDGV(1);
 
-            W_SpendTab.Controls.Remove(_spend_Worship);
-            W_SpendTab.Controls.Remove(_spend_Mission);
-            W_SpendTab.Controls.Remove(_spend_Edu);
-            W_SpendTab.Controls.Remove(_spend_Human);
-            W_SpendTab.Controls.Remove(_spend_Vol);
-            W_SpendTab.Controls.Remove(_spend_Main);
-            W_SpendTab.Controls.Remove(_spend_Loan);
-            W_SpendTab.Controls.Remove(_spend_Res);
-
             _spend_total.Rows[0].Cells[1].Value = ToComma(Sum_Worship);
 
             SetInputSumDGV(); // 최초 DGV 그리기. ( 수입 SUM )
-            W_SpendTab.Controls.Add(_spend_Worship);
-            currentTab = _spend_Worship;
         }
+        
 
         private void AddGridView()
         {
@@ -179,7 +153,6 @@ namespace UI
             _spend_Main = new DataGridView();
             _spend_Loan = new DataGridView();
             _spend_Res = new DataGridView();
-
 
             _spend_Worship.CellEndEdit += _spend_Worship_CellEndEdit;
             _spend_Mission.CellEndEdit += _spend_Mission_CellEndEdit;
@@ -207,6 +180,7 @@ namespace UI
             // spend ---------------------------------------
             spend.Size = new Size(300, 392);
             spend.Location = new Point(20, 20);
+            spend.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             spend.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             spend.ColumnHeadersHeight = 30;
             spend.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -216,8 +190,10 @@ namespace UI
             spend.ColumnCount = 2;
             spend.ReadOnly = true;
             spend.AllowUserToAddRows = false;
+            spend.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
-            spend.Columns[0].Name = "수 입";
+            spend.Columns[0].Name = "항 목";
             spend.Columns[1].Name = "금 액";
             
             for (int i = 0; i < spend.Columns.Count; i++)
@@ -237,6 +213,8 @@ namespace UI
             spend_total.ReadOnly = true;
             spend_total.RowCount = 2;
             spend_total.AllowUserToAddRows = false;
+            spend_total.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             spend_total.RowHeadersDefaultCellStyle.Padding = new Padding(spend_total.RowHeadersWidth);
 
             spend_total.Rows[0].Cells[0].Value = "Total";
@@ -260,6 +238,8 @@ namespace UI
             _spend_total.ReadOnly = true;
             _spend_total.RowCount = 2;
             _spend_total.AllowUserToAddRows = false;
+            _spend_total.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             _spend_total.RowHeadersDefaultCellStyle.Padding = new Padding(_spend_total.RowHeadersWidth);
 
             _spend_total.Rows[0].Cells[0].Value = "Total";
@@ -286,6 +266,8 @@ namespace UI
             _spend_Worship.Font = new Font("Microsoft Sans Serif", 12);
             _spend_Worship.RowTemplate.Height = 30;
             _spend_Worship.AllowUserToAddRows = false;
+            _spend_Worship.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
             // _spend_Mission ----------------------------------
             _spend_Mission.Size = new Size(600, 392);
@@ -297,6 +279,8 @@ namespace UI
             _spend_Mission.Font = new Font("Microsoft Sans Serif", 12);
             _spend_Mission.RowTemplate.Height = 30;
             _spend_Mission.AllowUserToAddRows = false;
+            _spend_Mission.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
             // _spend_Edu ----------------------------------
             _spend_Edu.Size = new Size(600, 392);
@@ -308,6 +292,8 @@ namespace UI
             _spend_Edu.Font = new Font("Microsoft Sans Serif", 12);
             _spend_Edu.RowTemplate.Height = 30;
             _spend_Edu.AllowUserToAddRows = false;
+            _spend_Edu.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
             // _spend_Human ----------------------------------
             _spend_Human.Size = new Size(600, 392);
@@ -319,6 +305,8 @@ namespace UI
             _spend_Human.Font = new Font("Microsoft Sans Serif", 12);
             _spend_Human.RowTemplate.Height = 30;
             _spend_Human.AllowUserToAddRows = false;
+            _spend_Human.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
             // _spend_Vol ----------------------------------
             _spend_Vol.Size = new Size(600, 392);
@@ -330,6 +318,8 @@ namespace UI
             _spend_Vol.Font = new Font("Microsoft Sans Serif", 12);
             _spend_Vol.RowTemplate.Height = 30;
             _spend_Vol.AllowUserToAddRows = false;
+            _spend_Vol.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
             // _spend_Main ----------------------------------
             _spend_Main.Size = new Size(600, 392);
@@ -341,6 +331,8 @@ namespace UI
             _spend_Main.Font = new Font("Microsoft Sans Serif", 12);
             _spend_Main.RowTemplate.Height = 30;
             _spend_Main.AllowUserToAddRows = false;
+            _spend_Main.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
             // _spend_Loan ----------------------------------
             _spend_Loan.Size = new Size(600, 392);
@@ -352,6 +344,8 @@ namespace UI
             _spend_Loan.Font = new Font("Microsoft Sans Serif", 12);
             _spend_Loan.RowTemplate.Height = 30;
             _spend_Loan.AllowUserToAddRows = false;
+            _spend_Loan.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
             // _spend_Res ----------------------------------
             _spend_Res.Size = new Size(600, 392);
@@ -362,6 +356,8 @@ namespace UI
             _spend_Res.ColumnHeadersHeight = 30;
             _spend_Res.Font = new Font("Microsoft Sans Serif", 12);
             _spend_Res.RowTemplate.Height = 30;
+            _spend_Res.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
             #endregion
 
@@ -377,10 +373,17 @@ namespace UI
             W_SpendTab.Controls.Add(_spend_Main);
             W_SpendTab.Controls.Add(_spend_Loan);
             W_SpendTab.Controls.Add(_spend_Res);
+            _spend_Mission.Hide();
+            _spend_Edu.Hide();
+            _spend_Human.Hide();
+            _spend_Vol.Hide();
+            _spend_Main.Hide();
+            _spend_Loan.Hide();
+            _spend_Res.Hide();
 
             W_SpendTab.Controls.Add(spend_total);
             W_SpendTab.Controls.Add(_spend_total);
-
+            currentTab = _spend_Worship;
         }
         #region EditingControlShowing
         private void _spend_Worship_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
@@ -447,46 +450,46 @@ namespace UI
         {
             if (e.RowIndex != -1 && e.RowIndex != 8)
             {
-                W_SpendTab.Controls.Remove(currentTab);
+                currentTab.Hide();
                 switch (e.RowIndex)
                 {
                     case 0:
-                        W_SpendTab.Controls.Add(_spend_Worship);
+                        _spend_Worship.Show();
                         _spend_total.Rows[0].Cells[1].Value = ToComma(Sum_Worship);
                         currentTab = _spend_Worship;
                         break;
                     case 1:
-                        W_SpendTab.Controls.Add(_spend_Mission);
+                        _spend_Mission.Show();
                         _spend_total.Rows[0].Cells[1].Value = ToComma(Sum_Mission);
                         currentTab = _spend_Mission;
                         break;
                     case 2:
-                        W_SpendTab.Controls.Add(_spend_Edu);
+                        _spend_Edu.Show();
                         _spend_total.Rows[0].Cells[1].Value = ToComma(Sum_Edu);
                         currentTab = _spend_Edu;
                         break;
                     case 3:
-                        W_SpendTab.Controls.Add(_spend_Human);
+                        _spend_Human.Show();
                         _spend_total.Rows[0].Cells[1].Value = ToComma(Sum_Human);
                         currentTab = _spend_Human;
                         break;
                     case 4:
-                        W_SpendTab.Controls.Add(_spend_Vol);
+                        _spend_Vol.Show();
                         _spend_total.Rows[0].Cells[1].Value = ToComma(Sum_Vol);
                         currentTab = _spend_Vol;
                         break;
                     case 5:
-                        W_SpendTab.Controls.Add(_spend_Main);
+                        _spend_Main.Show();
                         _spend_total.Rows[0].Cells[1].Value = ToComma(Sum_Main);
                         currentTab = _spend_Main;
                         break;
                     case 6:
-                        W_SpendTab.Controls.Add(_spend_Loan);
+                        _spend_Loan.Show();
                         _spend_total.Rows[0].Cells[1].Value = ToComma(Sum_Loan);
                         currentTab = _spend_Loan;
                         break;
                     case 7:
-                        W_SpendTab.Controls.Add(_spend_Res);
+                        _spend_Res.Show();
                         _spend_total.Rows[0].Cells[1].Value = ToComma(Sum_Res);
                         currentTab = _spend_Res;
                         break;
@@ -501,12 +504,12 @@ namespace UI
                 _spend_Res.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
 
             // Make Comma type
-            for (int i = 0; i < _spend_Res.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Res.RowCount; i++)
                 _spend_Res.Rows[i].Cells[1].Value = ToComma(_spend_Res.Rows[i].Cells[1].Value);
 
             // Set Sumation.
             int sum = 0;
-            for (int i = 0; i < _spend_Res.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Res.RowCount; i++)
             {
                 if (_spend_Res.Rows[i].Cells[1].Value.ToString() != "")
                     sum += Convert.ToInt32(ToNoComma(_spend_Res.Rows[i].Cells[1].Value));
@@ -525,12 +528,12 @@ namespace UI
                 _spend_Loan.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
 
             // Make Comma type
-            for (int i = 0; i < _spend_Loan.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Loan.RowCount; i++)
                 _spend_Loan.Rows[i].Cells[1].Value = ToComma(_spend_Loan.Rows[i].Cells[1].Value);
 
             // Set Sumation.
             int sum = 0;
-            for (int i = 0; i < _spend_Loan.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Loan.RowCount; i++)
             {
                 if (_spend_Loan.Rows[i].Cells[1].Value.ToString() != "")
                     sum += Convert.ToInt32(ToNoComma(_spend_Loan.Rows[i].Cells[1].Value));
@@ -549,12 +552,12 @@ namespace UI
                 _spend_Main.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
 
             // Make Comma type
-            for (int i = 0; i < _spend_Main.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Main.RowCount; i++)
                 _spend_Main.Rows[i].Cells[1].Value = ToComma(_spend_Main.Rows[i].Cells[1].Value);
 
             // Set Sumation.
             int sum = 0;
-            for (int i = 0; i < _spend_Main.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Main.RowCount; i++)
             {
                 if (_spend_Main.Rows[i].Cells[1].Value.ToString() != "")
                     sum += Convert.ToInt32(ToNoComma(_spend_Main.Rows[i].Cells[1].Value));
@@ -573,12 +576,12 @@ namespace UI
                 _spend_Vol.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
 
             // Make Comma type
-            for (int i = 0; i < _spend_Vol.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Vol.RowCount; i++)
                 _spend_Vol.Rows[i].Cells[1].Value = ToComma(_spend_Vol.Rows[i].Cells[1].Value);
 
             // Set Sumation.
             int sum = 0;
-            for (int i = 0; i < _spend_Vol.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Vol.RowCount; i++)
             {
                 if (_spend_Vol.Rows[i].Cells[1].Value.ToString() != "")
                     sum += Convert.ToInt32(ToNoComma(_spend_Vol.Rows[i].Cells[1].Value));
@@ -597,12 +600,12 @@ namespace UI
                 _spend_Human.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
 
             // Make Comma type
-            for (int i = 0; i < _spend_Human.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Human.RowCount; i++)
                 _spend_Human.Rows[i].Cells[1].Value = ToComma(_spend_Human.Rows[i].Cells[1].Value);
 
             // Set Sumation.
             int sum = 0;
-            for (int i = 0; i < _spend_Human.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Human.RowCount; i++)
             {
                 if (_spend_Human.Rows[i].Cells[1].Value.ToString() != "")
                     sum += Convert.ToInt32(ToNoComma(_spend_Human.Rows[i].Cells[1].Value));
@@ -621,12 +624,12 @@ namespace UI
                 _spend_Edu.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
 
             // Make Comma type
-            for (int i = 0; i < _spend_Edu.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Edu.RowCount; i++)
                 _spend_Edu.Rows[i].Cells[1].Value = ToComma(_spend_Edu.Rows[i].Cells[1].Value);
 
             // Set Sumation.
             int sum = 0;
-            for (int i = 0; i < _spend_Edu.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Edu.RowCount; i++)
             {
                 if (_spend_Edu.Rows[i].Cells[1].Value.ToString() != "")
                     sum += Convert.ToInt32(ToNoComma(_spend_Edu.Rows[i].Cells[1].Value));
@@ -645,12 +648,12 @@ namespace UI
                 _spend_Mission.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
 
             // Make Comma type
-            for (int i = 0; i < _spend_Mission.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Mission.RowCount; i++)
                 _spend_Mission.Rows[i].Cells[1].Value = ToComma(_spend_Mission.Rows[i].Cells[1].Value);
 
             // Set Sumation.
             int sum = 0;
-            for (int i = 0; i < _spend_Mission.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Mission.RowCount; i++)
             {
                 if (_spend_Mission.Rows[i].Cells[1].Value.ToString() != "")
                     sum += Convert.ToInt32(ToNoComma(_spend_Mission.Rows[i].Cells[1].Value));
@@ -669,12 +672,12 @@ namespace UI
                 _spend_Worship.Rows[e.RowIndex].Cells[2].Value = ((DateTime)dateTimePicker1.Value).ToShortDateString();
 
             // Make Comma type
-            for (int i = 0; i < _spend_Worship.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Worship.RowCount; i++)
                 _spend_Worship.Rows[i].Cells[1].Value = ToComma(_spend_Worship.Rows[i].Cells[1].Value);
 
             // Set Sumation.
             int sum = 0;
-            for (int i = 0; i < _spend_Worship.RowCount - 1; i++)
+            for (int i = 0; i < _spend_Worship.RowCount; i++)
             {
                 if (_spend_Worship.Rows[i].Cells[1].Value.ToString() != "")
                     sum += Convert.ToInt32(ToNoComma(_spend_Worship.Rows[i].Cells[1].Value));
@@ -765,7 +768,7 @@ namespace UI
                         SQLite.Execute(string.Format("insert into Spending_Worship (name, date, amount) values ('{0}', '{1}', {2})", "성가대운영비", DateTime.Now.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Worship (name, date, amount) values ('{0}', '{1}', {2})", "주보대", DateTime.Now.ToShortDateString(), 0));
 
-                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Worship where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Worship where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                         _spend_Worship.DataSource = ds.Tables[0];
                     }
                     _spend_Worship.Columns[0].ReadOnly = true;
@@ -783,7 +786,7 @@ namespace UI
                         SQLite.Execute(string.Format("insert into Spending_Worship (name, date, amount) values ('{0}', '{1}', {2})", "성가대운영비", ((DateTime)dateTimePicker1.Value).ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Worship (name, date, amount) values ('{0}', '{1}', {2})", "주보대", ((DateTime)dateTimePicker1.Value).ToShortDateString(), 0));
 
-                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Worship where date = '{0}' order by no asc", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
+                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Worship where date = '{0}' order by no asc", ((DateTime)dateTimePicker1.Value).ToShortDateString()));
                         _spend_Worship.DataSource = ds.Tables[0];
                     }
                     _spend_Worship.Columns[0].ReadOnly = true;
@@ -797,7 +800,7 @@ namespace UI
 
                 // Set Sumation.
                 int sum = 0;
-                for (int i = 0; i < _spend_Worship.RowCount - 1; i++)
+                for (int i = 0; i < _spend_Worship.RowCount; i++)
                     if (_spend_Worship.Rows[i].Cells[1].Value.ToString() != "")
                         sum += Convert.ToInt32(ToNoComma(_spend_Worship.Rows[i].Cells[1].Value));
 
@@ -830,7 +833,7 @@ namespace UI
                         SQLite.Execute(string.Format("insert into Spending_Mission (name, date, amount) values ('{0}', '{1}', {2})", "선교비", DateTime.Now.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Mission (name, date, amount) values ('{0}', '{1}', {2})", "심방비", DateTime.Now.ToShortDateString(), 0));
 
-                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Mission where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Mission where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                         _spend_Mission.DataSource = ds.Tables[0];
                     }
                     _spend_Mission.Columns[0].ReadOnly = true;
@@ -847,7 +850,7 @@ namespace UI
                         SQLite.Execute(string.Format("insert into Spending_Mission (name, date, amount) values ('{0}', '{1}', {2})", "선교비", dateTimePicker1.Value.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Mission (name, date, amount) values ('{0}', '{1}', {2})", "심방비", dateTimePicker1.Value.ToShortDateString(), 0));
 
-                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Mission where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Mission where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                         _spend_Mission.DataSource = ds.Tables[0];
                     }
                     _spend_Mission.Columns[0].ReadOnly = true;
@@ -860,7 +863,7 @@ namespace UI
 
                 // Set Sumation.
                 int sum = 0;
-                for (int i = 0; i < _spend_Mission.RowCount - 1; i++)
+                for (int i = 0; i < _spend_Mission.RowCount; i++)
                     if (_spend_Mission.Rows[i].Cells[1].Value.ToString() != "")
                         sum += Convert.ToInt32(ToNoComma(_spend_Mission.Rows[i].Cells[1].Value));
 
@@ -893,7 +896,7 @@ namespace UI
                         SQLite.Execute(string.Format("insert into Spending_Edu (name, date, amount) values ('{0}', '{1}', {2})", "장학금", DateTime.Now.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Edu (name, date, amount) values ('{0}', '{1}', {2})", "도서비", DateTime.Now.ToShortDateString(), 0));
 
-                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Edu where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Edu where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                         _spend_Edu.DataSource = ds.Tables[0];
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
@@ -912,7 +915,7 @@ namespace UI
                         SQLite.Execute(string.Format("insert into Spending_Edu (name, date, amount) values ('{0}', '{1}', {2})", "장학금", dateTimePicker1.Value.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Edu (name, date, amount) values ('{0}', '{1}', {2})", "도서비", dateTimePicker1.Value.ToShortDateString(), 0));
 
-                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Edu where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Edu where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                         _spend_Edu.DataSource = ds.Tables[0];
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
@@ -927,7 +930,7 @@ namespace UI
 
                 // Set Sumation.
                 int sum = 0;
-                for (int i = 0; i < _spend_Edu.RowCount - 1; i++)
+                for (int i = 0; i < _spend_Edu.RowCount; i++)
                     if (_spend_Edu.Rows[i].Cells[1].Value.ToString() != "")
                         sum += Convert.ToInt32(ToNoComma(_spend_Edu.Rows[i].Cells[1].Value));
 
@@ -958,7 +961,7 @@ namespace UI
                         SQLite.Execute(string.Format("insert into Spending_Human (name, date, amount) values ('{0}', '{1}', {2})", "전도사님사례비", DateTime.Now.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Human (name, date, amount) values ('{0}', '{1}', {2})", "상여금", DateTime.Now.ToShortDateString(), 0));
 
-                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Human where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Human where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                         _spend_Human.DataSource = ds.Tables[0];
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
@@ -975,7 +978,7 @@ namespace UI
                         SQLite.Execute(string.Format("insert into Spending_Human (name, date, amount) values ('{0}', '{1}', {2})", "전도사님사례비", dateTimePicker1.Value.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Human (name, date, amount) values ('{0}', '{1}', {2})", "상여금", dateTimePicker1.Value.ToShortDateString(), 0));
 
-                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Human where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Human where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                         _spend_Human.DataSource = ds.Tables[0];
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
@@ -990,7 +993,7 @@ namespace UI
 
                 // Set Sumation.
                 int sum = 0;
-                for (int i = 0; i < _spend_Human.RowCount - 1; i++)
+                for (int i = 0; i < _spend_Human.RowCount; i++)
                     if (_spend_Human.Rows[i].Cells[1].Value.ToString() != "")
                         sum += Convert.ToInt32(ToNoComma(_spend_Human.Rows[i].Cells[1].Value));
 
@@ -1021,7 +1024,7 @@ namespace UI
                         SQLite.Execute(string.Format("insert into Spending_Vol (name, date, amount) values ('{0}', '{1}', {2})", "구제비", DateTime.Now.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Vol (name, date, amount) values ('{0}', '{1}', {2})", "행사비", DateTime.Now.ToShortDateString(), 0));
 
-                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Vol where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Vol where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                         _spend_Vol.DataSource = ds.Tables[0];
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
@@ -1038,7 +1041,7 @@ namespace UI
                         SQLite.Execute(string.Format("insert into Spending_Vol (name, date, amount) values ('{0}', '{1}', {2})", "구제비", dateTimePicker1.Value.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Vol (name, date, amount) values ('{0}', '{1}', {2})", "행사비", dateTimePicker1.Value.ToShortDateString(), 0));
 
-                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Vol where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Vol where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                         _spend_Vol.DataSource = ds.Tables[0];
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
@@ -1053,7 +1056,7 @@ namespace UI
 
                 // Set Sumation.
                 int sum = 0;
-                for (int i = 0; i < _spend_Vol.RowCount - 1; i++)
+                for (int i = 0; i < _spend_Vol.RowCount; i++)
                     if (_spend_Vol.Rows[i].Cells[1].Value.ToString() != "")
                         sum += Convert.ToInt32(ToNoComma(_spend_Vol.Rows[i].Cells[1].Value));
 
@@ -1089,7 +1092,7 @@ namespace UI
                         SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "교회비품비", DateTime.Now.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "기타지출", DateTime.Now.ToShortDateString(), 0));
 
-                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Main where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Main where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                         _spend_Main.DataSource = ds.Tables[0];
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
@@ -1113,7 +1116,7 @@ namespace UI
                         SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "교회비품비", dateTimePicker1.Value.ToShortDateString(), 0));
                         SQLite.Execute(string.Format("insert into Spending_Main (name, date, amount) values ('{0}', '{1}', {2})", "기타지출", dateTimePicker1.Value.ToShortDateString(), 0));
 
-                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Main where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Main where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                         _spend_Main.DataSource = ds.Tables[0];
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
@@ -1128,7 +1131,7 @@ namespace UI
 
                 // Set Sumation.
                 int sum = 0;
-                for (int i = 0; i < _spend_Main.RowCount - 1; i++)
+                for (int i = 0; i < _spend_Main.RowCount; i++)
                     if (_spend_Main.Rows[i].Cells[1].Value.ToString() != "")
                         sum += Convert.ToInt32(ToNoComma(_spend_Main.Rows[i].Cells[1].Value));
 
@@ -1154,10 +1157,10 @@ namespace UI
                     _spend_Loan.DataSource = ds.Tables[0];
                     if (ds.Tables[0].Rows.Count == 0)
                     {
-                        SQLite.Execute(string.Format("insert into Spending_Loan (name, date, amount) values ('{0}', '{1}', {2})", "상환", DateTime.Now.ToShortDateString(), 0));
-                        SQLite.Execute(string.Format("insert into Spending_Loan (name, date, amount) values ('{0}', '{1}', {2})", "적립이자", DateTime.Now.ToShortDateString(), 0));
+                        SQLite.Execute(string.Format("insert into Spending_Loan (name, date, amount) values ('{0}', '{1}', {2})", "상환적립", DateTime.Now.ToShortDateString(), 0));
+                        SQLite.Execute(string.Format("insert into Spending_Loan (name, date, amount) values ('{0}', '{1}', {2})", "지급이자", DateTime.Now.ToShortDateString(), 0));
 
-                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Loan where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
+                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Loan where date = '{0}' order by no asc", DateTime.Now.ToShortDateString()));
                         _spend_Loan.DataSource = ds.Tables[0];
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
@@ -1169,10 +1172,10 @@ namespace UI
                     _spend_Loan.DataSource = ds.Tables[0];
                     if (ds.Tables[0].Rows.Count == 0)
                     {
-                        SQLite.Execute(string.Format("insert into Spending_Loan (name, date, amount) values ('{0}', '{1}', {2})", "상환", dateTimePicker1.Value.ToShortDateString(), 0));
-                        SQLite.Execute(string.Format("insert into Spending_Loan (name, date, amount) values ('{0}', '{1}', {2})", "적립이자", dateTimePicker1.Value.ToShortDateString(), 0));
+                        SQLite.Execute(string.Format("insert into Spending_Loan (name, date, amount) values ('{0}', '{1}', {2})", "상환적립", dateTimePicker1.Value.ToShortDateString(), 0));
+                        SQLite.Execute(string.Format("insert into Spending_Loan (name, date, amount) values ('{0}', '{1}', {2})", "지급이자", dateTimePicker1.Value.ToShortDateString(), 0));
 
-                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', amount as '금 액', date as '날 짜' from Spending_Loan where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
+                        ds = SQLite.ExecuteSelectQuery(string.Format("select name as '항 목', cast (amount as Text) as '금 액', date as '날 짜' from Spending_Loan where date = '{0}' order by no asc", dateTimePicker1.Value.ToShortDateString()));
                         _spend_Loan.DataSource = ds.Tables[0];
                     }
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
@@ -1186,7 +1189,7 @@ namespace UI
 
                 // Set Sumation.
                 int sum = 0;
-                for (int i = 0; i < _spend_Loan.RowCount - 1; i++)
+                for (int i = 0; i < _spend_Loan.RowCount; i++)
                     if (_spend_Loan.Rows[i].Cells[1].Value.ToString() != "")
                         sum += Convert.ToInt32(ToNoComma(_spend_Loan.Rows[i].Cells[1].Value));
 
@@ -1228,7 +1231,7 @@ namespace UI
 
                 // Set Sumation.
                 int sum = 0;
-                for (int i = 0; i < _spend_Res.RowCount - 1; i++)
+                for (int i = 0; i < _spend_Res.RowCount-1; i++)
                     if (_spend_Res.Rows[i].Cells[1].Value.ToString() != "")
                         sum += Convert.ToInt32(ToNoComma(_spend_Res.Rows[i].Cells[1].Value));
 

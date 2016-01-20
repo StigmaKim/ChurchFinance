@@ -14,305 +14,280 @@ namespace UI
     {
 
         #region public 변수
-        /// <summary>
-        /// 전년도 이월액
-        /// </summary>
-        private int foreYearBalance;
-        /// <summary>
-        /// 수입
-        /// </summary>
-        private int income;
-        /// <summary>
-        /// 지출
-        /// </summary>
-        private int spend;
-        /// <summary>
-        /// 헌금
-        /// </summary>
-        private int offering;
-        /// <summary>
-        /// 재정 지출
-        /// </summary>
-        private int spending;
-        /// <summary>
-        /// 수입 이자
-        /// </summary>
-        private int incomeInterest;
-        /// <summary>
-        /// 대출 관련비
-        /// </summary>
-        private int loanEtc;
-        /// <summary>
-        /// 차월 이월액
-        /// </summary>
-        private int balance;
-        /// <summary>
-        /// 차랑 헌금
-        /// </summary>
-        private int carOffering;
 
-        /// <summary>
-        /// 날짜
-        /// </summary>
+        int Thanks;
+        int O10;
+        int Cell;
+        int Archi;
+        int Mission;
+        int Rice;
+        int Help;
+        int Car;
+        int Term;
+        int Other;
+        int Interest;
+        int sum;
+
+        int Worship;
+        int SMission;
+        int Edu;
+        int Human;
+        int Vol;
+        int Main;
+        int Loan;
+        int Res;
+        int spendSum;
+
+        int balance;
+
+        SQLite SQLite;
+        
         private DateTime date;
 
         #endregion
-
-        #region get/set
-
-        public int ForeYearBalance
-        {
-            get
-            {
-                return foreYearBalance;
-            }
-
-            set
-            {
-                Invalidate();
-                foreYearBalance = value;
-            }
-        }
-
-        public int Income
-        {
-            get
-            {
-                return income;
-            }
-
-            set
-            {
-                Invalidate();
-                income = value;
                 
-            }
-        }
-
-        public int Spend
-        {
-            get
-            {
-                return spend;
-            }
-
-            set
-            {
-                spend = value;
-                Invalidate();
-
-            }
-        }
-
-        public int Offering
-        {
-            get
-            {
-                return offering;
-            }
-
-            set
-            {
-                offering = value;
-                Invalidate();
-
-            }
-        }
-
-        public int Spending
-        {
-            get
-            {
-                return spending;
-            }
-
-            set
-            {
-                spending = value;
-                Invalidate();
-
-            }
-        }
-
-        public int IncomeInterest
-        {
-            get
-            {
-                return incomeInterest;
-            }
-
-            set
-            {
-                incomeInterest = value;
-                Invalidate();
-
-            }
-        }
-
-        public int LoanEtc
-        {
-            get
-            {
-                return loanEtc;
-            }
-
-            set
-            {
-                loanEtc = value;
-                Invalidate();
-
-            }
-        }
-
-        public int Balance
-        {
-            get
-            {
-                return balance;
-            }
-
-            set
-            {
-                balance = value;
-                Invalidate();
-
-            }
-        }
-
-        public int CarOffering
-        {
-            get
-            {
-                return carOffering;
-            }
-
-            set
-            {
-                carOffering = value;
-                Invalidate();
-
-            }
-        }
-
-        public DateTime Date
-        {
-            get
-            {
-                return date;
-            }
-
-            set
-            {
-                date = value;
-                Invalidate();
-
-            }
-        }
-
-        #endregion
-        
-        /// <summary>
-        /// 생성자
-        /// </summary>
         public SpendReport()
         {
             InitializeComponent();
+            SQLite = new SQLite();
 
-            // 예시 데이터 입력
-            foreYearBalance = 4599710;
-            income = 15718000;
-            spend = 17837890;
-            offering = 15718000;
-            spending = 16937480;
-            incomeInterest = 0;
-            loanEtc = 900410;
-            carOffering = 80000;
-            date = DateTime.Now;
-
-            
-            // 차월 이월액
-            balance = foreYearBalance - (spend - income);
+            Title.Location = new Point(380, 20);
+            spend.ClearSelection();
             
             Paint += SpendReport_Paint;
         }
-
-        /// <summary>
-        /// 지출 보고서
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
+        public void SetDate(DateTime d)
+        {
+            date = d;
+        }
         private void SpendReport_Paint(object sender, PaintEventArgs e)
         {
+            Title.Text = date.Year + "년 " + date.Month + "월 재정 보고";
 
-            Title.Text = Date.Year + "년 " + Date.Month + "월 재정 보고";
-
-            setForeYearBalance();
-
-            inputInputSpendData();
+            setIncomeDGV();
+            setSpendDGV();
+            setTotalDGVS();
+            setIncomeFromDB();
+            setSpendFromDB();
+            setValueIntoDGVS();
         }
 
-        /// <summary>
-        /// 전년도 이월액 부분을 셋팅합니다.
-        /// </summary>
-        private void setForeYearBalance()
+        private void setValueIntoDGVS()
         {
-            // 전년도 이월액 설정
-            foreYearBalanceView.ColumnCount = 2;
+            income.Rows[0].Cells[1].Value = Thanks.ToString("n0") + " 원";
+            income.Rows[1].Cells[1].Value = O10.ToString("n0") + " 원";
+            income.Rows[2].Cells[1].Value = Cell.ToString("n0") + " 원";
+            income.Rows[3].Cells[1].Value = Archi.ToString("n0") + " 원";
+            income.Rows[4].Cells[1].Value = Mission.ToString("n0") + " 원";
+            income.Rows[5].Cells[1].Value = Rice.ToString("n0") + " 원";
+            income.Rows[6].Cells[1].Value = Help.ToString("n0") + " 원";
+            income.Rows[7].Cells[1].Value = Car.ToString("n0") + " 원";
+            income.Rows[8].Cells[1].Value = Term.ToString("n0") + " 원";
+            income.Rows[9].Cells[1].Value = Other.ToString("n0") + " 원";
+            income.Rows[10].Cells[1].Value = Interest.ToString("n0") + " 원";
+            income.Rows[11].Cells[1].Value = sum.ToString("n0") + " 원";
 
-            for (int i = 0; i < foreYearBalanceView.Columns.Count; i++)
-                foreYearBalanceView.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
-            foreYearBalanceView.ColumnHeadersVisible = false;
-            foreYearBalanceView.ReadOnly = true;
-            foreYearBalanceView.RowCount = 1;
-
-            foreYearBalanceView.Rows[0].Cells[0].Value = "전년도 이월액";
-            foreYearBalanceView.Rows[0].Cells[1].Value = ForeYearBalance.ToString("n0") + " 원";
-            foreYearBalanceView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            foreYearBalanceView.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-
+            spend.Rows[0].Cells[1].Value = Worship.ToString("n0") + " 원";
+            spend.Rows[1].Cells[1].Value = SMission.ToString("n0") + " 원";
+            spend.Rows[2].Cells[1].Value = Edu.ToString("n0") + " 원";
+            spend.Rows[3].Cells[1].Value = Human.ToString("n0") + " 원";
+            spend.Rows[4].Cells[1].Value = Vol.ToString("n0") + " 원";
+            spend.Rows[5].Cells[1].Value = Main.ToString("n0") + " 원";
+            spend.Rows[6].Cells[1].Value = Loan.ToString("n0") + " 원";
+            spend.Rows[7].Cells[1].Value = Res.ToString("n0") + " 원";
+            spend.Rows[11].Cells[1].Value = spendSum.ToString("n0") + " 원";
         }
 
-        /// <summary>
-        /// 수입 지출 GridView를 설정합니다.
-        /// </summary>
-        private void inputInputSpendData()
+        public void setIncomeFromDB()
         {
-            balance = foreYearBalance - (spend - income);
+            Thanks = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Thanks where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            O10 = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_10 where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Cell = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Cell where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Archi = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Archi where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Mission = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Mission where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Rice = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Rice where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Help = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Help where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Car = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Car where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Term = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Term where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Other = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Other where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Interest = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Interest where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
 
-            // 수입 지출 DatagridView 설정
-            incomeSpendView.ColumnCount = 6;
-            incomeSpendView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            incomeSpendView.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            for (int i = 0; i < incomeSpendView.Columns.Count; i++)
-                incomeSpendView.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            sum = Thanks + O10 + Cell + Archi + Mission + Rice + Help + Car + Term + Other + Interest;
+        }
 
-            incomeSpendView.ColumnHeadersVisible = false;
-            incomeSpendView.ReadOnly = true;
-            incomeSpendView.RowCount = 6;
+        public void setSpendFromDB()
+        {
+            Worship = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Worship where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            SMission = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Mission where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Edu = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Edu where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Human = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Human where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Vol = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Vol where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Main = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Main where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Loan = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Loan where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            Res = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Res where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
 
-            // 첫번째 줄
-            incomeSpendView.Rows[0].Cells[0].Value = "수입";
-            incomeSpendView.Rows[0].Cells[2].Value = Income.ToString("n0") + " 원";
-            incomeSpendView.Rows[0].Cells[3].Value = "지출";
-            incomeSpendView.Rows[0].Cells[5].Value = Spend.ToString("n0") + " 원";
-            // 두번째 줄
-            incomeSpendView.Rows[1].Cells[1].Value = "헌금";
-            incomeSpendView.Rows[1].Cells[2].Value = Offering.ToString("n0") + " 원";
-            incomeSpendView.Rows[1].Cells[4].Value = "재정 지출";
-            incomeSpendView.Rows[1].Cells[5].Value = Spending.ToString("n0") + " 원";
-            // 세번째 줄
-            incomeSpendView.Rows[2].Cells[1].Value = "수입이자";
-            incomeSpendView.Rows[2].Cells[2].Value = IncomeInterest.ToString("n0") + " 원";
-            incomeSpendView.Rows[2].Cells[4].Value = "대출 관련비";
-            incomeSpendView.Rows[2].Cells[5].Value = LoanEtc.ToString("n0") + " 원";
-            // 네번째 줄
-            incomeSpendView.Rows[4].Cells[4].Value = "차월 이월액";
-            incomeSpendView.Rows[4].Cells[5].Value = Balance.ToString("n0") + " 원";
-            // 다섯번째 줄
-            incomeSpendView.Rows[5].Cells[4].Value = "차랑 헌금";
-            incomeSpendView.Rows[5].Cells[5].Value = CarOffering.ToString("n0") + " 원";
+            spendSum = Worship + SMission + Edu + Human + Vol + Main + Loan + Res;
+        }
+        
+        private void setIncomeDGV()
+        {
+            income.ClearSelection();
+            income.Location = new Point(180, 70);
+            income.Size = new Size(300, 392);
+            income.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            income.ColumnCount = 2;
+            income.RowTemplate.Height = 30;
+            income.RowHeadersVisible = false;
 
+            for (int i = 0; i < income.Columns.Count; i++)
+                income.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            income.Columns[0].HeaderText = "항 목";
+            income.Columns[1].HeaderText = "금 액";
+
+            income.ReadOnly = true;
+            income.RowCount = 12;
+
+            income.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            income.ColumnHeadersHeight = 30;
+            income.Rows[0].Cells[0].Value = "감사헌금";
+            income.Rows[1].Cells[0].Value = "십일조";
+            income.Rows[2].Cells[0].Value = "구역헌금";
+            income.Rows[3].Cells[0].Value = "건축헌금";
+            income.Rows[4].Cells[0].Value = "선교헌금";
+            income.Rows[5].Cells[0].Value = "성미헌금";
+            income.Rows[6].Cells[0].Value = "구제헌금";
+            income.Rows[7].Cells[0].Value = "차량헌금";
+            income.Rows[8].Cells[0].Value = "절기헌금";
+            income.Rows[9].Cells[0].Value = "기타수입";
+            income.Rows[10].Cells[0].Value = "이자수입";
+            income.Rows[11].Cells[0].Value = "수입 총액";
+            income.Rows[11].Height = 30;
+            income.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            income.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            income.Font = new Font("Microsoft Sans Serif", 12);
+            income.Rows[0].Height = 30;
+            income.RowHeadersDefaultCellStyle.Padding = new Padding(income.RowHeadersWidth);
+
+            income.SelectionChanged += Income_SelectionChanged;
+        }
+
+        private void Income_SelectionChanged(object sender, EventArgs e)
+        {
+            income.ClearSelection();
+        }
+
+        private void setSpendDGV()
+        {
+            spend.ClearSelection();
+            spend.Location = new Point(490, 70);
+            spend.Size = new Size(300, 392);
+            
+            spend.ColumnCount = 2;
+            income.RowTemplate.Height = 30;
+            spend.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            spend.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            spend.RowHeadersVisible = false;
+            spend.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            spend.ColumnHeadersHeight = 30;
+
+            for (int i = 0; i < spend.Columns.Count; i++)
+                spend.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            spend.Columns[0].HeaderText = "항 목";
+            spend.Columns[1].HeaderText = "금 액";
+
+            spend.ReadOnly = true;
+            spend.RowTemplate.Height = 30;
+            spend.RowCount = 12;
+
+            spend.Rows[0].Cells[0].Value = "예배비";
+            spend.Rows[1].Cells[0].Value = "선교비";
+            spend.Rows[2].Cells[0].Value = "교육비";
+            spend.Rows[3].Cells[0].Value = "인건비";
+            spend.Rows[4].Cells[0].Value = "봉사비";
+            spend.Rows[5].Cells[0].Value = "운영관리비";
+            spend.Rows[6].Cells[0].Value = "대출관련비";
+            spend.Rows[7].Cells[0].Value = "예비비";
+            spend.Rows[11].Cells[0].Value = "지출 총액";
+
+            spend.Rows[11].Height = 30;
+
+            spend.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            spend.Font = new Font("Microsoft Sans Serif", 12);
+            spend.RowHeadersDefaultCellStyle.Padding = new Padding(income.RowHeadersWidth);
+
+            spend.SelectionChanged += Spend_SelectionChanged;
+        }
+
+        private void Spend_SelectionChanged(object sender, EventArgs e)
+        {
+            spend.ClearSelection();
+        }
+
+        private void setTotalDGVS()
+        {
+            // beforeBalance
+            beforeBalance.ClearSelection();
+            beforeBalance.SelectionChanged += BeforeBalance_SelectionChanged;
+            beforeBalance.Location = new Point(180, 470);
+            beforeBalance.Size = new Size(300, 33);
+            beforeBalance.RowHeadersVisible = false;
+            beforeBalance.ColumnCount = 2;
+            beforeBalance.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            beforeBalance.ColumnHeadersVisible = false;
+            beforeBalance.ReadOnly = true;
+            beforeBalance.RowTemplate.Height = 30;
+            beforeBalance.RowCount = 2;
+            beforeBalance.AllowUserToAddRows = false;
+            beforeBalance.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            beforeBalance.ColumnHeadersHeight = 30;
+            beforeBalance.Font = new Font("Microsoft Sans Serif", 12);
+            beforeBalance.RowHeadersDefaultCellStyle.Padding = new Padding(income.RowHeadersWidth);
+            beforeBalance.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            beforeBalance.AllowUserToResizeRows = false;
+            beforeBalance.AllowUserToResizeColumns = false;
+
+            for (int i = 0; i < beforeBalance.Columns.Count; i++)
+                beforeBalance.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            beforeBalance.Rows[0].Cells[0].Value = "전월 이월액";
+
+            // afterBalance
+            afterBalance.ClearSelection();
+            afterBalance.SelectionChanged += AfterBalance_SelectionChanged;
+            afterBalance.Location = new Point(490, 470);
+            afterBalance.Size = new Size(300, 33);
+            afterBalance.RowHeadersVisible = false;
+            afterBalance.ColumnCount = 2;
+            afterBalance.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            afterBalance.ColumnHeadersVisible = false;
+            afterBalance.ReadOnly = true;
+            afterBalance.RowTemplate.Height = 30;
+            afterBalance.RowCount = 2;
+            afterBalance.AllowUserToAddRows = false;
+            afterBalance.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            afterBalance.ColumnHeadersHeight = 30;
+            afterBalance.Font = new Font("Microsoft Sans Serif", 12);
+            afterBalance.RowHeadersDefaultCellStyle.Padding = new Padding(income.RowHeadersWidth);
+            afterBalance.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            afterBalance.AllowUserToResizeRows = false;
+            afterBalance.AllowUserToResizeColumns = false;
+
+            for (int i = 0; i < afterBalance.Columns.Count; i++)
+                afterBalance.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            afterBalance.Rows[0].Cells[0].Value = "잔 액";
+        }
+
+        private void AfterBalance_SelectionChanged(object sender, EventArgs e)
+        {
+            afterBalance.ClearSelection();
+        }
+
+        private void BeforeBalance_SelectionChanged(object sender, EventArgs e)
+        {
+            beforeBalance.ClearSelection();
         }
     }
 }
