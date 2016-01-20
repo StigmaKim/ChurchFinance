@@ -339,12 +339,13 @@ namespace UI
 
         public PrintDocument pd;
         private PageSettings pgSettings;
+        private Button printBtn;
         DateTime date;
 
         /// <summary>
         /// 생성자
         /// </summary>
-        public SpendDetail()
+        public SpendDetail(Button btn)
         {
             InitializeComponent();
 
@@ -436,12 +437,15 @@ namespace UI
 
             #endregion
 
+            printBtn = btn;
+
             // 표 설정
             setView();
 
             Paint += SpendDetail_Paint;
-            
         }
+
+        
 
         public void SetDate(DateTime d)
         {
@@ -453,21 +457,35 @@ namespace UI
         /// </summary>
         private void setView()
         {
+            this.BackColor = Color.White;
+
             // 행 갯수와 Alignment
             DataView.Location = new Point(80, 80);
             DataView.Size = new Size(800, 400);
             DataView.ColumnCount = 7;
-            DataView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            DataView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             DataView.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            DataView.Font = new Font("Microsoft Sans Serif", 12);
+            DataView.RowTemplate.Height = 30;
+
+            // 컬럼 헤더
+            DataView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            DataView.ColumnHeadersHeight = 30;
+            DataView.ReadOnly = true;
 
             DataView.Columns[0].HeaderText = "항목";
             DataView.Columns[1].HeaderText = "세목";
             DataView.Columns[3].HeaderText = "예산";
             DataView.Columns[5].HeaderText = "지출";
             DataView.Columns[6].HeaderText = "진도비";
+            DataView.AllowUserToAddRows = false;
 
             for (int i = 0; i < DataView.ColumnCount; i++)
                 DataView.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            for (int i = 0; i < DataView.ColumnCount; i++)
+                DataView.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
             DataView.ReadOnly = true;
 
@@ -477,8 +495,11 @@ namespace UI
             pd = new PrintDocument();
             pgSettings = new PageSettings();
             pd.PrintPage += Pd_PrintPage;
+
         }
         
+        #region 프린터 인쇄 처리
+
         /// <summary>
         /// 프린트 출력
         /// </summary>
@@ -494,8 +515,6 @@ namespace UI
             // 높이에 맞는 사이즈 설정
             DataView.Size = new Size(tempSz.Width, 875);
 
-            System.Diagnostics.Debug.WriteLine(pgSettings.PaperSize.Height);
-
             DataView.DrawToBitmap(tapBM, new Rectangle(new Point(0, 0), new Size(pgSettings.PaperSize.Width, pgSettings.PaperSize.Height)));
 
             e.Graphics.DrawImage(tapBM, new Point(5, 5));
@@ -503,6 +522,16 @@ namespace UI
             DataView.Size = tempSz;
         }
 
+        private void Btn_Click(object sender, EventArgs e)
+        {
+            PrintPreviewDialog dig = new PrintPreviewDialog();
+
+            dig.Document = pd;
+
+            dig.ShowDialog();
+        }
+
+        #endregion
 
         /// <summary>
         /// Data Input
