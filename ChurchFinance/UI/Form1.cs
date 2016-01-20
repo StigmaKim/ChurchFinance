@@ -50,7 +50,6 @@ namespace UI
 
         string currentCategory = null;
         Control currentTab = null;
-        NeoTabPage currentWeekTab = null; 
 
         // DB 관련 
         SQLite SQLite = null ;
@@ -76,9 +75,12 @@ namespace UI
         NeoTabPage Y_SpendingTab;
         
         // Budget Tab
-        NeoTabPage B_Tab;
+        NeoTabPage B_IncomeTab;
+        NeoTabPage B_SpendTab;
 
-        Budget Bp;
+        Budget BIp;
+        Budget BSp;
+
         int cnt = 0;
 
 
@@ -101,30 +103,40 @@ namespace UI
             
             neoTabWindow1.Renderer = NeoTabControlLibrary.AddInRendererManager.LoadRenderer("MarginBlueRendererVS2");
             neoTabWindow1.BackColor = Color.White;
-            neoTabWindow1.SelectedIndexChanged += NeoTabWindow1_SelectedIndexChanged;
 
             imgBtnContainer1.BackColor = Color.White;
             imgBtnContainer2.BackColor = Color.White;
             button1.Click += Button1_Click;
 
-            setImgBtn();
-            setWeekTabPage();
-
             panel5.BackColor = Color.LightGray;
             panel2.BackColor = Color.LightGray;
 
-
             // Budget
-            B_Tab = new NeoTabPage();
-            B_Tab.Text = "예산설정";
-            Bp = new Budget();
-            Bp.Dock = DockStyle.Fill;
-            B_Tab.Controls.Add(Bp);
+            B_IncomeTab = new NeoTabPage();
+            B_SpendTab = new NeoTabPage();
+            B_IncomeTab.Text = "수입 예산";
+            B_SpendTab.Text = "지출 예산";
+            BIp = new Budget(Budget.DMode.income, dateTimePicker1);
+            BIp.SetDate(dateTimePicker1.Value);
+            BIp.SetLabel();
+            BIp.Dock = DockStyle.Fill;
+            BSp = new Budget(Budget.DMode.spend, dateTimePicker1);
+            BSp.SetDate(dateTimePicker1.Value);
+            BSp.SetLabel();
+            BSp.Dock = DockStyle.Fill;
+            B_IncomeTab.Controls.Add(BIp);
+            B_SpendTab.Controls.Add(BSp);
+
+            // Week
+            W_IncomeTab = new NeoTabPage();
+            W_SpendingTab = new NeoTabPage();
 
             // Month
             M_ReportTab = new NeoTabPage();
             M_ReportTab.Text = "재정 보고";
             sr = new SpendReport();
+            sr.SetDate(dateTimePicker1.Value);
+            sr.Validate();
             sr.Dock = DockStyle.Fill;
             M_ReportTab.Controls.Add(sr);
 
@@ -142,9 +154,14 @@ namespace UI
 
             M_DetailTab = new NeoTabPage();
             M_DetailTab.Text = "지출 세부 항목";
-            sd = new SpendDetail(button2);
+            sd = new SpendDetail();
+            sd.SetDate(dateTimePicker1.Value);
+            sr.Validate();
             sd.Dock = DockStyle.Fill;
             M_DetailTab.Controls.Add(sd);
+            
+            setImgBtn();
+            setWeekTabPage();
 
             // IncomeProgress
             ip.Date = DateTime.Now;
@@ -157,84 +174,64 @@ namespace UI
 
         private void DateTimePicker1_CloseUp(object sender, EventArgs e)
         {
-            Debug.WriteLine("Date : " + dateTimePicker1.Value);
-            /*
-            W_IncomeTab.Controls.Add(_income_Thanks);
-            W_IncomeTab.Controls.Add(_income_10);
-            W_IncomeTab.Controls.Add(_income_Cell);
-            W_IncomeTab.Controls.Add(_income_Archi);
-            W_IncomeTab.Controls.Add(_income_Mission);
-            W_IncomeTab.Controls.Add(_income_Rice);
-            W_IncomeTab.Controls.Add(_income_Help);
-            W_IncomeTab.Controls.Add(_income_Car);
-            W_IncomeTab.Controls.Add(_income_Term);
-            W_IncomeTab.Controls.Add(_income_Other);
-            W_IncomeTab.Controls.Add(_income_Interest);
-            */
-            // 날짜 바뀔때 Re Draw
-            SetThanksDGV(2);
-            Set10DGV(2);
-            SetCellDGV(2);
-            SetArchiDGV(2);
-            SetMissionDGV(2);
-            SetRiceDGV(2);
-            SetHelpDGV(2);
-            SetCarDGV(2);
-            SetTermDGV(2);
-            SetOtherDGV(2);
-            SetInterestDGV(2);
-            /*
-            W_IncomeTab.Controls.Remove(_income_Thanks);
-            W_IncomeTab.Controls.Remove(_income_10);
-            W_IncomeTab.Controls.Remove(_income_Cell);
-            W_IncomeTab.Controls.Remove(_income_Archi);
-            W_IncomeTab.Controls.Remove(_income_Mission);
-            W_IncomeTab.Controls.Remove(_income_Rice);
-            W_IncomeTab.Controls.Remove(_income_Help);
-            W_IncomeTab.Controls.Remove(_income_Car);
-            W_IncomeTab.Controls.Remove(_income_Term);
-            W_IncomeTab.Controls.Remove(_income_Other);
-            W_IncomeTab.Controls.Remove(_income_Interest);
-            */
-            SetInputSumDGV();
-            W_IncomeTab.Controls.Add(_income_Thanks);
-            currentTab = _income_Thanks;
-            Invalidate();
-            // IncomeProgress
-            ip.Date = dateTimePicker1.Value;
-            sp.Date = dateTimePicker1.Value;
-            ip.titleInvalidate();
-            sp.titleInvalidate();
-            ip.setIncomeFromDB();
-            sp.setSpendFromDB();
-            sp.setSpendFromDB();
-            sp.setSpendFromDB();
-        }
-        
-        private void MakeSumValueZero()
-        {
-            Sum_Thanks = 0;
-            Sum_10 = 0;
-            Sum_Cell = 0;
-            Sum_Archi = 0;
-            Sum_Mission = 0;
-            Sum_Rice = 0;
-            Sum_Help = 0;
-            Sum_Car = 0;
-            Sum_Term = 0;
-            Sum_Other = 0;
-            Sum_Interest = 0;
-        }
-        private void NeoTabWindow1_SelectedIndexChanged(object sender, SelectedIndexChangedEventArgs e)
-        {
-            currentWeekTab = e.TabPage;           
+            switch( currentCategory)
+            {
+                case "Week":
+                    SetThanksDGV(2);
+                    Set10DGV(2);
+                    SetCellDGV(2);
+                    SetArchiDGV(2);
+                    SetMissionDGV(2);
+                    SetRiceDGV(2);
+                    SetHelpDGV(2);
+                    SetCarDGV(2);
+                    SetTermDGV(2);
+                    SetOtherDGV(2);
+                    SetInterestDGV(2);
+
+                    SetInputSumDGV();
+                    currentTab.Hide();
+                    _income_Thanks.Show();
+                    currentTab = _income_Thanks;
+                    
+                    break;
+
+                case "Month":
+                    // IncomeProgress
+                    ip.Date = dateTimePicker1.Value;
+                    sp.Date = dateTimePicker1.Value;
+                    ip.titleInvalidate();
+                    sp.titleInvalidate();
+                    ip.setIncomeFromDB();
+                    sp.setIncomeFromDB();
+                    ip.setSpendFromDB();
+                    sp.setSpendFromDB();
+
+                    // SpendReport
+                    sr.SetDate(dateTimePicker1.Value);
+                    sr.setIncomeFromDB();
+                    sr.setSpendFromDB();
+                    sr.Invalidate();
+
+                    break;
+
+                case "Year":
+
+
+
+
+                    break;
+
+                case "Budget":                       
+                    
+                    break;
+            }
         }
         /// <summary>
         /// 아이콘 설정
         /// </summary>
         private void setImgBtn()
         {
-
             // imgBtnContainer1
 
             // 첫번째 아이콘 추가
@@ -275,25 +272,22 @@ namespace UI
             LogoBtn.ImgName = "Title";
             // LogoBtn.Click
             imgBtnContainer2.InputBtn(LogoBtn);
-
         }
 
         #region WEEK MONTH YEAR CLICK EVENT
         private void BudgetBtn_Click(object sender, EventArgs e)
         {
             neoTabWindow1.Controls.Clear();
-
-            neoTabWindow1.Controls.Add(B_Tab);
+            neoTabWindow1.Controls.Add(B_IncomeTab);
+            neoTabWindow1.Controls.Add(B_SpendTab);
+            BIp.SetDate(dateTimePicker1.Value);
+            BSp.SetDate(dateTimePicker1.Value);
             currentCategory = "Budget";
             button1.Visible = true;
             button2.Visible = false;
-        }
 
-        /// <summary>
-        /// Year 버튼 클릭 이벤트
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+            // 값 세팅 부분
+        }
         private void YearBtn_Click(object sender, EventArgs e)
         {
             neoTabWindow1.Controls.Clear();
@@ -301,13 +295,9 @@ namespace UI
             currentCategory = "Year";
             button1.Visible = false;
             button2.Visible = true;
-        }
 
-        /// <summary>
-        /// Month 버튼 클릭 이벤트
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+            // 값 세팅 부분
+        }
         private void MonthBtn_Click(object sender, EventArgs e)
         {
             neoTabWindow1.Controls.Clear();
@@ -320,34 +310,52 @@ namespace UI
             currentCategory = "Month";
             button1.Visible = false;
             button2.Visible = true;
-            
-        }
 
-        /// <summary>
-        /// Week 버튼 클릭 이벤트
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+            // 값 세팅 부분
+            // IncomeProgress
+            ip.Date = dateTimePicker1.Value;
+            sp.Date = dateTimePicker1.Value;
+            ip.titleInvalidate();
+            sp.titleInvalidate();
+            ip.setBudgetFromDB();
+            sp.setBudgetFromDB();
+            ip.setIncomeFromDB();
+            sp.setIncomeFromDB();
+            ip.setSpendFromDB();
+            sp.setSpendFromDB();
+        }
         private void WeekBtn_Click(object sender, EventArgs e)
         {
-            // Tab 다 지우고 새로 넣기
             neoTabWindow1.Controls.Clear();
-
             neoTabWindow1.Controls.Add(W_IncomeTab);
             neoTabWindow1.Controls.Add(W_SpendingTab);
-            currentWeekTab = W_IncomeTab;
 
             currentCategory = "Week";
             button1.Visible = true;
             button2.Visible = false;
+
+            // 값 세팅 부분
+            SetThanksDGV(2);
+            Set10DGV(2);
+            SetCellDGV(2);
+            SetArchiDGV(2);
+            SetMissionDGV(2);
+            SetRiceDGV(2);
+            SetHelpDGV(2);
+            SetCarDGV(2);
+            SetTermDGV(2);
+            SetOtherDGV(2);
+            SetInterestDGV(2);
+
+            SetInputSumDGV();
+            currentTab.Hide();
+            _income_Thanks.Show();
+            currentTab = _income_Thanks;
         }
         #endregion 
         
         private void setWeekTabPage()
         {
-            W_IncomeTab = new NeoTabPage();
-            W_SpendingTab = new NeoTabPage();
-
             W_IncomeTab.Text = "수 입";
             W_IncomeTab.BackColor = Color.White;
             W_IncomeTab.AutoScroll = true;
@@ -379,24 +387,11 @@ namespace UI
             SetOtherDGV(1);
             SetInterestDGV(1);
 
-            W_IncomeTab.Controls.Remove(_income_Thanks);
-            W_IncomeTab.Controls.Remove(_income_10);
-            W_IncomeTab.Controls.Remove(_income_Cell);
-            W_IncomeTab.Controls.Remove(_income_Archi);
-            W_IncomeTab.Controls.Remove(_income_Mission);
-            W_IncomeTab.Controls.Remove(_income_Rice);
-            W_IncomeTab.Controls.Remove(_income_Help);
-            W_IncomeTab.Controls.Remove(_income_Car);
-            W_IncomeTab.Controls.Remove(_income_Term);
-            W_IncomeTab.Controls.Remove(_income_Other);
-            W_IncomeTab.Controls.Remove(_income_Interest);
-
             _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Thanks);
 
             SetInputSumDGV(); // 최초 DGV 그리기. ( 수입 SUM )
-            W_IncomeTab.Controls.Add(_income_Thanks);
+
             currentTab = _income_Thanks;
-            currentWeekTab = W_IncomeTab;
         }
 
         private static string ToNoComma(TextBox tb)
@@ -524,8 +519,11 @@ namespace UI
             income.ColumnCount = 2;
             income.ReadOnly = true;
             income.AllowUserToAddRows = false;
+            income.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            income.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
-            income.Columns[0].Name = "수 입";
+            income.Columns[0].Name = "항 목";
             income.Columns[1].Name = "금 액";
             
             for (int i = 0; i < income.Columns.Count; i++)
@@ -547,6 +545,8 @@ namespace UI
             income_total.SelectionChanged += Income_total_SelectionChanged;
             income_total.RowCount = 2;
             income_total.AllowUserToAddRows = false;
+            income_total.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             income_total.RowHeadersDefaultCellStyle.Padding = new Padding(income_total.RowHeadersWidth);
 
             income_total.Rows[0].Cells[0].Value = "Total";
@@ -567,6 +567,8 @@ namespace UI
             _income_total.SelectionChanged += _income_total_SelectionChanged;
             _income_total.RowCount = 2;
             _income_total.AllowUserToAddRows = false;
+            _income_total.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             _income_total.RowHeadersDefaultCellStyle.Padding = new Padding(_income_total.RowHeadersWidth);
 
             _income_total.Rows[0].Cells[0].Value = "Total";
@@ -589,6 +591,8 @@ namespace UI
             _income_Thanks.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             _income_Thanks.ColumnHeadersHeight = 30;
             _income_Thanks.Font = new Font("Microsoft Sans Serif", 12);
+            _income_Thanks.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
             // _income_10 ----------------------------------
             _income_10.Size = new Size(600, 392);
@@ -599,6 +603,8 @@ namespace UI
             _income_10.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             _income_10.ColumnHeadersHeight = 30;
             _income_10.Font = new Font("Microsoft Sans Serif", 12);
+            _income_10.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
             // _income_Cell ----------------------------------
             _income_Cell.Size = new Size(600, 392);
@@ -609,6 +615,8 @@ namespace UI
             _income_Cell.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             _income_Cell.ColumnHeadersHeight = 30;
             _income_Cell.Font = new Font("Microsoft Sans Serif", 12);
+            _income_Cell.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
             // _income_Archi ----------------------------------
             _income_Archi.Size = new Size(600, 392);
@@ -619,6 +627,8 @@ namespace UI
             _income_Archi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             _income_Archi.ColumnHeadersHeight = 30;
             _income_Archi.Font = new Font("Microsoft Sans Serif", 12);
+            _income_Archi.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
             // _income_Mission ----------------------------------
             _income_Mission.Size = new Size(600, 392);
@@ -629,6 +639,8 @@ namespace UI
             _income_Mission.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             _income_Mission.ColumnHeadersHeight = 30;
             _income_Mission.Font = new Font("Microsoft Sans Serif", 12);
+            _income_Mission.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
             // _income_Rice ----------------------------------
             _income_Rice.Size = new Size(600, 392);
@@ -639,6 +651,8 @@ namespace UI
             _income_Rice.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             _income_Rice.ColumnHeadersHeight = 30;
             _income_Rice.Font = new Font("Microsoft Sans Serif", 12);
+            _income_Rice.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
             // _income_Help ----------------------------------
             _income_Help.Size = new Size(600, 392);
@@ -649,6 +663,8 @@ namespace UI
             _income_Help.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             _income_Help.ColumnHeadersHeight = 30;
             _income_Help.Font = new Font("Microsoft Sans Serif", 12);
+            _income_Help.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
             // _income_Car ----------------------------------
             _income_Car.Size = new Size(600, 392);
@@ -659,6 +675,8 @@ namespace UI
             _income_Car.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             _income_Car.ColumnHeadersHeight = 30;
             _income_Car.Font = new Font("Microsoft Sans Serif", 12);
+            _income_Car.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
             // _income_Term ----------------------------------
             _income_Term.Size = new Size(600, 392);
@@ -669,6 +687,8 @@ namespace UI
             _income_Term.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             _income_Term.ColumnHeadersHeight = 30;
             _income_Term.Font = new Font("Microsoft Sans Serif", 12);
+            _income_Term.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
             // _income_Other ----------------------------------
             _income_Other.Size = new Size(600, 392);
@@ -679,6 +699,8 @@ namespace UI
             _income_Other.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             _income_Other.ColumnHeadersHeight = 30;
             _income_Other.Font = new Font("Microsoft Sans Serif", 12);
+            _income_Other.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
             // _income_Interest ----------------------------------
             _income_Interest.Size = new Size(600, 392);
@@ -689,6 +711,8 @@ namespace UI
             _income_Interest.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             _income_Interest.ColumnHeadersHeight = 30;
             _income_Interest.Font = new Font("Microsoft Sans Serif", 12);
+            _income_Interest.RowHeadersWidthSizeMode =
+                DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             #endregion
 
             // Draw DGVS --------------------------------------------------
@@ -696,6 +720,8 @@ namespace UI
             W_IncomeTab.Controls.Add(income);
 
             W_IncomeTab.Controls.Add(_income_Thanks);
+            currentTab = _income_Thanks;
+            
             W_IncomeTab.Controls.Add(_income_10);
             W_IncomeTab.Controls.Add(_income_Cell);
             W_IncomeTab.Controls.Add(_income_Archi);
@@ -706,6 +732,17 @@ namespace UI
             W_IncomeTab.Controls.Add(_income_Term);
             W_IncomeTab.Controls.Add(_income_Other);
             W_IncomeTab.Controls.Add(_income_Interest);
+
+            _income_10.Hide();
+            _income_Cell.Hide();
+            _income_Archi.Hide();
+            _income_Mission.Hide();
+            _income_Rice.Hide();
+            _income_Help.Hide();
+            _income_Car.Hide();
+            _income_Term.Hide();
+            _income_Other.Hide();
+            _income_Interest.Hide();
 
             W_IncomeTab.Controls.Add(income_total);
             W_IncomeTab.Controls.Add(_income_total);
@@ -796,61 +833,61 @@ namespace UI
         {
             if( e.RowIndex != -1 && e.RowIndex != 11)
             {
-                W_IncomeTab.Controls.Remove(currentTab);
+                currentTab.Hide();
                 switch (e.RowIndex)
                 {
                     case 0:
-                        W_IncomeTab.Controls.Add(_income_Thanks);
+                        _income_Thanks.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Thanks);
                         currentTab = _income_Thanks;
                         break;
                     case 1:
-                        W_IncomeTab.Controls.Add(_income_10);
+                        _income_10.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_10);
                         currentTab = _income_10;
                         break;
                     case 2:
-                        W_IncomeTab.Controls.Add(_income_Cell);
+                        _income_Cell.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Cell);
                         currentTab = _income_Cell;
                         break;
                     case 3:
-                        W_IncomeTab.Controls.Add(_income_Archi);
+                        _income_Archi.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Archi);
                         currentTab = _income_Archi;
                         break;
                     case 4:
-                        W_IncomeTab.Controls.Add(_income_Mission);
+                        _income_Mission.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Mission);
                         currentTab = _income_Mission;
                         break;
                     case 5:
-                        W_IncomeTab.Controls.Add(_income_Rice);
+                        _income_Rice.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Rice);
                         currentTab = _income_Rice;
                         break;
                     case 6:
-                        W_IncomeTab.Controls.Add(_income_Help);
+                        _income_Help.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Help);
                         currentTab = _income_Help;
                         break;
                     case 7:
-                        W_IncomeTab.Controls.Add(_income_Car);
+                        _income_Car.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Car);
                         currentTab = _income_Car;
                         break;
                     case 8:
-                        W_IncomeTab.Controls.Add(_income_Term);
+                        _income_Term.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Term);
                         currentTab = _income_Term;
                         break;
                     case 9:
-                        W_IncomeTab.Controls.Add(_income_Other);
+                        _income_Other.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Other);
                         currentTab = _income_Other;
                         break;
                     case 10:
-                        W_IncomeTab.Controls.Add(_income_Interest);
+                        _income_Interest.Show();
                         _income_total.Rows[0].Cells[1].Value = ToComma(Sum_Interest);
                         currentTab = _income_Interest;
                         break;
@@ -1195,6 +1232,7 @@ namespace UI
                         sum += Convert.ToInt32(ToNoComma(_income_10.Rows[i].Cells[1].Value));
                 Sum_10 = sum;
 
+                W_IncomeTab.Invalidate();
                 SQLite.CloseDB();
             }
             catch (SQLiteException e)
@@ -1586,6 +1624,8 @@ namespace UI
                 SQLite.ConnectToDB();
                 income.Rows.Clear();
 
+
+
                 // 감사헌금
                 String[] a = { "감사헌금", ToComma(Sum_Thanks.ToString()) };
                 income.Rows.Add(a);
@@ -1654,7 +1694,8 @@ namespace UI
         {
             if(currentCategory.Equals("Budget"))
             {
-                Bp.ButtonEvent();
+                BIp.ButtonEvent();
+                BSp.ButtonEvent();
             }
             else
             {
@@ -1728,3 +1769,4 @@ namespace UI
         }
     }
 }
+
