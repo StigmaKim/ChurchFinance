@@ -37,6 +37,7 @@
             // 
             // dgv
             // 
+            this.dgv.BackgroundColor = System.Drawing.Color.Lavender;
             this.dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv.Location = new System.Drawing.Point(44, 91);
             this.dgv.Name = "dgv";

@@ -308,6 +308,7 @@ namespace UI
             spend.Font = new Font("Microsoft Sans Serif", 12);
             spend.RowTemplate.Height = 30;
             spend.ColumnCount = 2;
+            spend.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             spend.Columns[0].ReadOnly = true;
             spend.AllowUserToAddRows = false;
             spend.RowHeadersWidthSizeMode =
@@ -318,6 +319,8 @@ namespace UI
 
             for (int i = 0; i < spend.Columns.Count; i++)
                 spend.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            for (int i = 0; i < spend.ColumnCount; i++)
+                spend.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
             #endregion
 
             #region DGV 옵션 2
@@ -336,6 +339,7 @@ namespace UI
                 DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             spend_Worship.RowCount = 12;
             spend_Worship.ColumnCount = 2;
+            spend_Worship.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             spend_Worship.Columns[0].HeaderText = "항 목";
             spend_Worship.Columns[1].HeaderText = "금 액";
 
@@ -353,6 +357,7 @@ namespace UI
                 DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             spend_Mission.RowCount = 12;
             spend_Mission.ColumnCount = 2;
+            spend_Mission.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             spend_Mission.Columns[0].HeaderText = "항 목";
             spend_Mission.Columns[1].HeaderText = "금 액";
 
@@ -370,6 +375,7 @@ namespace UI
                 DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             spend_Edu.RowCount = 12;
             spend_Edu.ColumnCount = 2;
+            spend_Edu.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             spend_Edu.Columns[0].HeaderText = "항 목";
             spend_Edu.Columns[1].HeaderText = "금 액";
 
@@ -387,6 +393,7 @@ namespace UI
                 DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             spend_Human.RowCount = 12;
             spend_Human.ColumnCount = 2;
+            spend_Human.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             spend_Human.Columns[0].HeaderText = "항 목";
             spend_Human.Columns[1].HeaderText = "금 액";
 
@@ -404,6 +411,7 @@ namespace UI
                 DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             spend_Vol.RowCount = 12;
             spend_Vol.ColumnCount = 2;
+            spend_Vol.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             spend_Vol.Columns[0].HeaderText = "항 목";
             spend_Vol.Columns[1].HeaderText = "금 액";
 
@@ -421,6 +429,7 @@ namespace UI
                 DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             spend_Main.RowCount = 12;
             spend_Main.ColumnCount = 2;
+            spend_Main.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             spend_Main.Columns[0].HeaderText = "항 목";
             spend_Main.Columns[1].HeaderText = "금 액";
 
@@ -438,6 +447,7 @@ namespace UI
                 DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             spend_Loan.RowCount = 12;
             spend_Loan.ColumnCount = 2;
+            spend_Loan.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             spend_Loan.Columns[0].HeaderText = "항 목";
             spend_Loan.Columns[1].HeaderText = "금 액";
             
@@ -501,6 +511,7 @@ namespace UI
                 dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgv.ColumnCount = 2;
+                dgv.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dgv.RowTemplate.Height = 30;
                 dgv.RowCount = 11;
                 dgv.Font = new Font("Microsoft Sans Serif", 12);
@@ -515,6 +526,9 @@ namespace UI
 
                 for (int i = 0; i < dgv.Columns.Count; i++)
                     dgv.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+                for (int i = 0; i < dgv.ColumnCount; i++)
+                    dgv.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
             }
             else if( mode == DMode.spend)
             {
@@ -627,25 +641,25 @@ namespace UI
         {
             if( mode == DMode.income)
             {
-                dgv.Rows[0].Cells[0].Value = "감사헌금";
+                dgv.Rows[0].Cells[0].Value = "  감사헌금";
                 dgv.Rows[0].Cells[1].Value = Thanks;
-                dgv.Rows[1].Cells[0].Value = "십일조";
+                dgv.Rows[1].Cells[0].Value = "  십일조";
                 dgv.Rows[1].Cells[1].Value = O10;
-                dgv.Rows[2].Cells[0].Value = "구역헌금";
+                dgv.Rows[2].Cells[0].Value = "  구역헌금";
                 dgv.Rows[2].Cells[1].Value = Cell;
-                dgv.Rows[3].Cells[0].Value = "건축헌금";
+                dgv.Rows[3].Cells[0].Value = "  건축헌금";
                 dgv.Rows[3].Cells[1].Value = Archi;
-                dgv.Rows[4].Cells[0].Value = "선교헌금";
+                dgv.Rows[4].Cells[0].Value = "  선교헌금";
                 dgv.Rows[4].Cells[1].Value = Mission;
-                dgv.Rows[5].Cells[0].Value = "성미헌금";
+                dgv.Rows[5].Cells[0].Value = "  성미헌금";
                 dgv.Rows[5].Cells[1].Value = Rice;
-                dgv.Rows[6].Cells[0].Value = "구제헌금";
+                dgv.Rows[6].Cells[0].Value = "  구제헌금";
                 dgv.Rows[6].Cells[1].Value = Help;
-                dgv.Rows[7].Cells[0].Value = "차량헌금";
+                dgv.Rows[7].Cells[0].Value = "  차량헌금";
                 dgv.Rows[7].Cells[1].Value = Car;
-                dgv.Rows[8].Cells[0].Value = "절기헌금";
+                dgv.Rows[8].Cells[0].Value = "  절기헌금";
                 dgv.Rows[8].Cells[1].Value = Term;
-                dgv.Rows[9].Cells[0].Value = "Total";
+                dgv.Rows[9].Cells[0].Value = "  Total";
                 int sum = 0;
                 for (int i = 0; i < 9; i++)
                     sum += Convert.ToInt32(dgv.Rows[i].Cells[1].Value);
@@ -774,9 +788,9 @@ namespace UI
             ds = SQLite.ExecuteSelectQuery(string.Format("select * from Budget2"));
 
             // Worship
-            spend_Worship.Rows[0].Cells[0].Value = "강단꽃꽃이";
-            spend_Worship.Rows[1].Cells[0].Value = "성가대운영비";
-            spend_Worship.Rows[2].Cells[0].Value = "주보대";
+            spend_Worship.Rows[0].Cells[0].Value = "  강단꽃꽃이";
+            spend_Worship.Rows[1].Cells[0].Value = "  성가대운영비";
+            spend_Worship.Rows[2].Cells[0].Value = "  주보대";
             for (int i = 0; i < 3; i++)
                 spend_Worship.Rows[i].Cells[1].Value = ToComma(ds.Tables[0].Rows[i]["amount"].ToString());
             spend_Worship.Columns[0].ReadOnly = true;
@@ -793,12 +807,12 @@ namespace UI
                 if (spend_Worship.Rows[i].Cells[1].Value.ToString() != "")
                     sum += Convert.ToInt32(ToNoComma(spend_Worship.Rows[i].Cells[1].Value));
             Sum_Worship = sum;
-            spend_Worship.Rows[11].Cells[0].Value = "Total";
+            spend_Worship.Rows[11].Cells[0].Value = "  Total";
             spend_Worship.Rows[11].Cells[1].Value = ToComma(Sum_Worship);
 
             // Mission
-            spend_Mission.Rows[0].Cells[0].Value = "선교비";
-            spend_Mission.Rows[1].Cells[0].Value = "심방비";
+            spend_Mission.Rows[0].Cells[0].Value = "  선교비";
+            spend_Mission.Rows[1].Cells[0].Value = "  심방비";
             for (int i = 0; i < 2; i++)
                 spend_Mission.Rows[i].Cells[1].Value = ToComma(ds.Tables[0].Rows[i+3]["amount"].ToString());
             spend_Mission.Columns[0].ReadOnly = true;
@@ -815,15 +829,15 @@ namespace UI
                 if (spend_Mission.Rows[i].Cells[1].Value.ToString() != "")
                     sum += Convert.ToInt32(ToNoComma(spend_Mission.Rows[i].Cells[1].Value));
             Sum_Mission = sum;
-            spend_Mission.Rows[11].Cells[0].Value = "Total";
+            spend_Mission.Rows[11].Cells[0].Value = "  Total";
             spend_Mission.Rows[11].Cells[1].Value = ToComma(Sum_Mission);
 
             // Edu
-            spend_Edu.Rows[0].Cells[0].Value = "주일학교지원비";
-            spend_Edu.Rows[1].Cells[0].Value = "학생부지원비";
-            spend_Edu.Rows[2].Cells[0].Value = "청년부지원비";
-            spend_Edu.Rows[3].Cells[0].Value = "장학금";
-            spend_Edu.Rows[4].Cells[0].Value = "도서비";
+            spend_Edu.Rows[0].Cells[0].Value = "  주일학교지원비";
+            spend_Edu.Rows[1].Cells[0].Value = "  학생부지원비";
+            spend_Edu.Rows[2].Cells[0].Value = "  청년부지원비";
+            spend_Edu.Rows[3].Cells[0].Value = "  장학금";
+            spend_Edu.Rows[4].Cells[0].Value = "  도서비";
             for (int i = 0; i < 5; i++)
                 spend_Edu.Rows[i].Cells[1].Value = ToComma(ds.Tables[0].Rows[i + 5]["amount"].ToString());
             spend_Edu.Columns[0].ReadOnly = true;
@@ -840,13 +854,13 @@ namespace UI
                 if (spend_Edu.Rows[i].Cells[1].Value.ToString() != "")
                     sum += Convert.ToInt32(ToNoComma(spend_Edu.Rows[i].Cells[1].Value));
             Sum_Edu = sum;
-            spend_Edu.Rows[11].Cells[0].Value = "Total";
+            spend_Edu.Rows[11].Cells[0].Value = "  Total";
             spend_Edu.Rows[11].Cells[1].Value = ToComma(Sum_Edu);
 
             // Human
-            spend_Human.Rows[0].Cells[0].Value = "목사님사례비";
-            spend_Human.Rows[1].Cells[0].Value = "전도사님사례비";
-            spend_Human.Rows[2].Cells[0].Value = "상여금";
+            spend_Human.Rows[0].Cells[0].Value = "  목사님사례비";
+            spend_Human.Rows[1].Cells[0].Value = "  전도사님사례비";
+            spend_Human.Rows[2].Cells[0].Value = "  상여금";
             for (int i = 0; i < 3; i++)
                 spend_Human.Rows[i].Cells[1].Value = ToComma(ds.Tables[0].Rows[i + 10]["amount"].ToString());
             spend_Human.Columns[0].ReadOnly = true;
@@ -863,13 +877,13 @@ namespace UI
                 if (spend_Human.Rows[i].Cells[1].Value.ToString() != "")
                     sum += Convert.ToInt32(ToNoComma(spend_Human.Rows[i].Cells[1].Value));
             Sum_Human = sum;
-            spend_Human.Rows[11].Cells[0].Value = "Total";
+            spend_Human.Rows[11].Cells[0].Value = "  Total";
             spend_Human.Rows[11].Cells[1].Value = ToComma(Sum_Human);
 
             // Vol
-            spend_Vol.Rows[0].Cells[0].Value = "목사님사례비";
-            spend_Vol.Rows[1].Cells[0].Value = "전도사님사례비";
-            spend_Vol.Rows[2].Cells[0].Value = "상여금";
+            spend_Vol.Rows[0].Cells[0].Value = "  목사님사례비";
+            spend_Vol.Rows[1].Cells[0].Value = "  전도사님사례비";
+            spend_Vol.Rows[2].Cells[0].Value = "  상여금";
             for (int i = 0; i < 3; i++)
                 spend_Vol.Rows[i].Cells[1].Value = ToComma(ds.Tables[0].Rows[i + 13]["amount"].ToString());
             spend_Vol.Columns[0].ReadOnly = true;
@@ -886,20 +900,20 @@ namespace UI
                 if (spend_Vol.Rows[i].Cells[1].Value.ToString() != "")
                     sum += Convert.ToInt32(ToNoComma(spend_Vol.Rows[i].Cells[1].Value));
             Sum_Vol = sum;
-            spend_Vol.Rows[11].Cells[0].Value = "Total";
+            spend_Vol.Rows[11].Cells[0].Value = "  Total";
             spend_Vol.Rows[11].Cells[1].Value = ToComma(Sum_Vol);
 
             // Main
-            spend_Main.Rows[0].Cells[0].Value = "사택유지비";
-            spend_Main.Rows[1].Cells[0].Value = "교회관리비";
-            spend_Main.Rows[2].Cells[0].Value = "목회활동비";
-            spend_Main.Rows[3].Cells[0].Value = "수도광열비";
-            spend_Main.Rows[4].Cells[0].Value = "통신비";
-            spend_Main.Rows[5].Cells[0].Value = "차량관리비";
-            spend_Main.Rows[6].Cells[0].Value = "차량구입비적립";
-            spend_Main.Rows[7].Cells[0].Value = "상회비";
-            spend_Main.Rows[8].Cells[0].Value = "교회비품비";
-            spend_Main.Rows[9].Cells[0].Value = "기타지출";
+            spend_Main.Rows[0].Cells[0].Value = "  사택유지비";
+            spend_Main.Rows[1].Cells[0].Value = "  교회관리비";
+            spend_Main.Rows[2].Cells[0].Value = "  목회활동비";
+            spend_Main.Rows[3].Cells[0].Value = "  수도광열비";
+            spend_Main.Rows[4].Cells[0].Value = "  통신비";
+            spend_Main.Rows[5].Cells[0].Value = "  차량관리비";
+            spend_Main.Rows[6].Cells[0].Value = "  차량구입비적립";
+            spend_Main.Rows[7].Cells[0].Value = "  상회비";
+            spend_Main.Rows[8].Cells[0].Value = "  교회비품비";
+            spend_Main.Rows[9].Cells[0].Value = "  기타지출";
             for (int i = 0; i < 10; i++)
                 spend_Main.Rows[i].Cells[1].Value = ToComma(ds.Tables[0].Rows[i + 16]["amount"].ToString());
             spend_Main.Columns[0].ReadOnly = true;
@@ -916,12 +930,12 @@ namespace UI
                 if (spend_Main.Rows[i].Cells[1].Value.ToString() != "")
                     sum += Convert.ToInt32(ToNoComma(spend_Main.Rows[i].Cells[1].Value));
             Sum_Main = sum;
-            spend_Main.Rows[11].Cells[0].Value = "Total";
+            spend_Main.Rows[11].Cells[0].Value = "  Total";
             spend_Main.Rows[11].Cells[1].Value = ToComma(Sum_Main);
 
             // Loan
-            spend_Loan.Rows[0].Cells[0].Value = "상환적립";
-            spend_Loan.Rows[1].Cells[0].Value = "지급이자";
+            spend_Loan.Rows[0].Cells[0].Value = "  상환적립";
+            spend_Loan.Rows[1].Cells[0].Value = "  지급이자";
             for (int i = 0; i < 2; i++)
                 spend_Loan.Rows[i].Cells[1].Value = ToComma(ds.Tables[0].Rows[i + 26]["amount"].ToString());
             spend_Loan.Columns[0].ReadOnly = true;
@@ -938,7 +952,7 @@ namespace UI
                 if (spend_Loan.Rows[i].Cells[1].Value.ToString() != "")
                     sum += Convert.ToInt32(ToNoComma(spend_Loan.Rows[i].Cells[1].Value));
             Sum_Loan = sum;
-            spend_Loan.Rows[11].Cells[0].Value = "Total";
+            spend_Loan.Rows[11].Cells[0].Value = "  Total";
             spend_Loan.Rows[11].Cells[1].Value = ToComma(Sum_Loan);
 
             // Res
@@ -952,35 +966,35 @@ namespace UI
                 spend.Rows.Clear();
 
                 // 예배비
-                String[] a = { "예배비", ToComma(Sum_Worship.ToString()) };
+                String[] a = { "  예배비", ToComma(Sum_Worship.ToString()) };
                 spend.Rows.Add(a);
 
                 // 선교비
-                string[] b = { "선교비", ToComma(Sum_Mission.ToString()) };
+                string[] b = { "  선교비", ToComma(Sum_Mission.ToString()) };
                 spend.Rows.Add(b);
 
                 // 교육비
-                string[] c = { "교육비", ToComma(Sum_Edu.ToString()) };
+                string[] c = { "  교육비", ToComma(Sum_Edu.ToString()) };
                 spend.Rows.Add(c);
 
                 // 인건비
-                string[] d = { "인건비", ToComma(Sum_Human.ToString()) };
+                string[] d = { "  인건비", ToComma(Sum_Human.ToString()) };
                 spend.Rows.Add(d);
 
                 // 봉사비
-                string[] e = { "봉사비", ToComma(Sum_Vol.ToString()) };
+                string[] e = { "  봉사비", ToComma(Sum_Vol.ToString()) };
                 spend.Rows.Add(e);
 
                 // 운영관리비
-                string[] f = { "운영관리비", ToComma(Sum_Main.ToString()) };
+                string[] f = { "  운영관리비", ToComma(Sum_Main.ToString()) };
                 spend.Rows.Add(f);
 
                 // 대출관련비
-                string[] g = { "대출관련비", ToComma(Sum_Loan.ToString()) };
+                string[] g = { "  대출관련비", ToComma(Sum_Loan.ToString()) };
                 spend.Rows.Add(g);
 
                 // 예비비
-                string[] h = { "예비비", ToComma(Sum_Res.ToString()) };
+                string[] h = { "  예비비", ToComma(Sum_Res.ToString()) };
                 spend.Rows.Add(h);
                 string[] q;
                 for(int i=0; i < 3; i++)
@@ -996,7 +1010,7 @@ namespace UI
                         sumn += Convert.ToInt32(ToNoComma(spend.Rows[i].Cells[1].Value));
 
                 // 합계
-                string[] m = { "Total", ToComma(sumn.ToString()) };
+                string[] m = { "  Total", ToComma(sumn.ToString()) };
                 spend.Rows.Add(m);
 
                 for(int i = 0; i < 12; i++)

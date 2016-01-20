@@ -407,7 +407,7 @@ namespace UI
             // 현재 데이터 입력
             curPray.Flower = 100000;
             curPray.Singer = 100000;
-            curPray.Jubo = 0;
+            curPray.Jubo = 2000000;
             curMissionWork.Misson = 660000;
             curMissionWork.Visit = 0;
             curEdu.WeekSchool = 200000;
@@ -460,9 +460,10 @@ namespace UI
             this.BackColor = Color.White;
 
             // 행 갯수와 Alignment
-            DataView.Location = new Point(80, 80);
-            DataView.Size = new Size(800, 400);
+            DataView.Location = new Point(60, 40);
+            DataView.Size = new Size(860, 452);
             DataView.ColumnCount = 7;
+
             DataView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             DataView.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
@@ -481,15 +482,40 @@ namespace UI
             DataView.Columns[6].HeaderText = "진도비";
             DataView.AllowUserToAddRows = false;
 
+            DataView.Columns[0].Width = 100;
+            DataView.Columns[1].Width = 130;
+            DataView.Columns[2].Width = 130;
+            DataView.Columns[3].Width = 130;
+            DataView.Columns[4].Width = 130;
+            DataView.Columns[5].Width = 130;
+            DataView.Columns[6].Width = 90;
+            /*
             for (int i = 0; i < DataView.ColumnCount; i++)
                 DataView.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                */
 
             for (int i = 0; i < DataView.ColumnCount; i++)
                 DataView.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
-            DataView.ReadOnly = true;
-
             DataView.RowCount = 37;
+            DataView.Rows[0].DefaultCellStyle.BackColor = Color.Lavender;
+            DataView.Rows[7].DefaultCellStyle.BackColor = Color.Lavender;
+            DataView.Rows[4].DefaultCellStyle.BackColor = Color.Lavender;
+            DataView.Rows[13].DefaultCellStyle.BackColor = Color.Lavender;
+            DataView.Rows[17].DefaultCellStyle.BackColor = Color.Lavender;
+            DataView.Rows[21].DefaultCellStyle.BackColor = Color.Lavender;
+            DataView.Rows[32].DefaultCellStyle.BackColor = Color.Lavender;
+            DataView.Rows[35].DefaultCellStyle.BackColor = Color.Lavender;
+            DataView.Rows[36].DefaultCellStyle.BackColor = Color.Lavender;
+
+            DataView.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            DataView.Columns[0].DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
+            DataView.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            DataView.Columns[1].DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
+            DataView.RowHeadersVisible = false;
+
+            DataView.SelectionChanged += DataView_SelectionChanged;
+            DataView.ClearSelection();
 
             // 프린트 관련 변수 및 이벤트 연결
             pd = new PrintDocument();
@@ -497,7 +523,11 @@ namespace UI
             pd.PrintPage += Pd_PrintPage;
 
         }
-        
+
+        private void DataView_SelectionChanged(object sender, EventArgs e)
+        {
+        }
+
         #region 프린터 인쇄 처리
 
         /// <summary>
@@ -760,7 +790,7 @@ namespace UI
         private void SpendDetail_Paint(object sender, PaintEventArgs e)
         {
             label1.Text = date.Year + "년 " + date.Month + "월 지출 세부 명세";
-            label1.Location = new Point(350, 20);
+            label1.Location = new Point(350, 10);
             inputData();
         }
     }
@@ -1398,3 +1428,4 @@ namespace UI
     }
     #endregion
 }
+

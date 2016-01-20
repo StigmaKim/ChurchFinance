@@ -154,7 +154,7 @@ namespace UI
 
             M_DetailTab = new NeoTabPage();
             M_DetailTab.Text = "지출 세부 항목";
-            sd = new SpendDetail();
+            sd = new SpendDetail(button2);
             sd.Dock = DockStyle.Fill;
             M_DetailTab.Controls.Add(sd);
 
@@ -175,23 +175,23 @@ namespace UI
             switch( currentCategory)
             {
                 case "Week":
-            SetThanksDGV(2);
-            Set10DGV(2);
-            SetCellDGV(2);
-            SetArchiDGV(2);
-            SetMissionDGV(2);
-            SetRiceDGV(2);
-            SetHelpDGV(2);
-            SetCarDGV(2);
-            SetTermDGV(2);
-            SetOtherDGV(2);
-            SetInterestDGV(2);
+                    Debug.WriteLine("Check Here :" + (currentTab == _income_Thanks));
+                    SetThanksDGV(2);
+                    Set10DGV(2);
+                    SetCellDGV(2);
+                    SetArchiDGV(2);
+                    SetMissionDGV(2);
+                    SetRiceDGV(2);
+                    SetHelpDGV(2);
+                    SetCarDGV(2);
+                    SetTermDGV(2);
+                    SetOtherDGV(2);
+                    SetInterestDGV(2);
 
-            SetInputSumDGV();
-                    currentTab.Hide();
-                    _income_Thanks.Show();
-            currentTab = _income_Thanks;
-                    
+                    SetInputSumDGV();
+                            currentTab.Hide();
+                            _income_Thanks.Show();
+                    currentTab = _income_Thanks;
                     break;
 
                 case "Month":
@@ -332,7 +332,8 @@ namespace UI
             button1.Visible = true;
             button2.Visible = false;
 
-            // 값 세팅 부분
+            
+            // Income
             SetThanksDGV(2);
             Set10DGV(2);
             SetCellDGV(2);
@@ -349,6 +350,8 @@ namespace UI
             currentTab.Hide();
             _income_Thanks.Show();
             currentTab = _income_Thanks;
+
+            WSP.SetData();
         }
         #endregion 
         
@@ -520,6 +523,8 @@ namespace UI
             income.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             income.RowHeadersWidthSizeMode =
                 DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            income.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            income.DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
 
             income.Columns[0].Name = "항 목";
             income.Columns[1].Name = "금 액";
@@ -546,6 +551,8 @@ namespace UI
             income_total.RowHeadersWidthSizeMode =
                 DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             income_total.RowHeadersDefaultCellStyle.Padding = new Padding(income_total.RowHeadersWidth);
+            income_total.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            income_total.DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
 
             income_total.Rows[0].Cells[0].Value = "Total";
 
@@ -568,6 +575,8 @@ namespace UI
             _income_total.RowHeadersWidthSizeMode =
                 DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             _income_total.RowHeadersDefaultCellStyle.Padding = new Padding(_income_total.RowHeadersWidth);
+            _income_total.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            _income_total.DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
 
             _income_total.Rows[0].Cells[0].Value = "Total";
             _income_total.Rows[0].Cells[1].Value = "";
@@ -1179,6 +1188,8 @@ namespace UI
                     _income_Thanks.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 for (int i = 0; i < _income_Thanks.ColumnCount; i++)
                     _income_Thanks.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                _income_Thanks.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                _income_Thanks.DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
 
                 // Set Sumation.
                 int sum = 0;
@@ -1222,6 +1233,8 @@ namespace UI
                     _income_10.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 for (int i = 0; i < _income_10.ColumnCount; i++)
                     _income_10.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                _income_10.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                _income_10.DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
 
                 // Set Sumation.
                 int sum = 0;
@@ -1265,6 +1278,8 @@ namespace UI
                     _income_Cell.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 for (int i = 0; i < _income_Cell.ColumnCount; i++)
                     _income_Cell.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                _income_Cell.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                _income_Cell.DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
 
                 // Set Sumation.
                 int sum = 0;
@@ -1307,6 +1322,8 @@ namespace UI
                     _income_Archi.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 for (int i = 0; i < _income_Archi.ColumnCount; i++)
                     _income_Archi.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                _income_Archi.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                _income_Archi.DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
 
                 // Set Sumation.
                 int sum = 0;
@@ -1349,6 +1366,8 @@ namespace UI
                     _income_Mission.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 for (int i = 0; i < _income_Mission.ColumnCount; i++)
                     _income_Mission.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                _income_Mission.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                _income_Mission.DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
 
                 // Set Sumation.
                 int sum = 0;
@@ -1390,6 +1409,8 @@ namespace UI
                     _income_Rice.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 for (int i = 0; i < _income_Rice.ColumnCount; i++)
                     _income_Rice.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                _income_Rice.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                _income_Rice.DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
 
                 // Set Sumation.
                 int sum = 0;
@@ -1431,6 +1452,8 @@ namespace UI
                     _income_Help.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 for (int i = 0; i < _income_Help.ColumnCount; i++)
                     _income_Help.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                _income_Help.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                _income_Help.DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
 
                 // Set Sumation.
                 int sum = 0;
@@ -1472,6 +1495,8 @@ namespace UI
                     _income_Car.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 for (int i = 0; i < _income_Car.ColumnCount; i++)
                     _income_Car.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                _income_Car.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                _income_Car.DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
 
                 // Set Sumation.
                 int sum = 0;
@@ -1514,6 +1539,8 @@ namespace UI
                     _income_Term.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 for (int i = 0; i < _income_Term.ColumnCount; i++)
                     _income_Term.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                _income_Term.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                _income_Term.DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
 
                 // Set Sumation.
                 int sum = 0;
@@ -1555,6 +1582,8 @@ namespace UI
                     _income_Other.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 for (int i = 0; i < _income_Other.ColumnCount; i++)
                     _income_Other.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                _income_Other.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                _income_Other.DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
 
                 // Set Sumation.
                 int sum = 0;
@@ -1596,6 +1625,8 @@ namespace UI
                     _income_Interest.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 for (int i = 0; i < _income_Interest.ColumnCount; i++)
                     _income_Interest.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                _income_Interest.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                _income_Interest.DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
 
                 // Set Sumation.
                 int sum = 0;
@@ -1672,11 +1703,9 @@ namespace UI
                 // Total of Total
                 int sumn = 0;
                 for (int i = 0; i < income.RowCount-1; i++)
-                {
                     if (income.Rows[i].Cells[1].Value.ToString() != "")
                         sumn += Convert.ToInt32(ToNoComma(income.Rows[i].Cells[1].Value));
-                }
-
+                
                 income_total.Rows[0].Cells[1].Value = ToComma(sumn);
                 SQLite.CloseDB();
             }

@@ -142,6 +142,10 @@ namespace UI
 
             for (int i = 0; i < income.Columns.Count; i++)
                 income.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            for (int i = 0; i < income.ColumnCount; i++)
+                income.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+
             income.Columns[0].HeaderText = "항 목";
             income.Columns[1].HeaderText = "금 액";
 
@@ -150,18 +154,18 @@ namespace UI
 
             income.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             income.ColumnHeadersHeight = 30;
-            income.Rows[0].Cells[0].Value = "감사헌금";
-            income.Rows[1].Cells[0].Value = "십일조";
-            income.Rows[2].Cells[0].Value = "구역헌금";
-            income.Rows[3].Cells[0].Value = "건축헌금";
-            income.Rows[4].Cells[0].Value = "선교헌금";
-            income.Rows[5].Cells[0].Value = "성미헌금";
-            income.Rows[6].Cells[0].Value = "구제헌금";
-            income.Rows[7].Cells[0].Value = "차량헌금";
-            income.Rows[8].Cells[0].Value = "절기헌금";
-            income.Rows[9].Cells[0].Value = "기타수입";
-            income.Rows[10].Cells[0].Value = "이자수입";
-            income.Rows[11].Cells[0].Value = "수입 총액";
+            income.Rows[0].Cells[0].Value = "  감사헌금";
+            income.Rows[1].Cells[0].Value = "  십일조";
+            income.Rows[2].Cells[0].Value = "  구역헌금";
+            income.Rows[3].Cells[0].Value = "  건축헌금";
+            income.Rows[4].Cells[0].Value = "  선교헌금";
+            income.Rows[5].Cells[0].Value = "  성미헌금";
+            income.Rows[6].Cells[0].Value = "  구제헌금";
+            income.Rows[7].Cells[0].Value = "  차량헌금";
+            income.Rows[8].Cells[0].Value = "  절기헌금";
+            income.Rows[9].Cells[0].Value = "  기타수입";
+            income.Rows[10].Cells[0].Value = "  이자수입";
+            income.Rows[11].Cells[0].Value = "  수입 총액";
             income.Rows[11].Height = 30;
             income.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             income.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
@@ -185,8 +189,9 @@ namespace UI
             spend.Size = new Size(300, 392);
             
             spend.ColumnCount = 2;
-            income.RowTemplate.Height = 30;
-            spend.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            spend.RowTemplate.Height = 30;
+            spend.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            spend.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             spend.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             spend.RowHeadersVisible = false;
             spend.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
@@ -194,22 +199,25 @@ namespace UI
 
             for (int i = 0; i < spend.Columns.Count; i++)
                 spend.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            for (int i = 0; i < spend.ColumnCount; i++)
+                spend.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+
             spend.Columns[0].HeaderText = "항 목";
             spend.Columns[1].HeaderText = "금 액";
 
             spend.ReadOnly = true;
-            spend.RowTemplate.Height = 30;
             spend.RowCount = 12;
 
-            spend.Rows[0].Cells[0].Value = "예배비";
-            spend.Rows[1].Cells[0].Value = "선교비";
-            spend.Rows[2].Cells[0].Value = "교육비";
-            spend.Rows[3].Cells[0].Value = "인건비";
-            spend.Rows[4].Cells[0].Value = "봉사비";
-            spend.Rows[5].Cells[0].Value = "운영관리비";
-            spend.Rows[6].Cells[0].Value = "대출관련비";
-            spend.Rows[7].Cells[0].Value = "예비비";
-            spend.Rows[11].Cells[0].Value = "지출 총액";
+            spend.Rows[0].Cells[0].Value = "  예배비";
+            spend.Rows[1].Cells[0].Value = "  선교비";
+            spend.Rows[2].Cells[0].Value = "  교육비";
+            spend.Rows[3].Cells[0].Value = "  인건비";
+            spend.Rows[4].Cells[0].Value = "  봉사비";
+            spend.Rows[5].Cells[0].Value = "  운영관리비";
+            spend.Rows[6].Cells[0].Value = "  대출관련비";
+            spend.Rows[7].Cells[0].Value = "  예비비";
+            spend.Rows[11].Cells[0].Value = "  지출 총액";
 
             spend.Rows[11].Height = 30;
 
@@ -234,7 +242,8 @@ namespace UI
             beforeBalance.Size = new Size(300, 33);
             beforeBalance.RowHeadersVisible = false;
             beforeBalance.ColumnCount = 2;
-            beforeBalance.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            beforeBalance.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            beforeBalance.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             beforeBalance.ColumnHeadersVisible = false;
             beforeBalance.ReadOnly = true;
             beforeBalance.RowTemplate.Height = 30;
@@ -251,7 +260,7 @@ namespace UI
             for (int i = 0; i < beforeBalance.Columns.Count; i++)
                 beforeBalance.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            beforeBalance.Rows[0].Cells[0].Value = "전월 이월액";
+            beforeBalance.Rows[0].Cells[0].Value = "  전월 이월액";
 
             // afterBalance
             afterBalance.ClearSelection();
@@ -260,7 +269,8 @@ namespace UI
             afterBalance.Size = new Size(300, 33);
             afterBalance.RowHeadersVisible = false;
             afterBalance.ColumnCount = 2;
-            afterBalance.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            afterBalance.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            afterBalance.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             afterBalance.ColumnHeadersVisible = false;
             afterBalance.ReadOnly = true;
             afterBalance.RowTemplate.Height = 30;
@@ -277,7 +287,7 @@ namespace UI
             for (int i = 0; i < afterBalance.Columns.Count; i++)
                 afterBalance.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            afterBalance.Rows[0].Cells[0].Value = "잔 액";
+            afterBalance.Rows[0].Cells[0].Value = "  잔 액";
         }
 
         private void AfterBalance_SelectionChanged(object sender, EventArgs e)
