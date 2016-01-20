@@ -155,11 +155,9 @@ namespace UI
             M_DetailTab = new NeoTabPage();
             M_DetailTab.Text = "지출 세부 항목";
             sd = new SpendDetail();
-            sd.SetDate(dateTimePicker1.Value);
-            sr.Validate();
             sd.Dock = DockStyle.Fill;
             M_DetailTab.Controls.Add(sd);
-            
+
             setImgBtn();
             setWeekTabPage();
 
@@ -177,36 +175,36 @@ namespace UI
             switch( currentCategory)
             {
                 case "Week":
-                    SetThanksDGV(2);
-                    Set10DGV(2);
-                    SetCellDGV(2);
-                    SetArchiDGV(2);
-                    SetMissionDGV(2);
-                    SetRiceDGV(2);
-                    SetHelpDGV(2);
-                    SetCarDGV(2);
-                    SetTermDGV(2);
-                    SetOtherDGV(2);
-                    SetInterestDGV(2);
+            SetThanksDGV(2);
+            Set10DGV(2);
+            SetCellDGV(2);
+            SetArchiDGV(2);
+            SetMissionDGV(2);
+            SetRiceDGV(2);
+            SetHelpDGV(2);
+            SetCarDGV(2);
+            SetTermDGV(2);
+            SetOtherDGV(2);
+            SetInterestDGV(2);
 
-                    SetInputSumDGV();
+            SetInputSumDGV();
                     currentTab.Hide();
                     _income_Thanks.Show();
-                    currentTab = _income_Thanks;
+            currentTab = _income_Thanks;
                     
                     break;
 
                 case "Month":
-                    // IncomeProgress
-                    ip.Date = dateTimePicker1.Value;
-                    sp.Date = dateTimePicker1.Value;
-                    ip.titleInvalidate();
-                    sp.titleInvalidate();
-                    ip.setIncomeFromDB();
+            // IncomeProgress
+            ip.Date = dateTimePicker1.Value;
+            sp.Date = dateTimePicker1.Value;
+            ip.titleInvalidate();
+            sp.titleInvalidate();
+            ip.setIncomeFromDB();
                     sp.setIncomeFromDB();
                     ip.setSpendFromDB();
-                    sp.setSpendFromDB();
-
+            sp.setSpendFromDB();
+        
                     // SpendReport
                     sr.SetDate(dateTimePicker1.Value);
                     sr.setIncomeFromDB();
@@ -225,7 +223,7 @@ namespace UI
                 case "Budget":                       
                     
                     break;
-            }
+        }
         }
         /// <summary>
         /// 아이콘 설정
@@ -310,7 +308,7 @@ namespace UI
             currentCategory = "Month";
             button1.Visible = false;
             button2.Visible = true;
-
+            
             // 값 세팅 부분
             // IncomeProgress
             ip.Date = dateTimePicker1.Value;
