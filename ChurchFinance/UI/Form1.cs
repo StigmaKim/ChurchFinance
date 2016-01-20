@@ -142,7 +142,7 @@ namespace UI
 
             M_DetailTab = new NeoTabPage();
             M_DetailTab.Text = "지출 세부 항목";
-            sd = new SpendDetail();
+            sd = new SpendDetail(button2);
             sd.Dock = DockStyle.Fill;
             M_DetailTab.Controls.Add(sd);
 
