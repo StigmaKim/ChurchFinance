@@ -937,6 +937,11 @@ namespace UI
 
         #region 프린터 부분
 
+        /// <summary>
+        /// 미리보기 버튼 클릭
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button2_Click(object sender, EventArgs e)
         {
             PrintPreviewDialog dig = new PrintPreviewDialog();
@@ -948,6 +953,11 @@ namespace UI
 
         }
 
+        /// <summary>
+        /// 프린터에 출력할 이미지 그리는 부분
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PrintDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
             if (mode == DMode.income)

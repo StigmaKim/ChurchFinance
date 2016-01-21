@@ -453,8 +453,10 @@ namespace UI
             pd = new PrintDocument();
             pgSettings = new PageSettings();
             pd.PrintPage += Pd_PrintPage;
+            printBtn.Click += PrintBtn_Click;
 
         }
+        
 
         private void DataView_SelectionChanged(object sender, EventArgs e)
         {
@@ -563,6 +565,15 @@ namespace UI
         /// <param name="e"></param>
         private void Pd_PrintPage(object sender, PrintPageEventArgs e)
         {
+
+            int curYPos = 50;
+
+
+            SizeF sz = e.Graphics.MeasureString(label1.Text, new Font("Tahoma", 20));
+            e.Graphics.DrawString(label1.Text, new Font("Tahoma", 20), new SolidBrush(Color.Black), new Point((int)(pgSettings.PaperSize.Width / 2 - (sz.Width / 2)), curYPos));
+
+
+            /*
             Bitmap tapBM = new Bitmap(pgSettings.PaperSize.Width, pgSettings.PaperSize.Height);
 
             // 사이즈 임시 저장
@@ -575,19 +586,17 @@ namespace UI
 
             e.Graphics.DrawImage(tapBM, new Point(5, 5));
 
-            DataView.Size = tempSz;
+            DataView.Size = tempSz;*/
         }
 
-        private void Btn_Click(object sender, EventArgs e)
+        private void PrintBtn_Click(object sender, EventArgs e)
         {
             PrintPreviewDialog dig = new PrintPreviewDialog();
 
             dig.Document = pd;
 
             dig.ShowDialog();
-
-            // 테스트용 주석
-            // 동기화용 주석
+            
         }
 
         #endregion
