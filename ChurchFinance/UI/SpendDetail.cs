@@ -587,6 +587,7 @@ namespace UI
             dig.ShowDialog();
 
             // 테스트용 주석
+            // 동기화용 주석
         }
 
         #endregion
