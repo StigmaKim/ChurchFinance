@@ -466,8 +466,8 @@ namespace UI
             DataView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             DataView.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
-            DataView.Font = new Font("Microsoft Sans Serif", 12);
-            DataView.RowTemplate.Height = 30;
+            DataView.Font = new Font("Microsoft Sans Serif", 11);
+            DataView.RowTemplate.Height = 25;
 
             // 컬럼 헤더
             DataView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
@@ -495,9 +495,19 @@ namespace UI
             pd = new PrintDocument();
             pgSettings = new PageSettings();
             pd.PrintPage += Pd_PrintPage;
+            printBtn.Click += PrintBtn_Click;
 
         }
-        
+
+        private void PrintBtn_Click(object sender, EventArgs e)
+        {
+            PrintPreviewDialog dig = new PrintPreviewDialog();
+
+            dig.Document = pd;
+
+            dig.ShowDialog();
+        }
+
         #region 프린터 인쇄 처리
 
         /// <summary>
@@ -507,13 +517,19 @@ namespace UI
         /// <param name="e"></param>
         private void Pd_PrintPage(object sender, PrintPageEventArgs e)
         {
+
+            int curYPos;
+
+            SizeF sz = e.Graphics.MeasureString(title.Text, new Font("Tahoma", 20));
+            //e.Graphics.DrawString(title.Text, new Font("Tahoma", 20), new SolidBrush(Color.Black), new Point((int)(pgSettings.PaperSize.Width / 2 - (sz.Width / 2)), curYPos));
+
             Bitmap tapBM = new Bitmap(pgSettings.PaperSize.Width, pgSettings.PaperSize.Height);
 
             // 사이즈 임시 저장
             Size tempSz = DataView.Size;
 
             // 높이에 맞는 사이즈 설정
-            DataView.Size = new Size(tempSz.Width, 875);
+            DataView.Size = new Size(tempSz.Width, pgSettings.PaperSize.Height);
 
             DataView.DrawToBitmap(tapBM, new Rectangle(new Point(0, 0), new Size(pgSettings.PaperSize.Width, pgSettings.PaperSize.Height)));
 
@@ -521,15 +537,7 @@ namespace UI
 
             DataView.Size = tempSz;
         }
-
-        private void Btn_Click(object sender, EventArgs e)
-        {
-            PrintPreviewDialog dig = new PrintPreviewDialog();
-
-            dig.Document = pd;
-
-            dig.ShowDialog();
-        }
+        
 
         #endregion
 
@@ -759,8 +767,8 @@ namespace UI
         /// <param name="e"></param>
         private void SpendDetail_Paint(object sender, PaintEventArgs e)
         {
-            label1.Text = date.Year + "년 " + date.Month + "월 지출 세부 명세";
-            label1.Location = new Point(350, 20);
+            title.Text = date.Year + "년 " + date.Month + "월 지출 세부 명세";
+            title.Location = new Point(350, 20);
             inputData();
         }
     }
