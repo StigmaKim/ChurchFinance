@@ -96,7 +96,7 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.button2);
+            //this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Location = new System.Drawing.Point(13, 735);
             this.panel1.Name = "panel1";

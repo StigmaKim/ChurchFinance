@@ -81,6 +81,11 @@ namespace UI
         Budget BIp;
         Budget BSp;
 
+        Button reportBtn;
+        Button incomeBtn;
+        Button spendBtn;
+        Button detailBtn;
+
         int cnt = 0;
 
 
@@ -131,10 +136,39 @@ namespace UI
             W_IncomeTab = new NeoTabPage();
             W_SpendingTab = new NeoTabPage();
 
+            // 버튼 선언
+            reportBtn = new Button();
+            incomeBtn = new Button();
+            spendBtn = new Button();
+            detailBtn = new Button();
+
+            reportBtn.Size = new Size(107, 40);
+            reportBtn.Location = new Point(843, 6);
+            reportBtn.Text = "보고인쇄";
+            incomeBtn.Size = new Size(107, 40);
+            incomeBtn.Location = new Point(843, 6);
+            incomeBtn.Text = "수입인쇄";
+            spendBtn.Size = new Size(107, 40);
+            spendBtn.Location = new Point(843, 6);
+            spendBtn.Text = "지출인쇄";
+            detailBtn.Size = new Size(107, 40);
+            detailBtn.Location = new Point(843, 6);
+            detailBtn.Text = "세부인쇄";
+
+            panel1.Controls.Add(reportBtn);
+            panel1.Controls.Add(incomeBtn);
+            panel1.Controls.Add(spendBtn);
+            panel1.Controls.Add(detailBtn);
+
+            reportBtn.Show();
+            incomeBtn.Hide();
+            spendBtn.Hide();
+            detailBtn.Hide();
+
             // Month
             M_ReportTab = new NeoTabPage();
             M_ReportTab.Text = "재정 보고";
-            sr = new SpendReport();
+            sr = new SpendReport(reportBtn);
             sr.SetDate(dateTimePicker1.Value);
             sr.Validate();
             sr.Dock = DockStyle.Fill;
@@ -142,21 +176,24 @@ namespace UI
 
             M_IncomeTab = new NeoTabPage();
             M_IncomeTab.Text = "재정 수입";
-            ip = new IncomeProgress(IncomeProgress.DMode.income, button2);
+            ip = new IncomeProgress(IncomeProgress.DMode.income, incomeBtn);
             ip.Dock = DockStyle.Fill;
             M_IncomeTab.Controls.Add(ip);
 
             M_SpendingTab = new NeoTabPage();
             M_SpendingTab.Text = "재정 지출";
-            sp = new IncomeProgress(IncomeProgress.DMode.spend, button2);
+            sp = new IncomeProgress(IncomeProgress.DMode.spend, spendBtn);
             ip.Dock = DockStyle.Fill;
             M_SpendingTab.Controls.Add(sp);
 
             M_DetailTab = new NeoTabPage();
             M_DetailTab.Text = "지출 세부 항목";
-            sd = new SpendDetail(button2);
+            sd = new SpendDetail(detailBtn);
             sd.Dock = DockStyle.Fill;
             M_DetailTab.Controls.Add(sd);
+
+            neoTabWindow1.SelectedIndexChanged += NeoTabWindow1_SelectedIndexChanged;
+            
 
             setImgBtn();
             setWeekTabPage();
@@ -172,7 +209,40 @@ namespace UI
             // CheckSum 생성 - 기간별 Sum 저장되는 Table
             createCheckSumTable();
         }
+
+        private void NeoTabWindow1_SelectedIndexChanged(object sender, SelectedIndexChangedEventArgs e)
+        {
+            if (neoTabWindow1.SelectedIndex == 0)
+            {
+                reportBtn.Show();
+                incomeBtn.Hide();
+                spendBtn.Hide();
+                detailBtn.Hide();
+            }
+            else if (neoTabWindow1.SelectedIndex == 1)
+            {
+                reportBtn.Hide();
+                incomeBtn.Show();
+                spendBtn.Hide();
+                detailBtn.Hide();
+            }
+            else if (neoTabWindow1.SelectedIndex == 2)
+            {
+                reportBtn.Hide();
+                incomeBtn.Hide();
+                spendBtn.Show();
+                detailBtn.Hide();
+            }
+            else if (neoTabWindow1.SelectedIndex == 3)
+            {
+                reportBtn.Hide();
+                incomeBtn.Hide();
+                spendBtn.Hide();
+                detailBtn.Show();
+            }
+        }
         
+
 
         private void createCheckSumTable()
         {

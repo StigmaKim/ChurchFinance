@@ -51,7 +51,7 @@ namespace UI
         private PageSettings pgSettings;
         private Button printBtn;
         
-        public SpendReport()
+        public SpendReport(Button printerBtn)
         {
             InitializeComponent();
             SQLite = new SQLite();
@@ -60,7 +60,7 @@ namespace UI
             spend.ClearSelection();
 
             // 인쇄할 버튼 나중에 설정
-            printBtn = new Button();
+            printBtn = printerBtn;
 
             pd = new PrintDocument();
             pgSettings = new PageSettings();
@@ -69,6 +69,8 @@ namespace UI
             pd.PrintPage += Pd_PrintPage;
             printBtn.Click += PrintBtn_Click;
         }
+
+        #region 프린터 부분
 
         private void PrintBtn_Click(object sender, EventArgs e)
         {
@@ -82,17 +84,40 @@ namespace UI
         private void Pd_PrintPage(object sender, PrintPageEventArgs e)
         {
 
-            int curYPos = 15;
+            int curYPos = 150;
             int LeftX = 20;
-            int RightX = 20 + income.Size.Width + 20;
+            int RightX = 20 + income.Size.Width + 60;
 
+            // 문자 그리기
+            SizeF sz = e.Graphics.MeasureString(Title.Text, new Font("Tahoma", 20));
+            e.Graphics.DrawString(Title.Text, new Font("Tahoma", 20), new SolidBrush(Color.Black), new Point((int)(pgSettings.PaperSize.Width / 2 - (sz.Width / 2)), curYPos));
+
+            curYPos += 120;
+
+            // 수입 DataGridView
             Bitmap incomeBitmap = new Bitmap(income.Size.Width, income.Size.Height);
-
             income.DrawToBitmap(incomeBitmap, new Rectangle(new Point(0, 0), new Size(income.Size.Width, income.Size.Height)));
+            e.Graphics.DrawImage(incomeBitmap, new Rectangle(pgSettings.Margins.Right / 2 + LeftX, curYPos, income.Width, income.Height));
 
-            e.Graphics.DrawImage(incomeBitmap, new Rectangle(pgSettings.Margins.Right / 2, curYPos, income.Width, income.Height));
-            
+            // 지출 DataGridView
+            Bitmap spendBitmap = new Bitmap(spend.Size.Width, spend.Size.Height);
+            spend.DrawToBitmap(spendBitmap, new Rectangle(new Point(0, 0), new Size(spend.Size.Width, spend.Size.Height)));
+            e.Graphics.DrawImage(spendBitmap, new Rectangle(pgSettings.Margins.Right / 2 + RightX, curYPos, spend.Width, spend.Height));
+
+            curYPos += (20 + spend.Size.Height);
+
+            // 전월 이월금
+            Bitmap beforeBalanceBitmap = new Bitmap(beforeBalance.Size.Width, beforeBalance.Size.Height);
+            beforeBalance.DrawToBitmap(beforeBalanceBitmap, new Rectangle(new Point(0, 0), new Size(beforeBalance.Size.Width, beforeBalance.Size.Height)));
+            e.Graphics.DrawImage(beforeBalanceBitmap, new Rectangle(pgSettings.Margins.Right / 2 + LeftX, curYPos, beforeBalance.Width, beforeBalance.Height));
+
+            // 잔금
+            Bitmap afterBalanceBitmap = new Bitmap(afterBalance.Size.Width, afterBalance.Size.Height);
+            afterBalance.DrawToBitmap(afterBalanceBitmap, new Rectangle(new Point(0, 0), new Size(afterBalance.Size.Width, afterBalance.Size.Height)));
+            e.Graphics.DrawImage(afterBalanceBitmap, new Rectangle(pgSettings.Margins.Right / 2 + RightX, curYPos, afterBalance.Width, afterBalance.Height));
         }
+
+        #endregion
 
         public void SetDate(DateTime d)
         {
