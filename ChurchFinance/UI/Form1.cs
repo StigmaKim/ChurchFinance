@@ -65,14 +65,24 @@ namespace UI
         NeoTabPage M_SpendingTab;
         NeoTabPage M_DetailTab;
 
+        // 월 탭 내용
         SpendReport sr = null;
         IncomeProgress ip = null;
         IncomeProgress sp = null;
         SpendDetail sd = null;
 
+        // 년도 탭 내용
+        SpendReport yearSR = null;
+        IncomeProgress yearIP = null;
+        IncomeProgress yearSP = null;
+        SpendDetail yearSD = null;
+
         // Year Tab
+        NeoTabPage Y_ReportTab;
         NeoTabPage Y_IncomeTab;
         NeoTabPage Y_SpendingTab;
+        NeoTabPage Y_DetailTab;
+        NeoTabPage Y_PersonTab;
         
         // Budget Tab
         NeoTabPage B_IncomeTab;
@@ -170,7 +180,7 @@ namespace UI
             spendBtn.Hide();
             detailBtn.Hide();
 
-            // Month
+            // 월별 탭
             M_ReportTab = new NeoTabPage();
             M_ReportTab.Text = "재정 보고";
             sr = new SpendReport(reportBtn);
@@ -196,6 +206,36 @@ namespace UI
             sd = new SpendDetail(detailBtn);
             sd.Dock = DockStyle.Fill;
             M_DetailTab.Controls.Add(sd);
+
+
+            // 년도 탭 
+            Y_ReportTab = new NeoTabPage();
+            Y_ReportTab.Text = "재정 보고";
+            yearSR = new SpendReport(new Button());
+            yearSR.Dock = DockStyle.Fill;
+            //Y_ReportTab.Controls.Add(yearSR);
+
+            Y_IncomeTab = new NeoTabPage();
+            Y_IncomeTab.Text = "재정 수입";
+            yearIP = new IncomeProgress(IncomeProgress.DMode.income, new Button());
+            yearIP.Dock = DockStyle.Fill;
+            //Y_IncomeTab.Controls.Add(yearIP);
+
+            Y_SpendingTab = new NeoTabPage();
+            Y_SpendingTab.Text = "재정 지출";
+            yearSP = new IncomeProgress(IncomeProgress.DMode.spend, new Button());
+            yearSP.Dock = DockStyle.Fill;
+            //Y_SpendingTab.Controls.Add(yearSP);
+
+            Y_DetailTab = new NeoTabPage();
+            Y_DetailTab.Text = "지출 세부 항목";
+            yearSD = new SpendDetail(new Button());
+            yearSD.Dock = DockStyle.Fill;
+            //Y_DetailTab.Controls.Add(yearSD);
+
+            Y_PersonTab = new NeoTabPage();
+            Y_PersonTab.Text = "개인별 정산";
+
 
             neoTabWindow1.SelectedIndexChanged += NeoTabWindow1_SelectedIndexChanged;
 
@@ -375,11 +415,13 @@ namespace UI
         }
 
         #region WEEK MONTH YEAR CLICK EVENT
+
         private void BudgetBtn_Click(object sender, EventArgs e)
         {
             neoTabWindow1.Controls.Clear();
             neoTabWindow1.Controls.Add(B_IncomeTab);
             neoTabWindow1.Controls.Add(B_SpendTab);
+
             BIp.SetDate(dateTimePicker1.Value);
             BSp.SetDate(dateTimePicker1.Value);
             BIp.CreateTable();
@@ -399,6 +441,12 @@ namespace UI
         private void YearBtn_Click(object sender, EventArgs e)
         {
             neoTabWindow1.Controls.Clear();
+
+            neoTabWindow1.Controls.Add(Y_ReportTab);
+            neoTabWindow1.Controls.Add(Y_IncomeTab);
+            neoTabWindow1.Controls.Add(Y_SpendingTab);
+            neoTabWindow1.Controls.Add(Y_DetailTab);
+            neoTabWindow1.Controls.Add(Y_PersonTab);
 
             currentCategory = "Year";
             button1.Visible = false;

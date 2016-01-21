@@ -86,6 +86,8 @@ namespace UI
 
             // 라벨 텍스트 수정
             title.Text = date.Year + "년도 재정 보고";
+            title.Location = new Point(380, 20);
+
 
             // Income DataGridView 설정
             setIncome();
