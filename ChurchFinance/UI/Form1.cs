@@ -144,16 +144,20 @@ namespace UI
 
             reportBtn.Size = new Size(107, 40);
             reportBtn.Location = new Point(843, 6);
-            reportBtn.Text = "보고인쇄";
+            reportBtn.Text = "인쇄";
+            reportBtn.Font = button1.Font;
             incomeBtn.Size = new Size(107, 40);
             incomeBtn.Location = new Point(843, 6);
-            incomeBtn.Text = "수입인쇄";
+            incomeBtn.Text = "인쇄";
+            incomeBtn.Font = button1.Font;
             spendBtn.Size = new Size(107, 40);
             spendBtn.Location = new Point(843, 6);
-            spendBtn.Text = "지출인쇄";
+            spendBtn.Text = "인쇄";
+            spendBtn.Font = button1.Font;
             detailBtn.Size = new Size(107, 40);
             detailBtn.Location = new Point(843, 6);
-            detailBtn.Text = "세부인쇄";
+            detailBtn.Text = "인쇄";
+            detailBtn.Font = button1.Font;
 
             panel1.Controls.Add(reportBtn);
             panel1.Controls.Add(incomeBtn);
@@ -193,7 +197,6 @@ namespace UI
             M_DetailTab.Controls.Add(sd);
 
             neoTabWindow1.SelectedIndexChanged += NeoTabWindow1_SelectedIndexChanged;
-            
 
             setImgBtn();
             setWeekTabPage();
