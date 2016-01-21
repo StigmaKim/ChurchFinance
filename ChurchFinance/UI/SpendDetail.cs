@@ -464,7 +464,7 @@ namespace UI
         public void SetValueFromDB()
         {
             DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select * from Budget2_"+date.Year));
-            
+            Debug.WriteLine("Why");
             budgetPray.Flower = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
             budgetPray.Singer = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"]); ;
             budgetPray.Jubo = Convert.ToInt32(ds.Tables[0].Rows[2]["amount"]); ;
@@ -931,6 +931,7 @@ namespace UI
         {
             label1.Text = date.Year + "년 " + date.Month + "월 지출 세부 명세";
             label1.Location = new Point(350, 10);
+            SetValueFromDB();
             inputData();
         }
     }
