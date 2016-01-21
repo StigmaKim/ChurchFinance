@@ -30,7 +30,7 @@
         {
             this.neoTabWindow1 = new NeoTabControlLibrary.NeoTabWindow();
             this.neoTabPage1 = new NeoTabControlLibrary.NeoTabPage();
-            this.yReport1 = new UI.YReport();
+            this.personDetail1 = new UI.PersonDetail();
             ((System.ComponentModel.ISupportInitialize)(this.neoTabWindow1)).BeginInit();
             this.neoTabWindow1.SuspendLayout();
             this.neoTabPage1.SuspendLayout();
@@ -50,18 +50,18 @@
             // neoTabPage1
             // 
             this.neoTabPage1.BackColor = System.Drawing.Color.Transparent;
-            this.neoTabPage1.Controls.Add(this.yReport1);
+            this.neoTabPage1.Controls.Add(this.personDetail1);
             this.neoTabPage1.Name = "neoTabPage1";
             this.neoTabPage1.Text = "neoTabPage1";
             this.neoTabPage1.ToolTipText = "neoTabPage1";
             // 
-            // yReport1
+            // personDetail1
             // 
-            this.yReport1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.yReport1.Location = new System.Drawing.Point(0, 0);
-            this.yReport1.Name = "yReport1";
-            this.yReport1.Size = new System.Drawing.Size(929, 583);
-            this.yReport1.TabIndex = 0;
+            this.personDetail1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.personDetail1.Location = new System.Drawing.Point(0, 0);
+            this.personDetail1.Name = "personDetail1";
+            this.personDetail1.Size = new System.Drawing.Size(929, 583);
+            this.personDetail1.TabIndex = 0;
             // 
             // TestForm
             // 
@@ -84,6 +84,6 @@
 
         private NeoTabControlLibrary.NeoTabPage neoTabPage1;
         private NeoTabControlLibrary.NeoTabWindow neoTabWindow1;
-        private YReport yReport1;
+        private PersonDetail personDetail1;
     }
 }
