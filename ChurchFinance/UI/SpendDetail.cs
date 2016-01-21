@@ -789,8 +789,8 @@ namespace UI
         /// <param name="e"></param>
         private void SpendDetail_Paint(object sender, PaintEventArgs e)
         {
-            label1.Text = date.Year + "년 " + date.Month + "월 지출 세부 명세";
-            label1.Location = new Point(350, 10);
+            title.Text = date.Year + "년 " + date.Month + "월 지출 세부 명세";
+            title.Location = new Point(350, 10);
             inputData();
         }
     }
