@@ -49,9 +49,10 @@ namespace UI
             ConnectToDB();
             cmd = GetSQLCommand();
             cmd.CommandText = sql;
+            int temp;
             try
             {
-                cmd.ExecuteNonQuery();
+                temp = cmd.ExecuteNonQuery();
             }
             catch(SQLiteException e) 
             {
@@ -60,7 +61,7 @@ namespace UI
                 return 1;
             }
             CloseDB();
-            return 0;
+            return temp;
         }
 
         public DataSet ExecuteSelectQuery(string sql)

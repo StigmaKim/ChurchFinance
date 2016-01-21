@@ -800,8 +800,8 @@ namespace UI
         public void setBudgetFromDB()
         {
             // 예산 데이터 입력
-            DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Budget"));
-            if (ds.Tables[0].Rows.Count == 0)
+            DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Budget_" + date.Year));
+            if( ds.Tables.Count == 0 )
             {
                 BudgetThanksOffering = 0;
                 BudgetSipil = 0;
@@ -826,27 +826,53 @@ namespace UI
             }
             else
             {
-                BudgetThanksOffering = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"].ToString());
-                BudgetSipil = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"].ToString());
-                BudgetRegion = Convert.ToInt32(ds.Tables[0].Rows[2]["amount"].ToString());
-                BudgetBuild = Convert.ToInt32(ds.Tables[0].Rows[3]["amount"].ToString());
-                BudgetMissionWork = Convert.ToInt32(ds.Tables[0].Rows[4]["amount"].ToString());
-                BudgetSungmi = Convert.ToInt32(ds.Tables[0].Rows[5]["amount"].ToString());
-                BudgetSaving = Convert.ToInt32(ds.Tables[0].Rows[6]["amount"].ToString());
-                BudgetCar = Convert.ToInt32(ds.Tables[0].Rows[7]["amount"].ToString());
-                BudgetTerm = Convert.ToInt32(ds.Tables[0].Rows[8]["amount"].ToString());
+                if (ds.Tables[0].Rows.Count == 0)
+                {
+                    BudgetThanksOffering = 0;
+                    BudgetSipil = 0;
+                    BudgetRegion = 0;
+                    BudgetBuild = 0;
+                    BudgetMissionWork = 0;
+                    BudgetSungmi = 0;
+                    BudgetSaving = 0;
+                    BudgetCar = 0;
+                    BudgetTerm = 0;
 
-                
-                // 지출 예산 데이터 입력
-                BudgetPray = Convert.ToInt32(ds.Tables[0].Rows[9]["amount"].ToString());
-                BudgetSpendMission = Convert.ToInt32(ds.Tables[0].Rows[10]["amount"].ToString());
-                BudgetEdu = Convert.ToInt32(ds.Tables[0].Rows[11]["amount"].ToString());
-                BudgetPerson = Convert.ToInt32(ds.Tables[0].Rows[12]["amount"].ToString());
-                BudgetService = Convert.ToInt32(ds.Tables[0].Rows[13]["amount"].ToString());
-                BudgetManage = Convert.ToInt32(ds.Tables[0].Rows[14]["amount"].ToString());
-                BudgetLoan = Convert.ToInt32(ds.Tables[0].Rows[15]["amount"].ToString());
-                BudgetPrepare = Convert.ToInt32(ds.Tables[0].Rows[16]["amount"].ToString());
-                
+
+                    // 지출 예산 데이터 입력
+                    BudgetPray = 0;
+                    BudgetSpendMission = 0;
+                    BudgetEdu = 0;
+                    BudgetPerson = 0;
+                    BudgetService = 0;
+                    BudgetManage = 0;
+                    BudgetLoan = 0;
+                    BudgetPrepare = 0;
+                }
+                else
+                {
+                    BudgetThanksOffering = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"].ToString());
+                    BudgetSipil = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"].ToString());
+                    BudgetRegion = Convert.ToInt32(ds.Tables[0].Rows[2]["amount"].ToString());
+                    BudgetBuild = Convert.ToInt32(ds.Tables[0].Rows[3]["amount"].ToString());
+                    BudgetMissionWork = Convert.ToInt32(ds.Tables[0].Rows[4]["amount"].ToString());
+                    BudgetSungmi = Convert.ToInt32(ds.Tables[0].Rows[5]["amount"].ToString());
+                    BudgetSaving = Convert.ToInt32(ds.Tables[0].Rows[6]["amount"].ToString());
+                    BudgetCar = Convert.ToInt32(ds.Tables[0].Rows[7]["amount"].ToString());
+                    BudgetTerm = Convert.ToInt32(ds.Tables[0].Rows[8]["amount"].ToString());
+
+
+                    // 지출 예산 데이터 입력
+                    BudgetPray = Convert.ToInt32(ds.Tables[0].Rows[9]["amount"].ToString());
+                    BudgetSpendMission = Convert.ToInt32(ds.Tables[0].Rows[10]["amount"].ToString());
+                    BudgetEdu = Convert.ToInt32(ds.Tables[0].Rows[11]["amount"].ToString());
+                    BudgetPerson = Convert.ToInt32(ds.Tables[0].Rows[12]["amount"].ToString());
+                    BudgetService = Convert.ToInt32(ds.Tables[0].Rows[13]["amount"].ToString());
+                    BudgetManage = Convert.ToInt32(ds.Tables[0].Rows[14]["amount"].ToString());
+                    BudgetLoan = Convert.ToInt32(ds.Tables[0].Rows[15]["amount"].ToString());
+                    BudgetPrepare = Convert.ToInt32(ds.Tables[0].Rows[16]["amount"].ToString());
+
+                }
             }
 
             // 수입 합계

@@ -116,14 +116,14 @@ namespace UI
             B_SpendTab = new NeoTabPage();
             B_IncomeTab.Text = "수입 예산";
             B_SpendTab.Text = "지출 예산";
-            BIp = new Budget(Budget.DMode.income, dateTimePicker1);
-            BIp.SetDate(dateTimePicker1.Value);
+            BIp = new Budget(Budget.DMode.income, dateTimePicker1, DateTime.Now);
             BIp.SetLabel();
             BIp.Dock = DockStyle.Fill;
-            BSp = new Budget(Budget.DMode.spend, dateTimePicker1);
-            BSp.SetDate(dateTimePicker1.Value);
+            BIp.SetDate(dateTimePicker1.Value);
+            BSp = new Budget(Budget.DMode.spend, dateTimePicker1, DateTime.Now);
             BSp.SetLabel();
             BSp.Dock = DockStyle.Fill;
+            BSp.SetDate(dateTimePicker1.Value);
             B_IncomeTab.Controls.Add(BIp);
             B_SpendTab.Controls.Add(BSp);
 
@@ -168,10 +168,23 @@ namespace UI
             ip.setSpendFromDB();
             sp.setSpendFromDB();
             sp.setSpendFromDB();
+
+            // CheckSum 생성 - 기간별 Sum 저장되는 Table
+            createCheckSumTable();
+        }
+
+        private void createCheckSumTable()
+        {
+            Debug.WriteLine("Korea");
+            SQLite.Execute(string.Format("create table CheckSum (no Integer primary key autoincrement, name varchar(20), amount Integer)"));
         }
 
         private void DateTimePicker1_CloseUp(object sender, EventArgs e)
         {
+            // 이건 각탭이 현재일때,
+            // 다시말해 현재 Month 탭에있을때 날짜바뀌면 Month탭 값 수정하는 부분.
+            // 다른탭 수정은 다른탭으로 넘어갈때 바뀌어진 날짜 기준으로 값을 세팅하는식으로서
+            // 버튼 클릭 이벤트에서 처리함.
             switch( currentCategory)
             {
                 case "Week":
@@ -195,21 +208,27 @@ namespace UI
                     break;
 
                 case "Month":
-            // IncomeProgress
-            ip.Date = dateTimePicker1.Value;
-            sp.Date = dateTimePicker1.Value;
-            ip.titleInvalidate();
-            sp.titleInvalidate();
-            ip.setIncomeFromDB();
+                    // IncomeProgress
+                    ip.Date = dateTimePicker1.Value;
+                    sp.Date = dateTimePicker1.Value;
+                    ip.titleInvalidate();
+                    sp.titleInvalidate();
+                    ip.setBudgetFromDB();
+                    sp.setBudgetFromDB();
+                    ip.setIncomeFromDB();
                     sp.setIncomeFromDB();
                     ip.setSpendFromDB();
-            sp.setSpendFromDB();
+                    sp.setSpendFromDB();
         
                     // SpendReport
                     sr.SetDate(dateTimePicker1.Value);
-                    sr.setIncomeFromDB();
-                    sr.setSpendFromDB();
+                    //sr.setIncomeFromDB();
+                    //sr.setSpendFromDB();
                     sr.Invalidate();
+
+                    // SpendDetail
+                    sd.SetDate(dateTimePicker1.Value);
+                    sd.Invalidate();
 
                     break;
 
@@ -220,14 +239,23 @@ namespace UI
 
                     break;
 
-                case "Budget":                       
-                    
+                case "Budget":
+                    BIp.SetDate(dateTimePicker1.Value);
+                    BSp.SetDate(dateTimePicker1.Value);
+                    BIp.CreateTable();
+                    BSp.CreateTable();
+                    BIp.SetLabel();
+                    BSp.SetLabel();
+                    BIp.GetValues();
+                    BSp.GetValues();
+                    BIp.SetRows();
+                    BSp.SetRows();
+                    //BIp.Invalidate();
+                    //BSp.Invalidate();
                     break;
+            }
         }
-        }
-        /// <summary>
-        /// 아이콘 설정
-        /// </summary>
+
         private void setImgBtn()
         {
             // imgBtnContainer1
@@ -255,8 +283,7 @@ namespace UI
             yearBtn.str = "년 단위 정산";
             yearBtn.Click += YearBtn_Click;
             imgBtnContainer1.InputBtn(yearBtn);
-
-
+            
             // imgBtnContainer2
 
             ImageBtn budgetBtn = new ImageBtn();
@@ -280,6 +307,14 @@ namespace UI
             neoTabWindow1.Controls.Add(B_SpendTab);
             BIp.SetDate(dateTimePicker1.Value);
             BSp.SetDate(dateTimePicker1.Value);
+            BIp.CreateTable();
+            BSp.CreateTable();
+            BIp.SetLabel();
+            BSp.SetLabel();
+            BIp.GetValues();
+            BSp.GetValues();
+            BIp.SetRows();
+            BSp.SetRows();
             currentCategory = "Budget";
             button1.Visible = true;
             button2.Visible = false;
@@ -321,6 +356,14 @@ namespace UI
             sp.setIncomeFromDB();
             ip.setSpendFromDB();
             sp.setSpendFromDB();
+
+            // SpendReport
+            sr.SetDate(dateTimePicker1.Value);
+            sr.setIncomeFromDB();
+            sr.setSpendFromDB();
+
+            // SpendDetail
+            sd.SetDate(dateTimePicker1.Value);
         }
         private void WeekBtn_Click(object sender, EventArgs e)
         {
@@ -351,6 +394,7 @@ namespace UI
             _income_Thanks.Show();
             currentTab = _income_Thanks;
 
+            // Spend
             WSP.SetData();
         }
         #endregion 
@@ -431,6 +475,11 @@ namespace UI
                 return "0";
             }
             return s;
+        }
+
+        private void SetCheckSum()
+        {
+
         }
 
         private void CreateTable()

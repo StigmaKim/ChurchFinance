@@ -70,11 +70,12 @@ namespace UI
             spend
         };
 
-        public Budget(DMode d, DateTimePicker dtp)
+        public Budget(DMode d, DateTimePicker dtp, DateTime dt)
         {
             InitializeComponent();
             mode = d;
             dateTimePicker1 = dtp;
+            date = dt;
 
             SQLite = new SQLite();
 
@@ -102,6 +103,7 @@ namespace UI
                 AddGridView();
             }
 
+            before.Hide();
             dgv.Hide();
             SetView();
             CreateTable();
@@ -111,6 +113,7 @@ namespace UI
 
         }
 
+        #region Event
         private void Spend_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             // Make Comma type
@@ -294,6 +297,8 @@ namespace UI
             }
         }
 
+        #endregion
+
         private void AddGridView()
         {
             #region DGV 옵션 1
@@ -342,6 +347,8 @@ namespace UI
             spend_Worship.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             spend_Worship.Columns[0].HeaderText = "항 목";
             spend_Worship.Columns[1].HeaderText = "금 액";
+            spend_Worship.SelectionChanged += Spend_Worship_SelectionChanged;
+            spend_Worship.ClearSelection();
 
             // spend_Mission ----------------------------------
             spend_Mission.Size = new Size(450, 392);
@@ -360,6 +367,8 @@ namespace UI
             spend_Mission.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             spend_Mission.Columns[0].HeaderText = "항 목";
             spend_Mission.Columns[1].HeaderText = "금 액";
+            spend_Mission.SelectionChanged += Spend_Mission_SelectionChanged;
+            spend_Mission.ClearSelection();
 
             // spend_Edu ----------------------------------
             spend_Edu.Size = new Size(450, 392);
@@ -378,6 +387,8 @@ namespace UI
             spend_Edu.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             spend_Edu.Columns[0].HeaderText = "항 목";
             spend_Edu.Columns[1].HeaderText = "금 액";
+            spend_Edu.SelectionChanged += Spend_Edu_SelectionChanged;
+            spend_Edu.ClearSelection();
 
             // spend_Human ----------------------------------
             spend_Human.Size = new Size(450, 392);
@@ -396,6 +407,8 @@ namespace UI
             spend_Human.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             spend_Human.Columns[0].HeaderText = "항 목";
             spend_Human.Columns[1].HeaderText = "금 액";
+            spend_Human.SelectionChanged += Spend_Human_SelectionChanged;
+            spend_Human.ClearSelection();
 
             // spend_Vol ----------------------------------
             spend_Vol.Size = new Size(450, 392);
@@ -414,6 +427,8 @@ namespace UI
             spend_Vol.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             spend_Vol.Columns[0].HeaderText = "항 목";
             spend_Vol.Columns[1].HeaderText = "금 액";
+            spend_Vol.SelectionChanged += Spend_Vol_SelectionChanged;
+            spend_Vol.ClearSelection();
 
             // spend_Main ----------------------------------
             spend_Main.Size = new Size(450, 392);
@@ -432,6 +447,8 @@ namespace UI
             spend_Main.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             spend_Main.Columns[0].HeaderText = "항 목";
             spend_Main.Columns[1].HeaderText = "금 액";
+            spend_Main.SelectionChanged += Spend_Main_SelectionChanged;
+            spend_Main.ClearSelection();
 
             // spend_Loan ----------------------------------
             spend_Loan.Size = new Size(450, 392);
@@ -450,6 +467,8 @@ namespace UI
             spend_Loan.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             spend_Loan.Columns[0].HeaderText = "항 목";
             spend_Loan.Columns[1].HeaderText = "금 액";
+            spend_Loan.SelectionChanged += Spend_Loan_SelectionChanged;
+            spend_Loan.ClearSelection();
             
             #endregion
 
@@ -470,6 +489,41 @@ namespace UI
             spend_Loan.Hide();
 
             currentTab = spend_Worship;
+        }
+
+        private void Spend_Loan_SelectionChanged(object sender, EventArgs e)
+        {
+            spend_Loan.ClearSelection();
+        }
+
+        private void Spend_Main_SelectionChanged(object sender, EventArgs e)
+        {
+            spend_Main.ClearSelection();
+        }
+
+        private void Spend_Vol_SelectionChanged(object sender, EventArgs e)
+        {
+            spend_Vol.ClearSelection();
+        }
+
+        private void Spend_Human_SelectionChanged(object sender, EventArgs e)
+        {
+            spend_Human.ClearSelection();
+        }
+
+        private void Spend_Edu_SelectionChanged(object sender, EventArgs e)
+        {
+            spend_Edu.ClearSelection();
+        }
+
+        private void Spend_Mission_SelectionChanged(object sender, EventArgs e)
+        {
+            spend_Mission.ClearSelection();
+        }
+
+        private void Spend_Worship_SelectionChanged(object sender, EventArgs e)
+        {
+            spend_Worship.ClearSelection();
         }
 
         public void SetLabel()
@@ -495,8 +549,7 @@ namespace UI
             for (int i = 0; i < 9; i++)
                 sum += Convert.ToInt32(ToNoComma(dgv.Rows[i].Cells[1].Value));
 
-            dgv.Rows[9].Cells[1].Value = ToComma(sum);            
-            
+            dgv.Rows[9].Cells[1].Value = ToComma(sum);
         }
 
         private void SetView()
@@ -524,16 +577,50 @@ namespace UI
                 dgv.Columns[1].Name = "금 액";
                 dgv.Columns["항 목"].ReadOnly = true;
 
+                dgv.SelectionChanged += Dgv_SelectionChanged;
+                dgv.ClearSelection();
+
                 for (int i = 0; i < dgv.Columns.Count; i++)
                     dgv.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
                 for (int i = 0; i < dgv.ColumnCount; i++)
                     dgv.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+
+                before.Show();
+                before.Location = new Point(285, 440);
+                before.Size = new Size(400, 31);
+                before.ColumnHeadersVisible = false;
+                before.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                before.ColumnCount = 2;
+                before.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                before.AllowUserToAddRows = false;
+                before.RowCount = 1;                
+                before.Rows[0].Height = 30;
+                before.Font = new Font("Microsoft Sans Serif", 12);
+                before.Columns[0].ReadOnly = true;
+                before.Rows[0].Cells[0].Value = "전년 이월액";
+
+                for (int i = 0; i < before.Columns.Count; i++)
+                    before.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+                before.SelectionChanged += Before_SelectionChanged;
+                before.ClearSelection();
+
             }
             else if( mode == DMode.spend)
             {
 
             }            
+        }
+
+        private void Dgv_SelectionChanged(object sender, EventArgs e)
+        {
+            dgv.ClearSelection();
+        }
+
+        private void Before_SelectionChanged(object sender, EventArgs e)
+        {
+            before.ClearSelection();
         }
 
         private void Dgv1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
@@ -600,11 +687,11 @@ namespace UI
             }
         }
 
-        private void GetValues()
+        public void GetValues()
         {
             if (mode == DMode.income)
             {
-                DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select amount from budget"));
+                DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select amount from budget_" + date.Year.ToString()));
                 if (ds.Tables[0].Rows.Count == 0)
                 {
                     Thanks = 0;
@@ -637,7 +724,8 @@ namespace UI
                 SetInputSumDGV();
             }
         }
-        private void SetRows()
+
+        public void SetRows()
         {
             if( mode == DMode.income)
             {
@@ -673,13 +761,13 @@ namespace UI
             }
         }
 
-        private void CreateTable()
+        public void CreateTable()
         {
             if (mode == DMode.income)
             {
-                Debug.WriteLine("HHHH");
-                SQLite.Execute(string.Format("create table Budget " +
-                            "(no Integer primary key autoincrement, amount Integer)"));
+                Debug.WriteLine("HHHH :: " + date);
+                SQLite.Execute(string.Format("create table Budget_" + date.Year.ToString() +
+                            " (no Integer primary key autoincrement, amount Integer)"));
                 /*
                 1. 감사헌금
                 2. 십일조
@@ -702,8 +790,8 @@ namespace UI
             }
             else if(mode == DMode.spend)
             {
-                SQLite.Execute(string.Format("create table Budget2 " +
-                        "(no Integer primary key autoincrement, amount Integer)"));
+                SQLite.Execute(string.Format("create table Budget2_" + date.Year.ToString() +
+                        " (no Integer primary key autoincrement, amount Integer)"));
                 /*
                 1. 강단꽃꽃이
                 2. 성가대운영비
@@ -744,33 +832,40 @@ namespace UI
             {
                 if( mode == DMode.income)
                 {
-                    SQLite.Execute(string.Format("drop table Budget"));
+                    SQLite.Execute(string.Format("drop table Budget_"+ date.Year.ToString()));
                     CreateTable();
                     for (int i = 0; i < 9; i++)
-                        SQLite.Execute(string.Format("insert into Budget (amount) values ({0})", Convert.ToInt32(ToNoComma(dgv.Rows[i].Cells[1].Value))));
+                        SQLite.Execute(string.Format("insert into Budget_" + date.Year.ToString() + " (amount) values ({0})", Convert.ToInt32(ToNoComma(dgv.Rows[i].Cells[1].Value))));
+                    if( before.Rows[0].Cells[1].Value.ToString() != "")
+                    {
+                        if ( SQLite.Execute(string.Format("update checksum set amount = {0} where name = '{1}'", before.Rows[0].Cells[1].Value, date.Year + "_0")) == 0 )
+                        {
+                            SQLite.Execute(string.Format("insert into checksum (name, amount) values ('{0}', {1})", date.Year + "_0", before.Rows[0].Cells[1].Value));
+                        }
+                    }
                 }
                     
                 else if( mode == DMode.spend)
                 {
                     for (int i = 0; i < 8; i++)
-                        SQLite.Execute(string.Format("insert into Budget (amount) values ({0})", Convert.ToInt32(ToNoComma(spend.Rows[i].Cells[1].Value))));
-                    SQLite.Execute(string.Format("drop table Budget2"));
+                        SQLite.Execute(string.Format("insert into Budget_" + date.Year.ToString() + " (amount) values ({0})", Convert.ToInt32(ToNoComma(spend.Rows[i].Cells[1].Value))));
+                    SQLite.Execute(string.Format("drop table Budget2_" + date.Year.ToString()));
                     CreateTable();
                     for (int i = 0; i < 3; i++)
-                        SQLite.Execute(string.Format("insert into Budget2 (amount) values ({0})", Convert.ToInt32(ToNoComma(spend_Worship.Rows[i].Cells[1].Value))));
+                        SQLite.Execute(string.Format("insert into Budget2_" + date.Year.ToString() + " (amount) values ({0})", Convert.ToInt32(ToNoComma(spend_Worship.Rows[i].Cells[1].Value))));
                     for (int i = 0; i < 2; i++)
-                        SQLite.Execute(string.Format("insert into Budget2 (amount) values ({0})", Convert.ToInt32(ToNoComma(spend_Mission.Rows[i].Cells[1].Value))));
+                        SQLite.Execute(string.Format("insert into Budget2_" + date.Year.ToString() + " (amount) values ({0})", Convert.ToInt32(ToNoComma(spend_Mission.Rows[i].Cells[1].Value))));
                     for (int i = 0; i < 5; i++)
-                        SQLite.Execute(string.Format("insert into Budget2 (amount) values ({0})", Convert.ToInt32(ToNoComma(spend_Edu.Rows[i].Cells[1].Value))));
+                        SQLite.Execute(string.Format("insert into Budget2_" + date.Year.ToString() + " (amount) values ({0})", Convert.ToInt32(ToNoComma(spend_Edu.Rows[i].Cells[1].Value))));
                     for (int i = 0; i < 3; i++)
-                        SQLite.Execute(string.Format("insert into Budget2 (amount) values ({0})", Convert.ToInt32(ToNoComma(spend_Human.Rows[i].Cells[1].Value))));
+                        SQLite.Execute(string.Format("insert into Budget2_" + date.Year.ToString() + " (amount) values ({0})", Convert.ToInt32(ToNoComma(spend_Human.Rows[i].Cells[1].Value))));
                     for (int i = 0; i < 3; i++)
-                        SQLite.Execute(string.Format("insert into Budget2 (amount) values ({0})", Convert.ToInt32(ToNoComma(spend_Vol.Rows[i].Cells[1].Value))));
+                        SQLite.Execute(string.Format("insert into Budget2_" + date.Year.ToString() + " (amount) values ({0})", Convert.ToInt32(ToNoComma(spend_Vol.Rows[i].Cells[1].Value))));
                     for (int i = 0; i < 10; i++)
-                        SQLite.Execute(string.Format("insert into Budget2 (amount) values ({0})", Convert.ToInt32(ToNoComma(spend_Main.Rows[i].Cells[1].Value))));
+                        SQLite.Execute(string.Format("insert into Budget2_" + date.Year.ToString() + " (amount) values ({0})", Convert.ToInt32(ToNoComma(spend_Main.Rows[i].Cells[1].Value))));
                     for (int i = 0; i < 2; i++)
-                        SQLite.Execute(string.Format("insert into Budget2 (amount) values ({0})", Convert.ToInt32(ToNoComma(spend_Loan.Rows[i].Cells[1].Value))));
-                    SQLite.Execute(string.Format("insert into Budget2 (amount) values ({0})", Convert.ToInt32(ToNoComma(spend.Rows[7].Cells[1].Value))));
+                        SQLite.Execute(string.Format("insert into Budget2_" + date.Year.ToString() + " (amount) values ({0})", Convert.ToInt32(ToNoComma(spend_Loan.Rows[i].Cells[1].Value))));
+                    SQLite.Execute(string.Format("insert into Budget2_" + date.Year.ToString() + " (amount) values ({0})", Convert.ToInt32(ToNoComma(spend.Rows[7].Cells[1].Value))));
                 }                
             }
             catch (SQLiteException e)
@@ -781,11 +876,11 @@ namespace UI
         
         private void SetSpendBudgetDGV()
         {
-            DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select * from Budget2"));
+            DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select * from Budget2_" + date.Year.ToString()));
             if(ds.Tables[0].Rows.Count == 0)
                 for(int i = 0; i < 29; i++)
-                    SQLite.Execute(string.Format("insert into Budget2 (amount) values({0})", 0));
-            ds = SQLite.ExecuteSelectQuery(string.Format("select * from Budget2"));
+                    SQLite.Execute(string.Format("insert into Budget2_" + date.Year.ToString() + " (amount) values({0})", 0));
+            ds = SQLite.ExecuteSelectQuery(string.Format("select * from Budget2_" + date.Year.ToString()));
 
             // Worship
             spend_Worship.Rows[0].Cells[0].Value = "  강단꽃꽃이";
@@ -794,6 +889,9 @@ namespace UI
             for (int i = 0; i < 3; i++)
                 spend_Worship.Rows[i].Cells[1].Value = ToComma(ds.Tables[0].Rows[i]["amount"].ToString());
             spend_Worship.Columns[0].ReadOnly = true;
+            for(int i = 3; i < spend_Worship.RowCount; i++)
+                spend_Worship.Rows[i].ReadOnly = true;
+            //spend_Worship.Columns
                                
             for (int i = 0; i < spend_Worship.Columns.Count; i++)
                 spend_Worship.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -816,6 +914,8 @@ namespace UI
             for (int i = 0; i < 2; i++)
                 spend_Mission.Rows[i].Cells[1].Value = ToComma(ds.Tables[0].Rows[i+3]["amount"].ToString());
             spend_Mission.Columns[0].ReadOnly = true;
+            for (int i = 3; i < spend_Mission.RowCount; i++)
+                spend_Mission.Rows[i].ReadOnly = true;
 
             for (int i = 0; i < spend_Mission.Columns.Count; i++)
                 spend_Mission.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -841,6 +941,8 @@ namespace UI
             for (int i = 0; i < 5; i++)
                 spend_Edu.Rows[i].Cells[1].Value = ToComma(ds.Tables[0].Rows[i + 5]["amount"].ToString());
             spend_Edu.Columns[0].ReadOnly = true;
+            for (int i = 3; i < spend_Mission.RowCount; i++)
+                spend_Edu.Rows[i].ReadOnly = true;
 
             for (int i = 0; i < spend_Edu.Columns.Count; i++)
                 spend_Edu.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -864,6 +966,8 @@ namespace UI
             for (int i = 0; i < 3; i++)
                 spend_Human.Rows[i].Cells[1].Value = ToComma(ds.Tables[0].Rows[i + 10]["amount"].ToString());
             spend_Human.Columns[0].ReadOnly = true;
+            for (int i = 3; i < spend_Mission.RowCount; i++)
+                spend_Human.Rows[i].ReadOnly = true;
 
             for (int i = 0; i < spend_Human.Columns.Count; i++)
                 spend_Human.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -887,6 +991,8 @@ namespace UI
             for (int i = 0; i < 3; i++)
                 spend_Vol.Rows[i].Cells[1].Value = ToComma(ds.Tables[0].Rows[i + 13]["amount"].ToString());
             spend_Vol.Columns[0].ReadOnly = true;
+            for (int i = 3; i < spend_Mission.RowCount; i++)
+                spend_Vol.Rows[i].ReadOnly = true;
 
             for (int i = 0; i < spend_Vol.Columns.Count; i++)
                 spend_Vol.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -917,6 +1023,8 @@ namespace UI
             for (int i = 0; i < 10; i++)
                 spend_Main.Rows[i].Cells[1].Value = ToComma(ds.Tables[0].Rows[i + 16]["amount"].ToString());
             spend_Main.Columns[0].ReadOnly = true;
+            for (int i = 3; i < spend_Mission.RowCount; i++)
+                spend_Main.Rows[i].ReadOnly = true;
 
             for (int i = 0; i < spend_Main.Columns.Count; i++)
                 spend_Main.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -939,6 +1047,8 @@ namespace UI
             for (int i = 0; i < 2; i++)
                 spend_Loan.Rows[i].Cells[1].Value = ToComma(ds.Tables[0].Rows[i + 26]["amount"].ToString());
             spend_Loan.Columns[0].ReadOnly = true;
+            for (int i = 3; i < spend_Mission.RowCount; i++)
+                spend_Loan.Rows[i].ReadOnly = true;
 
             for (int i = 0; i < spend_Loan.Columns.Count; i++)
                 spend_Loan.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
