@@ -506,52 +506,101 @@ namespace UI
                 Debug.WriteLine("HereTest");
                 ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Spending_Worship " +
                      "where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-                curPray.Flower = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
-                curPray.Singer = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"]);
-                curPray.Jubo = Convert.ToInt32(ds.Tables[0].Rows[2]["amount"]);
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    if (i % 3 == 0)
+                        curPray.Flower += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 3 == 1)
+                        curPray.Singer += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else
+                        curPray.Jubo += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                }
 
                 ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Spending_Mission " +
                      "where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-                curMissionWork.Misson = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
-                curMissionWork.Visit = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"]);
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    if (i % 2 == 0)
+                        curMissionWork.Misson += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 2 == 1)
+                        curMissionWork.Visit += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                }
 
                 ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Spending_Edu " +
                      "where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-                curEdu.WeekSchool = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
-                curEdu.Student = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"]);
-                curEdu.YoungMan = Convert.ToInt32(ds.Tables[0].Rows[2]["amount"]);
-                curEdu.ScholarShip = Convert.ToInt32(ds.Tables[0].Rows[3]["amount"]);
-                curEdu.Book = Convert.ToInt32(ds.Tables[0].Rows[4]["amount"]);
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    if (i % 5 == 0)
+                        curEdu.WeekSchool += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 5 == 1)
+                        curEdu.Student += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 5 == 2)
+                        curEdu.YoungMan += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 5 == 3)
+                        curEdu.ScholarShip += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 5 == 4)
+                        curEdu.Book += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                }
 
                 ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Spending_Human " +
                      "where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-                curPerson.Priest = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
-                curPerson.Missionary = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"]);
-                curPerson.Bonus = Convert.ToInt32(ds.Tables[0].Rows[2]["amount"]);
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    if (i % 3 == 0)
+                        curPerson.Priest += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 3 == 1)
+                        curPerson.Missionary += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else
+                        curPerson.Bonus += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                }
 
                 ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Spending_Vol " +
                      "where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-                curService.GyeongJo = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
-                curService.Saving = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"]);
-                curService.Events = Convert.ToInt32(ds.Tables[0].Rows[2]["amount"]);
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    if (i % 3 == 0)
+                        curService.GyeongJo += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 3 == 1)
+                        curService.Saving += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else
+                        curService.Events += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                }
 
                 ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Spending_Main " +
                      "where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-                curManage.Home = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
-                curManage.Church = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"]);
-                curManage.Ministry = Convert.ToInt32(ds.Tables[0].Rows[2]["amount"]);
-                curManage.Water = Convert.ToInt32(ds.Tables[0].Rows[3]["amount"]);
-                curManage.Communication = Convert.ToInt32(ds.Tables[0].Rows[4]["amount"]);
-                curManage.CarManage = Convert.ToInt32(ds.Tables[0].Rows[5]["amount"]);
-                curManage.CarBuy = Convert.ToInt32(ds.Tables[0].Rows[6]["amount"]);
-                curManage.Sang = Convert.ToInt32(ds.Tables[0].Rows[7]["amount"]);
-                curManage.Tool = Convert.ToInt32(ds.Tables[0].Rows[8]["amount"]);
-                curManage.Etc = Convert.ToInt32(ds.Tables[0].Rows[9]["amount"]);
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    if (i % 10 == 0)
+                        curManage.Home += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 10 == 1)
+                        curManage.Church += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 10 == 2)
+                        curManage.Ministry += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 10 == 3)
+                        curManage.Water += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 10 == 4)
+                        curManage.Communication += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 10 == 5)
+                        curManage.CarManage += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 10 == 6)
+                        curManage.CarBuy += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 10 == 7)
+                        curManage.Sang += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 10 == 8)
+                        curManage.Tool += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else
+                        curManage.Etc += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                }
 
                 ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Spending_Loan " +
                      "where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-                curLoan.Repayment = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
-                curLoan.Interest = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"]);
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    if (i % 2 == 0)
+                        curLoan.Repayment += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else
+                        curLoan.Interest += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                }
 
                 ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Spending_Res " +
                      "where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
@@ -600,64 +649,98 @@ namespace UI
                 for(int i = 0; i < ds.Tables[0].Rows.Count; i ++)
                 {
                     if(i%3 == 0)
-                    {
                         curPray.Flower += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
-                    }
                     else if( i%3 == 1)
-                    {
                         curPray.Singer += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
-                    }
                     else
-                    {
                         curPray.Jubo += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
-                    }
                 }
-                //curPray.Flower = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
-                //curPray.Singer = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"]);
-                //curPray.Jubo = Convert.ToInt32(ds.Tables[0].Rows[2]["amount"]);
 
                 ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Spending_Mission " +
                      "where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
-                curMissionWork.Misson = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
-                curMissionWork.Visit = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"]);
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    if (i % 2 == 0)
+                        curMissionWork.Misson += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 2 == 1)
+                        curMissionWork.Visit += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                }
 
                 ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Spending_Edu " +
                      "where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
-                curEdu.WeekSchool = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
-                curEdu.Student = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"]);
-                curEdu.YoungMan = Convert.ToInt32(ds.Tables[0].Rows[2]["amount"]);
-                curEdu.ScholarShip = Convert.ToInt32(ds.Tables[0].Rows[3]["amount"]);
-                curEdu.Book = Convert.ToInt32(ds.Tables[0].Rows[4]["amount"]);
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    if (i % 5 == 0)
+                        curEdu.WeekSchool += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 5 == 1)
+                        curEdu.Student += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 5 == 2)
+                        curEdu.YoungMan += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 5 == 3)
+                        curEdu.ScholarShip += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 5 == 4)
+                        curEdu.Book += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                }
 
                 ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Spending_Human " +
                      "where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
-                curPerson.Priest = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
-                curPerson.Missionary = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"]);
-                curPerson.Bonus = Convert.ToInt32(ds.Tables[0].Rows[2]["amount"]);
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    if (i % 3 == 0)
+                        curPerson.Priest += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 3 == 1)
+                        curPerson.Missionary += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else
+                        curPerson.Bonus += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                }
 
                 ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Spending_Vol " +
                      "where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
-                curService.GyeongJo = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
-                curService.Saving = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"]);
-                curService.Events = Convert.ToInt32(ds.Tables[0].Rows[2]["amount"]);
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    if (i % 3 == 0)
+                        curService.GyeongJo += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 3 == 1)
+                        curService.Saving += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else
+                        curService.Events += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                }
 
                 ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Spending_Main " +
                      "where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
-                curManage.Home = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
-                curManage.Church = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"]);
-                curManage.Ministry = Convert.ToInt32(ds.Tables[0].Rows[2]["amount"]);
-                curManage.Water = Convert.ToInt32(ds.Tables[0].Rows[3]["amount"]);
-                curManage.Communication = Convert.ToInt32(ds.Tables[0].Rows[4]["amount"]);
-                curManage.CarManage = Convert.ToInt32(ds.Tables[0].Rows[5]["amount"]);
-                curManage.CarBuy = Convert.ToInt32(ds.Tables[0].Rows[6]["amount"]);
-                curManage.Sang = Convert.ToInt32(ds.Tables[0].Rows[7]["amount"]);
-                curManage.Tool = Convert.ToInt32(ds.Tables[0].Rows[8]["amount"]);
-                curManage.Etc = Convert.ToInt32(ds.Tables[0].Rows[9]["amount"]);
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    if (i % 10 == 0)
+                        curManage.Home += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 10 == 1)
+                        curManage.Church += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 10 == 2)
+                        curManage.Ministry += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 10 == 3)
+                        curManage.Water += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 10 == 4)
+                        curManage.Communication += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 10 == 5)
+                        curManage.CarManage += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 10 == 6)
+                        curManage.CarBuy += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 10 == 7)
+                        curManage.Sang += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else if (i % 10 == 8)
+                        curManage.Tool += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else
+                        curManage.Etc += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                }
 
                 ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Spending_Loan " +
                      "where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
-                curLoan.Repayment = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
-                curLoan.Interest = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"]);
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    if (i % 2 == 0)
+                        curLoan.Repayment += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                    else
+                        curLoan.Interest += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
+                }
 
                 ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Spending_Res " +
                      "where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
