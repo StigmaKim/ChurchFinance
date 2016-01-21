@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Printing;
 
 namespace UI
 {
@@ -45,7 +46,11 @@ namespace UI
         private DateTime date;
 
         #endregion
-                
+
+        private PrintDocument pd;
+        private PageSettings pgSettings;
+        private Button printBtn;
+        
         public SpendReport()
         {
             InitializeComponent();
@@ -53,10 +58,42 @@ namespace UI
 
             Title.Location = new Point(380, 20);
             spend.ClearSelection();
-            
+
+            // 인쇄할 버튼 나중에 설정
+            printBtn = new Button();
+
+            pd = new PrintDocument();
+            pgSettings = new PageSettings();
+
             Paint += SpendReport_Paint;
+            pd.PrintPage += Pd_PrintPage;
+            printBtn.Click += PrintBtn_Click;
         }
-        
+
+        private void PrintBtn_Click(object sender, EventArgs e)
+        {
+            PrintPreviewDialog ppd = new PrintPreviewDialog();
+
+            ppd.Document = pd;
+
+            ppd.ShowDialog();
+        }
+
+        private void Pd_PrintPage(object sender, PrintPageEventArgs e)
+        {
+
+            int curYPos = 15;
+            int LeftX = 20;
+            int RightX = 20 + income.Size.Width + 20;
+
+            Bitmap incomeBitmap = new Bitmap(income.Size.Width, income.Size.Height);
+
+            income.DrawToBitmap(incomeBitmap, new Rectangle(new Point(0, 0), new Size(income.Size.Width, income.Size.Height)));
+
+            e.Graphics.DrawImage(incomeBitmap, new Rectangle(pgSettings.Margins.Right / 2, curYPos, income.Width, income.Height));
+            
+        }
+
         public void SetDate(DateTime d)
         {
             date = d;

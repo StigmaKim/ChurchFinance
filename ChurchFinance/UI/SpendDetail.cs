@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Printing;
 using System.Diagnostics;
+using NeoTabControlLibrary;
 
 namespace UI
 {
@@ -399,12 +400,12 @@ namespace UI
             DataView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             DataView.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
-            DataView.Font = new Font("Microsoft Sans Serif", 12);
-            DataView.RowTemplate.Height = 30;
+            DataView.Font = new Font("Microsoft Sans Serif", 11);
+            DataView.RowTemplate.Height = 25;
 
             // 컬럼 헤더
             DataView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            DataView.ColumnHeadersHeight = 30;
+            DataView.ColumnHeadersHeight = 25;
             DataView.ReadOnly = true;
 
             DataView.Columns[0].HeaderText = "항목";
@@ -421,11 +422,7 @@ namespace UI
             DataView.Columns[4].Width = 130;
             DataView.Columns[5].Width = 130;
             DataView.Columns[6].Width = 90;
-            /*
-            for (int i = 0; i < DataView.ColumnCount; i++)
-                DataView.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                */
-
+            
             for (int i = 0; i < DataView.ColumnCount; i++)
                 DataView.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
@@ -572,21 +569,21 @@ namespace UI
             SizeF sz = e.Graphics.MeasureString(label1.Text, new Font("Tahoma", 20));
             e.Graphics.DrawString(label1.Text, new Font("Tahoma", 20), new SolidBrush(Color.Black), new Point((int)(pgSettings.PaperSize.Width / 2 - (sz.Width / 2)), curYPos));
 
-
-            /*
-            Bitmap tapBM = new Bitmap(pgSettings.PaperSize.Width, pgSettings.PaperSize.Height);
-
+            curYPos += 80;
+            
             // 사이즈 임시 저장
             Size tempSz = DataView.Size;
 
             // 높이에 맞는 사이즈 설정
-            DataView.Size = new Size(tempSz.Width, 875);
+            DataView.Size = new Size(tempSz.Width - 17, 953);
 
-            DataView.DrawToBitmap(tapBM, new Rectangle(new Point(0, 0), new Size(pgSettings.PaperSize.Width, pgSettings.PaperSize.Height)));
+            Bitmap tapBM = new Bitmap(DataView.Size.Width, DataView.Size.Height);
 
-            e.Graphics.DrawImage(tapBM, new Point(5, 5));
+            DataView.DrawToBitmap(tapBM, new Rectangle(new Point(0, 0), new Size(DataView.Size.Width, DataView.Size.Height)));
 
-            DataView.Size = tempSz;*/
+            e.Graphics.DrawImage(tapBM, new Rectangle(pgSettings.Margins.Right / 2, curYPos, pgSettings.PaperSize.Width - ((pgSettings.Margins.Left / 2) + pgSettings.Margins.Right), this.DataView.Height));
+
+            DataView.Size = tempSz;
         }
 
         private void PrintBtn_Click(object sender, EventArgs e)
