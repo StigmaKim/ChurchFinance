@@ -836,15 +836,16 @@ namespace UI
                     CreateTable();
                     for (int i = 0; i < 9; i++)
                         SQLite.Execute(string.Format("insert into Budget_" + date.Year.ToString() + " (amount) values ({0})", Convert.ToInt32(ToNoComma(dgv.Rows[i].Cells[1].Value))));
-                    if( before.Rows[0].Cells[1].Value.ToString() != "")
-                    {
-                        if ( SQLite.Execute(string.Format("update checksum set amount = {0} where name = '{1}'", before.Rows[0].Cells[1].Value, date.Year + "_0")) == 0 )
+                    if( before.Rows[0].Cells[1].Value != null)
+                        if( before.Rows[0].Cells[1].Value.ToString() != "")
                         {
-                            SQLite.Execute(string.Format("insert into checksum (name, amount) values ('{0}', {1})", date.Year + "_0", before.Rows[0].Cells[1].Value));
+                            if ( SQLite.Execute(string.Format("update checksum set amount = {0} where name = '{1}'", before.Rows[0].Cells[1].Value, date.Year + "_0")) == 0 )
+                            {
+                                SQLite.Execute(string.Format("insert into checksum (name, amount) values ('{0}', {1})", date.Year + "_0", before.Rows[0].Cells[1].Value));
+                            }
                         }
-                    }
                 }
-                    
+
                 else if( mode == DMode.spend)
                 {
                     for (int i = 0; i < 8; i++)

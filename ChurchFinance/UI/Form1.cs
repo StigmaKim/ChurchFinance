@@ -33,7 +33,7 @@ namespace UI
         DataGridView _income_Term = null;
         DataGridView _income_Other = null;
         DataGridView _income_Interest = null;
-
+        
         int Sum_Thanks = 0;
         int Sum_10 = 0;
         int Sum_Cell = 0;
@@ -172,6 +172,7 @@ namespace UI
             // CheckSum 생성 - 기간별 Sum 저장되는 Table
             createCheckSumTable();
         }
+        
 
         private void createCheckSumTable()
         {
