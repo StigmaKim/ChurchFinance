@@ -48,7 +48,7 @@
             this.label1.Font = new System.Drawing.Font("Tahoma", 17F);
             this.label1.Location = new System.Drawing.Point(389, 17);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(152, 28);
+            this.label1.Size = new System.Drawing.Size(187, 28);
             this.label1.TabIndex = 1;
             this.label1.Text = "항목별 세부 명세";
             // 
