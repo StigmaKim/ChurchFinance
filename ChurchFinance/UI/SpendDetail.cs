@@ -368,7 +368,7 @@ namespace UI
             curService = new Service();
             curManage = new Manage();
             curLoan = new Loan();
-            
+
             #endregion
 
             printBtn = btn;
@@ -463,7 +463,7 @@ namespace UI
 
         public void SetValueFromDB()
         {
-            DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select * from Budget2_"+date.Year));
+            DataSet ds = SQLite.ExecuteSelectQuery(string.Format("select * from Budget2_" + date.Year));
             Debug.WriteLine("Why");
             budgetPray.Flower = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
             budgetPray.Singer = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"]); ;
@@ -500,12 +500,12 @@ namespace UI
             curPray.Flower = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
             curPray.Singer = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"]);
             curPray.Jubo = Convert.ToInt32(ds.Tables[0].Rows[2]["amount"]);
-            
+
             ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Spending_Mission " +
                  "where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
             curMissionWork.Misson = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
             curMissionWork.Visit = Convert.ToInt32(ds.Tables[0].Rows[1]["amount"]);
-            
+
             ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Spending_Edu " +
                  "where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
             curEdu.WeekSchool = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
@@ -547,9 +547,9 @@ namespace UI
             ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Spending_Res " +
                  "where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
             int sum = 0;
-            for(int i = 0; i< ds.Tables[0].Rows.Count; i++)
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 sum += Convert.ToInt32(ds.Tables[0].Rows[i]["amount"]);
-                
+
             curPrepare = sum;
             inputData();
         }
@@ -602,11 +602,11 @@ namespace UI
             DataView.Rows[0].Cells[1].Value = "소계";
             DataView.Rows[0].Cells[3].Value = (budgetPray.getSum()).ToString("n0") + "원";
             DataView.Rows[0].Cells[5].Value = (curPray.getSum()).ToString("n0") + "원";
-            if(curPray.getSum() == 0 || budgetPray.getSum() == 0)
+            if (curPray.getSum() == 0 || budgetPray.getSum() == 0)
                 DataView.Rows[0].Cells[6].Value = 0.ToString("0.00") + "%";
             else
-            DataView.Rows[0].Cells[6].Value = ((float)(curPray.getSum())
-                / (float)(budgetPray.getSum()) * 100).ToString("0.00") + "%";
+                DataView.Rows[0].Cells[6].Value = ((float)(curPray.getSum())
+                    / (float)(budgetPray.getSum()) * 100).ToString("0.00") + "%";
 
             DataView.Rows[1].Cells[1].Value = "강단꽃꽃이";
             DataView.Rows[1].Cells[2].Value = budgetPray.Flower.ToString("n0") + "원";
@@ -640,8 +640,8 @@ namespace UI
             if (curMissionWork.getSum() == 0 || budgetMissionWork.getSum() == 0)
                 DataView.Rows[4].Cells[6].Value = 0.ToString("0.00") + "%";
             else
-            DataView.Rows[4].Cells[6].Value = ((float)(curMissionWork.getSum())
-                / (float)(budgetMissionWork.getSum()) * 100).ToString("0.00") + "%";
+                DataView.Rows[4].Cells[6].Value = ((float)(curMissionWork.getSum())
+                    / (float)(budgetMissionWork.getSum()) * 100).ToString("0.00") + "%";
 
             DataView.Rows[5].Cells[1].Value = "선교비";
             DataView.Rows[5].Cells[2].Value = budgetMissionWork.Misson.ToString("n0") + "원";
@@ -667,8 +667,8 @@ namespace UI
             if (curPray.getSum() == 0 || budgetPray.getSum() == 0)
                 DataView.Rows[7].Cells[6].Value = 0.ToString("0.00") + "%";
             else
-            DataView.Rows[7].Cells[6].Value = ((float)(curEdu.getSum())
-                / (float)(budgetEdu.getSum()) * 100).ToString("0.00") + "%";
+                DataView.Rows[7].Cells[6].Value = ((float)(curEdu.getSum())
+                    / (float)(budgetEdu.getSum()) * 100).ToString("0.00") + "%";
 
             DataView.Rows[8].Cells[1].Value = "주일학교지원비";
             DataView.Rows[8].Cells[2].Value = budgetEdu.WeekSchool.ToString("n0") + "원";
@@ -718,8 +718,8 @@ namespace UI
             if (curPerson.getSum() == 0 || budgetPerson.getSum() == 0)
                 DataView.Rows[13].Cells[6].Value = 0.ToString("0.00") + "%";
             else
-            DataView.Rows[13].Cells[6].Value = ((float)(curPerson.getSum())
-                / (float)(budgetPerson.getSum()) * 100).ToString("0.00") + "%";
+                DataView.Rows[13].Cells[6].Value = ((float)(curPerson.getSum())
+                    / (float)(budgetPerson.getSum()) * 100).ToString("0.00") + "%";
 
             DataView.Rows[14].Cells[1].Value = "목사님사례비";
             DataView.Rows[14].Cells[2].Value = budgetPerson.Priest.ToString("n0") + "원";
@@ -753,8 +753,8 @@ namespace UI
             if (curService.getSum() == 0 || budgetService.getSum() == 0)
                 DataView.Rows[17].Cells[6].Value = 0.ToString("0.00") + "%";
             else
-            DataView.Rows[17].Cells[6].Value = ((float)(curService.getSum())
-                / (float)(budgetService.getSum()) * 100).ToString("0.00") + "%";
+                DataView.Rows[17].Cells[6].Value = ((float)(curService.getSum())
+                    / (float)(budgetService.getSum()) * 100).ToString("0.00") + "%";
 
             DataView.Rows[18].Cells[1].Value = "경조비";
             DataView.Rows[18].Cells[2].Value = budgetService.GyeongJo.ToString("n0") + "원";
@@ -788,8 +788,8 @@ namespace UI
             if (curManage.getSum() == 0 || budgetManage.getSum() == 0)
                 DataView.Rows[21].Cells[6].Value = 0.ToString("0.00") + "%";
             else
-            DataView.Rows[21].Cells[6].Value = ((float)(curManage.getSum())
-                / (float)(budgetManage.getSum()) * 100).ToString("0.00") + "%";
+                DataView.Rows[21].Cells[6].Value = ((float)(curManage.getSum())
+                    / (float)(budgetManage.getSum()) * 100).ToString("0.00") + "%";
 
             DataView.Rows[22].Cells[1].Value = "사택유지비";
             DataView.Rows[22].Cells[2].Value = budgetManage.Home.ToString("n0") + "원";
@@ -879,8 +879,8 @@ namespace UI
             if (curLoan.getSum() == 0 || budgetLoan.getSum() == 0)
                 DataView.Rows[32].Cells[6].Value = 0.ToString("0.00") + "%";
             else
-            DataView.Rows[32].Cells[6].Value = ((float)(curLoan.getSum())
-                / (float)(budgetLoan.getSum()) * 100).ToString("0.00") + "%";
+                DataView.Rows[32].Cells[6].Value = ((float)(curLoan.getSum())
+                    / (float)(budgetLoan.getSum()) * 100).ToString("0.00") + "%";
 
             DataView.Rows[33].Cells[1].Value = "상환적립";
             DataView.Rows[33].Cells[2].Value = budgetLoan.Repayment.ToString("n0") + "원";
@@ -919,10 +919,10 @@ namespace UI
                 + budgetService.getSum() + budgetManage.getSum() + budgetLoan.getSum() + budgetPrepare) == 0)
                 DataView.Rows[36].Cells[6].Value = 0.ToString("0.00") + "%";
             else
-            DataView.Rows[36].Cells[6].Value = ((float)(curPray.getSum() + curMissionWork.getSum() + curEdu.getSum() + curPerson.getSum()
-                + curService.getSum() + curManage.getSum() + curLoan.getSum() + curPrepare)
-                / (float)(budgetPray.getSum() + budgetMissionWork.getSum() + budgetEdu.getSum() + budgetPerson.getSum()
-                + budgetService.getSum() + budgetManage.getSum() + budgetLoan.getSum() + budgetPrepare) * 100).ToString("0.00") + "%";
+                DataView.Rows[36].Cells[6].Value = ((float)(curPray.getSum() + curMissionWork.getSum() + curEdu.getSum() + curPerson.getSum()
+                    + curService.getSum() + curManage.getSum() + curLoan.getSum() + curPrepare)
+                    / (float)(budgetPray.getSum() + budgetMissionWork.getSum() + budgetEdu.getSum() + budgetPerson.getSum()
+                    + budgetService.getSum() + budgetManage.getSum() + budgetLoan.getSum() + budgetPrepare) * 100).ToString("0.00") + "%";
         }
 
         /// <summary>
@@ -1027,7 +1027,7 @@ namespace UI
         /// 심방비
         /// </summary>
         private int visit;
-        
+
         #endregion
 
         #region get / set
@@ -1058,7 +1058,7 @@ namespace UI
             }
         }
 
-        
+
 
         #endregion
 
