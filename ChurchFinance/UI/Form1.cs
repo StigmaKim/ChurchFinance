@@ -476,12 +476,7 @@ namespace UI
             }
             return s;
         }
-
-        private void SetCheckSum()
-        {
-
-        }
-
+        
         private void CreateTable()
         {
             SQLite.Execute(string.Format("create table Offering_Thanks " +
@@ -1841,6 +1836,82 @@ namespace UI
                 sp.setSpendFromDB();
                 sp.setSpendFromDB();
                 sp.setSpendFromDB();
+
+                SetCheckSum();
+            }
+        }
+
+        private void SetCheckSum()
+        {
+            DateTime n = dateTimePicker1.Value;
+            int I_Thanks = 0;
+            int I_10 = 0;
+            int I_Cell = 0;
+            int I_Archi = 0;
+            int I_Mission = 0;
+            int I_Rice = 0;
+            int I_Help = 0;
+            int I_Car = 0;
+            int I_Term = 0;
+            int I_Other = 0;
+            int I_Interest = 0;
+
+            int S_Worship = 0;
+            int S_Mission = 0;
+            int S_Edu = 0;
+            int S_Human = 0;
+            int S_Vol = 0;
+            int S_Main = 0;
+            int S_Loan = 0;
+            int S_Res = 0;
+
+            for (int i = 1; i < 13; i++)
+            {
+                I_Thanks = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from Offering_Thanks where strftime('%Y-%m', date) >= '{0}' AND strftime('%Y-%m', date) < '{1}'",
+                                                                                                string.Format(n.Year.ToString() + "-01"), string.Format(n.Year.ToString() + "-" + (i + 1).ToString("00"))));
+                I_10 = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from Offering_10 where strftime('%Y-%m', date) >= '{0}' AND strftime('%Y-%m', date) < '{1}'",
+                                                                                                    string.Format(n.Year.ToString() + "-01"), string.Format(n.Year.ToString() + "-" + (i + 1).ToString("00"))));
+                I_Cell = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from Offering_Cell where strftime('%Y-%m', date) >= '{0}' AND strftime('%Y-%m', date) < '{1}'",
+                                                                                                    string.Format(n.Year.ToString() + "-01"), string.Format(n.Year.ToString() + "-" + (i + 1).ToString("00"))));
+                I_Archi = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from Offering_Archi where strftime('%Y-%m', date) >= '{0}' AND strftime('%Y-%m', date) < '{1}'",
+                                                                                                    string.Format(n.Year.ToString() + "-01"), string.Format(n.Year.ToString() + "-" + (i + 1).ToString("00"))));
+                I_Mission = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from Offering_Mission where strftime('%Y-%m', date) >= '{0}' AND strftime('%Y-%m', date) < '{1}'",
+                                                                                                    string.Format(n.Year.ToString() + "-01"), string.Format(n.Year.ToString() + "-" + (i + 1).ToString("00"))));
+                I_Rice = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from Offering_Rice where strftime('%Y-%m', date) >= '{0}' AND strftime('%Y-%m', date) < '{1}'",
+                                                                                                    string.Format(n.Year.ToString() + "-01"), string.Format(n.Year.ToString() + "-" + (i + 1).ToString("00"))));
+                I_Help = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from Offering_Help where strftime('%Y-%m', date) >= '{0}' AND strftime('%Y-%m', date) < '{1}'",
+                                                                                                    string.Format(n.Year.ToString() + "-01"), string.Format(n.Year.ToString() + "-" + (i + 1).ToString("00"))));
+                I_Car = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from Offering_Car where strftime('%Y-%m', date) >= '{0}' AND strftime('%Y-%m', date) < '{1}'",
+                                                                                                    string.Format(n.Year.ToString() + "-01"), string.Format(n.Year.ToString() + "-" + (i + 1).ToString("00"))));
+                I_Term = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from Offering_Term where strftime('%Y-%m', date) >= '{0}' AND strftime('%Y-%m', date) < '{1}'",
+                                                                                                    string.Format(n.Year.ToString() + "-01"), string.Format(n.Year.ToString() + "-" + (i + 1).ToString("00"))));
+                I_Other = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from Offering_Other where strftime('%Y-%m', date) >= '{0}' AND strftime('%Y-%m', date) < '{1}'",
+                                                                                                    string.Format(n.Year.ToString() + "-01"), string.Format(n.Year.ToString() + "-" + (i + 1).ToString("00"))));
+                I_Interest = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from Offering_Interest where strftime('%Y-%m', date) >= '{0}' AND strftime('%Y-%m', date) < '{1}'",
+                                                                                                    string.Format(n.Year.ToString() + "-01"), string.Format(n.Year.ToString() + "-" + (i + 1).ToString("00"))));
+
+                S_Worship = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from Spending_Worship where strftime('%Y-%m', date) >= '{0}' AND strftime('%Y-%m', date) < '{1}'",
+                                                                                                string.Format(n.Year.ToString() + "-01"), string.Format(n.Year.ToString() + "-" + (i + 1).ToString("00"))));
+                S_Mission = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from Spending_Mission where strftime('%Y-%m', date) >= '{0}' AND strftime('%Y-%m', date) < '{1}'",
+                                                                                                string.Format(n.Year.ToString() + "-01"), string.Format(n.Year.ToString() + "-" + (i + 1).ToString("00"))));
+                S_Edu = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from Spending_Edu where strftime('%Y-%m', date) >= '{0}' AND strftime('%Y-%m', date) < '{1}'",
+                                                                                                string.Format(n.Year.ToString() + "-01"), string.Format(n.Year.ToString() + "-" + (i + 1).ToString("00"))));
+                S_Human = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from Spending_Human where strftime('%Y-%m', date) >= '{0}' AND strftime('%Y-%m', date) < '{1}'",
+                                                                                                string.Format(n.Year.ToString() + "-01"), string.Format(n.Year.ToString() + "-" + (i + 1).ToString("00"))));
+                S_Vol = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from Spending_Vol where strftime('%Y-%m', date) >= '{0}' AND strftime('%Y-%m', date) < '{1}'",
+                                                                                                string.Format(n.Year.ToString() + "-01"), string.Format(n.Year.ToString() + "-" + (i + 1).ToString("00"))));
+                S_Main = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from Spending_Main where strftime('%Y-%m', date) >= '{0}' AND strftime('%Y-%m', date) < '{1}'",
+                                                                                                string.Format(n.Year.ToString() + "-01"), string.Format(n.Year.ToString() + "-" + (i + 1).ToString("00"))));
+                S_Loan = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from Spending_Loan where strftime('%Y-%m', date) >= '{0}' AND strftime('%Y-%m', date) < '{1}'",
+                                                                                                string.Format(n.Year.ToString() + "-01"), string.Format(n.Year.ToString() + "-" + (i + 1).ToString("00"))));
+                S_Res = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from Spending_Res where strftime('%Y-%m', date) >= '{0}' AND strftime('%Y-%m', date) < '{1}'",
+                                                                                                string.Format(n.Year.ToString() + "-01"), string.Format(n.Year.ToString() + "-" + (i + 1).ToString("00"))));
+
+                int before = SQLite.ExecuteSumQuery(string.Format("select sum(amount) as sum from checksum where name = '2016_00'"));
+                int check = I_Thanks + I_10 + I_Cell + I_Archi + I_Mission + I_Rice + I_Help + I_Car + I_Term + I_Other + I_Interest
+                    - S_Worship - S_Mission - S_Edu - S_Human - S_Vol - S_Main - S_Loan - S_Res;
+                if ( SQLite.Execute(string.Format("update checksum SET amount = {0} Where name = '{1}'", before + check, "2016-" + i.ToString("00"))) == 0)
+                    SQLite.Execute(string.Format("insert into checksum (name, amount) values ( '{0}', {1} )", "2016-" + i.ToString("00"), before + check));
             }
         }
     }

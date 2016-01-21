@@ -288,6 +288,9 @@ namespace UI
                 afterBalance.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             afterBalance.Rows[0].Cells[0].Value = "  잔 액";
+
+            beforeBalance.Rows[0].Cells[1].Value = (SQLite.ExecuteSumQuery(string.Format("select amount from checksum where name = '{0}'", date.Year + "-" + (date.Month - 1).ToString("00")))).ToString("n0") + " 원";
+            afterBalance.Rows[0].Cells[1].Value = (SQLite.ExecuteSumQuery(string.Format("select amount from checksum where name = '{0}'", date.Year + "-" + date.Month.ToString("00")))).ToString("n0") + " 원";
         }
 
         private void AfterBalance_SelectionChanged(object sender, EventArgs e)
