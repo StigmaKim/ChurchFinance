@@ -70,7 +70,6 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Global.cs" />
     <Compile Include="TitleBtn.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -123,6 +122,12 @@
       <DependentUpon>SpendReport.cs</DependentUpon>
     </Compile>
     <Compile Include="WeekSpendPage.cs" />
+    <Compile Include="YReport.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="YReport.Designer.cs">
+      <DependentUpon>YReport.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Budget.resx">
       <DependentUpon>Budget.cs</DependentUpon>
     </EmbeddedResource>
@@ -161,6 +166,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TestForm.resx">
       <DependentUpon>TestForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YReport.resx">
+      <DependentUpon>YReport.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Font\Daum_Regular.ttf" />
     <None Include="Font\Daum_SemiBold.ttf" />

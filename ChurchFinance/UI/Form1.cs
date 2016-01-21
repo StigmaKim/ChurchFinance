@@ -142,6 +142,7 @@ namespace UI
             spendBtn = new Button();
             detailBtn = new Button();
 
+            // 버튼 세팅
             reportBtn.Size = new Size(107, 40);
             reportBtn.Location = new Point(843, 6);
             reportBtn.Text = "인쇄";
