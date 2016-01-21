@@ -76,6 +76,7 @@ namespace UI
         IncomeProgress yearIP = null;
         IncomeProgress yearSP = null;
         SpendDetail yearSD = null;
+        YReport yearR = null;
 
         // Year Tab
         NeoTabPage Y_ReportTab;
@@ -217,24 +218,27 @@ namespace UI
 
             Y_IncomeTab = new NeoTabPage();
             Y_IncomeTab.Text = "재정 수입";
-            yearIP = new IncomeProgress(IncomeProgress.DMode.income, new Button());
+            yearIP = new IncomeProgress(IncomeProgress.DMode.Y_income, new Button());
             yearIP.Dock = DockStyle.Fill;
-            //Y_IncomeTab.Controls.Add(yearIP);
+            Y_IncomeTab.Controls.Add(yearIP);
 
             Y_SpendingTab = new NeoTabPage();
             Y_SpendingTab.Text = "재정 지출";
-            yearSP = new IncomeProgress(IncomeProgress.DMode.spend, new Button());
+            yearSP = new IncomeProgress(IncomeProgress.DMode.Y_spend, new Button());
             yearSP.Dock = DockStyle.Fill;
-            //Y_SpendingTab.Controls.Add(yearSP);
+            Y_SpendingTab.Controls.Add(yearSP);
 
             Y_DetailTab = new NeoTabPage();
             Y_DetailTab.Text = "지출 세부 항목";
             yearSD = new SpendDetail(SpendDetail.DMode.Year, new Button());
             yearSD.Dock = DockStyle.Fill;
             Y_DetailTab.Controls.Add(yearSD);
-
+            
             Y_PersonTab = new NeoTabPage();
             Y_PersonTab.Text = "개인별 정산";
+            yearR = new YReport();
+            yearR.Dock = DockStyle.Fill;
+            Y_PersonTab.Controls.Add(yearR);
             
             neoTabWindow1.SelectedIndexChanged += NeoTabWindow1_SelectedIndexChanged;
 
@@ -245,8 +249,8 @@ namespace UI
             ip.Date = DateTime.Now;
             sp.Date = DateTime.Now;
             ip.setIncomeFromDB();
+            sp.setIncomeFromDB();
             ip.setSpendFromDB();
-            sp.setSpendFromDB();
             sp.setSpendFromDB();
 
             // CheckSum 생성 - 기간별 Sum 저장되는 Table
@@ -300,7 +304,6 @@ namespace UI
             switch( currentCategory)
             {
                 case "Week":
-                    Debug.WriteLine("Check Here :" + (currentTab == _income_Thanks));
                     SetThanksDGV(2);
                     Set10DGV(2);
                     SetCellDGV(2);
@@ -331,6 +334,7 @@ namespace UI
                     sp.setIncomeFromDB();
                     ip.setSpendFromDB();
                     sp.setSpendFromDB();
+                    yearSP.setSpendFromDB();
         
                     // SpendReport
                     sr.SetDate(dateTimePicker1.Value);
@@ -343,6 +347,18 @@ namespace UI
                     break;
 
                 case "Year":
+                    // IncomeProgress
+                    yearIP.Date = dateTimePicker1.Value;
+                    yearSP.Date = dateTimePicker1.Value;
+                    yearIP.titleInvalidate();
+                    yearSP.titleInvalidate();
+                    yearIP.setBudgetFromDB();
+                    yearSP.setBudgetFromDB();
+                    yearIP.setIncomeFromDB();
+                    yearSP.setIncomeFromDB();
+                    yearIP.setSpendFromDB();
+                    yearSP.setSpendFromDB();
+
                     // SpendReport
                     yearSR.SetDate(dateTimePicker1.Value);
                     yearSR.Invalidate();
@@ -351,9 +367,10 @@ namespace UI
                     yearSD.SetDate(dateTimePicker1.Value);
                     yearSD.Invalidate();
 
-
-
-
+                    // Report
+                    yearR.SetDate(dateTimePicker1.Value);
+                    yearR.Invalidate();
+                    yearR.InitializeValue();
                     break;
 
                 case "Budget":
@@ -457,10 +474,23 @@ namespace UI
 
             // SpendDetail
             yearSD.SetDate(dateTimePicker1.Value);
-
+            
             // IncomeProgress
-
-
+            yearIP.Date = dateTimePicker1.Value;
+            yearSP.Date = dateTimePicker1.Value;
+            yearIP.titleInvalidate();
+            yearSP.titleInvalidate();
+            yearIP.setBudgetFromDB();
+            yearSP.setBudgetFromDB();
+            yearIP.setIncomeFromDB();
+            yearSP.setIncomeFromDB();
+            yearIP.setSpendFromDB();
+            yearSP.setSpendFromDB();
+            
+            // Report
+            yearR.SetDate(dateTimePicker1.Value);
+            yearR.Invalidate();
+            yearR.InitializeValue();
 
             currentCategory = "Year";
             button1.Visible = false;

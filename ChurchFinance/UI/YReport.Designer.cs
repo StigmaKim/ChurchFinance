@@ -30,13 +30,12 @@
         {
             this.title = new System.Windows.Forms.Label();
             this.income = new System.Windows.Forms.DataGridView();
-            this.spend = new System.Windows.Forms.DataGridView();
-            this.beforeBalance = new System.Windows.Forms.DataGridView();
-            this.afterBalance = new System.Windows.Forms.DataGridView();
+            this.total = new System.Windows.Forms.DataGridView();
+            this.NN = new System.Windows.Forms.TextBox();
+            this.NNbtn = new System.Windows.Forms.Button();
+            this.name = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.income)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spend)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.beforeBalance)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.afterBalance)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.total)).BeginInit();
             this.SuspendLayout();
             // 
             // title
@@ -52,54 +51,59 @@
             // income
             // 
             this.income.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.income.Location = new System.Drawing.Point(30, 65);
+            this.income.Location = new System.Drawing.Point(154, 70);
             this.income.Name = "income";
             this.income.RowTemplate.Height = 23;
             this.income.Size = new System.Drawing.Size(248, 299);
             this.income.TabIndex = 1;
             // 
-            // spend
+            // total
             // 
-            this.spend.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.spend.Location = new System.Drawing.Point(308, 65);
-            this.spend.Name = "spend";
-            this.spend.RowTemplate.Height = 23;
-            this.spend.Size = new System.Drawing.Size(240, 299);
-            this.spend.TabIndex = 2;
+            this.total.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.total.Location = new System.Drawing.Point(154, 375);
+            this.total.Name = "total";
+            this.total.RowTemplate.Height = 23;
+            this.total.Size = new System.Drawing.Size(248, 29);
+            this.total.TabIndex = 3;
             // 
-            // beforeBalance
+            // NN
             // 
-            this.beforeBalance.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.beforeBalance.Location = new System.Drawing.Point(30, 375);
-            this.beforeBalance.Name = "beforeBalance";
-            this.beforeBalance.RowTemplate.Height = 23;
-            this.beforeBalance.Size = new System.Drawing.Size(248, 29);
-            this.beforeBalance.TabIndex = 3;
+            this.NN.Location = new System.Drawing.Point(563, 18);
+            this.NN.Name = "NN";
+            this.NN.Size = new System.Drawing.Size(123, 21);
+            this.NN.TabIndex = 5;
             // 
-            // afterBalance
+            // NNbtn
             // 
-            this.afterBalance.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.afterBalance.Location = new System.Drawing.Point(308, 375);
-            this.afterBalance.Name = "afterBalance";
-            this.afterBalance.RowTemplate.Height = 23;
-            this.afterBalance.Size = new System.Drawing.Size(240, 29);
-            this.afterBalance.TabIndex = 4;
+            this.NNbtn.Location = new System.Drawing.Point(610, 60);
+            this.NNbtn.Name = "NNbtn";
+            this.NNbtn.Size = new System.Drawing.Size(75, 23);
+            this.NNbtn.TabIndex = 6;
+            this.NNbtn.Text = "button1";
+            this.NNbtn.UseVisualStyleBackColor = true;
+            // 
+            // name
+            // 
+            this.name.Location = new System.Drawing.Point(234, 47);
+            this.name.Name = "name";
+            this.name.Size = new System.Drawing.Size(100, 21);
+            this.name.TabIndex = 7;
             // 
             // YReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.afterBalance);
-            this.Controls.Add(this.beforeBalance);
-            this.Controls.Add(this.spend);
+            this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.name);
+            this.Controls.Add(this.NNbtn);
+            this.Controls.Add(this.NN);
+            this.Controls.Add(this.total);
             this.Controls.Add(this.income);
             this.Controls.Add(this.title);
             this.Name = "YReport";
             this.Size = new System.Drawing.Size(715, 461);
             ((System.ComponentModel.ISupportInitialize)(this.income)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spend)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.beforeBalance)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.afterBalance)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.total)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -109,8 +113,9 @@
 
         private System.Windows.Forms.Label title;
         private System.Windows.Forms.DataGridView income;
-        private System.Windows.Forms.DataGridView spend;
-        private System.Windows.Forms.DataGridView beforeBalance;
-        private System.Windows.Forms.DataGridView afterBalance;
+        private System.Windows.Forms.DataGridView total;
+        private System.Windows.Forms.TextBox NN;
+        private System.Windows.Forms.Button NNbtn;
+        private System.Windows.Forms.TextBox name;
     }
 }

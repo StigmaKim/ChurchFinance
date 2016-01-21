@@ -503,6 +503,7 @@ namespace UI
                 budgetLoan.Interest = Convert.ToInt32(ds.Tables[0].Rows[27]["amount"]);
                 budgetPrepare = Convert.ToInt32(ds.Tables[0].Rows[28]["amount"]);
 
+                Debug.WriteLine("HereTest");
                 ds = SQLite.ExecuteSelectQuery(string.Format("select amount from Spending_Worship " +
                      "where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
                 curPray.Flower = Convert.ToInt32(ds.Tables[0].Rows[0]["amount"]);
