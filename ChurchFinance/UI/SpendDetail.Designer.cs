@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.DataView = new System.Windows.Forms.DataGridView();
-            this.title = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DataView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -42,21 +42,21 @@
             this.DataView.Size = new System.Drawing.Size(873, 434);
             this.DataView.TabIndex = 0;
             // 
-            // title
+            // label1
             // 
-            this.title.AutoSize = true;
-            this.title.Font = new System.Drawing.Font("Tahoma", 17F);
-            this.title.Location = new System.Drawing.Point(389, 17);
-            this.title.Name = "title";
-            this.title.Size = new System.Drawing.Size(152, 28);
-            this.title.TabIndex = 1;
-            this.title.Text = "항목별 세부 명세";
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Tahoma", 17F);
+            this.label1.Location = new System.Drawing.Point(389, 17);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(152, 28);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "항목별 세부 명세";
             // 
             // SpendDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.title);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.DataView);
             this.Name = "SpendDetail";
             this.Size = new System.Drawing.Size(1065, 590);
@@ -69,6 +69,6 @@
         #endregion
 
         public System.Windows.Forms.DataGridView DataView;
-        private System.Windows.Forms.Label title;
+        private System.Windows.Forms.Label label1;
     }
 }
