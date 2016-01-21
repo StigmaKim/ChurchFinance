@@ -183,7 +183,7 @@ namespace UI
             // 월별 탭
             M_ReportTab = new NeoTabPage();
             M_ReportTab.Text = "재정 보고";
-            sr = new SpendReport(reportBtn);
+            sr = new SpendReport(SpendReport.DMode.Month, reportBtn);
             sr.SetDate(dateTimePicker1.Value);
             sr.Validate();
             sr.Dock = DockStyle.Fill;
@@ -203,7 +203,7 @@ namespace UI
 
             M_DetailTab = new NeoTabPage();
             M_DetailTab.Text = "지출 세부 항목";
-            sd = new SpendDetail(detailBtn);
+            sd = new SpendDetail(SpendDetail.DMode.Month, detailBtn);
             sd.Dock = DockStyle.Fill;
             M_DetailTab.Controls.Add(sd);
 
@@ -211,9 +211,9 @@ namespace UI
             // 년도 탭 
             Y_ReportTab = new NeoTabPage();
             Y_ReportTab.Text = "재정 보고";
-            yearSR = new SpendReport(new Button());
+            yearSR = new SpendReport(SpendReport.DMode.Year, new Button());
             yearSR.Dock = DockStyle.Fill;
-            //Y_ReportTab.Controls.Add(yearSR);
+            Y_ReportTab.Controls.Add(yearSR);
 
             Y_IncomeTab = new NeoTabPage();
             Y_IncomeTab.Text = "재정 수입";
@@ -229,14 +229,13 @@ namespace UI
 
             Y_DetailTab = new NeoTabPage();
             Y_DetailTab.Text = "지출 세부 항목";
-            yearSD = new SpendDetail(new Button());
+            yearSD = new SpendDetail(SpendDetail.DMode.Year, new Button());
             yearSD.Dock = DockStyle.Fill;
-            //Y_DetailTab.Controls.Add(yearSD);
+            Y_DetailTab.Controls.Add(yearSD);
 
             Y_PersonTab = new NeoTabPage();
             Y_PersonTab.Text = "개인별 정산";
-
-
+            
             neoTabWindow1.SelectedIndexChanged += NeoTabWindow1_SelectedIndexChanged;
 
             setImgBtn();
@@ -285,8 +284,6 @@ namespace UI
                 detailBtn.Show();
             }
         }
-        
-
 
         private void createCheckSumTable()
         {
@@ -317,8 +314,8 @@ namespace UI
                     SetInterestDGV(2);
 
                     SetInputSumDGV();
-                            currentTab.Hide();
-                            _income_Thanks.Show();
+                    currentTab.Hide();
+                    _income_Thanks.Show();
                     currentTab = _income_Thanks;
                     break;
 
@@ -337,8 +334,6 @@ namespace UI
         
                     // SpendReport
                     sr.SetDate(dateTimePicker1.Value);
-                    //sr.setIncomeFromDB();
-                    //sr.setSpendFromDB();
                     sr.Invalidate();
 
                     // SpendDetail
@@ -348,6 +343,13 @@ namespace UI
                     break;
 
                 case "Year":
+                    // SpendReport
+                    yearSR.SetDate(dateTimePicker1.Value);
+                    yearSR.Invalidate();
+
+                    // SpendDetail
+                    yearSD.SetDate(dateTimePicker1.Value);
+                    yearSD.Invalidate();
 
 
 
@@ -365,8 +367,8 @@ namespace UI
                     BSp.GetValues();
                     BIp.SetRows();
                     BSp.SetRows();
-                    //BIp.Invalidate();
-                    //BSp.Invalidate();
+                    BIp.Invalidate();
+                    BSp.Invalidate();
                     break;
             }
         }
@@ -447,6 +449,18 @@ namespace UI
             neoTabWindow1.Controls.Add(Y_SpendingTab);
             neoTabWindow1.Controls.Add(Y_DetailTab);
             neoTabWindow1.Controls.Add(Y_PersonTab);
+
+            // SpendReport
+            yearSR.SetDate(dateTimePicker1.Value);
+            //yearSR.setIncomeFromDB();
+            //yearSR.setSpendFromDB();
+
+            // SpendDetail
+            yearSD.SetDate(dateTimePicker1.Value);
+
+            // IncomeProgress
+
+
 
             currentCategory = "Year";
             button1.Visible = false;

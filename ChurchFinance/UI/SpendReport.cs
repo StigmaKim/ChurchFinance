@@ -50,9 +50,17 @@ namespace UI
         private PrintDocument pd;
         private PageSettings pgSettings;
         private Button printBtn;
-        
-        public SpendReport(Button printerBtn)
+        DMode mode; 
+
+        public enum DMode
         {
+            Month,
+            Year
+        }
+        
+        public SpendReport(DMode d, Button printerBtn)
+        {
+            mode = d;
             InitializeComponent();
             SQLite = new SQLite();
 
@@ -125,13 +133,20 @@ namespace UI
         }
         private void SpendReport_Paint(object sender, PaintEventArgs e)
         {
-            Title.Text = date.Year + "년 " + date.Month + "월 재정 보고";
-
             setIncomeDGV();
             setSpendDGV();
             setTotalDGVS();
             setIncomeFromDB();
             setSpendFromDB();
+            if ( mode == DMode.Month)
+            {
+                Title.Text = date.Year + "년 " + date.Month + "월 재정 보고";
+            }
+            else if ( mode == DMode.Year)
+            {
+                Title.Text = date.Year + "년 재정 보고";
+                Title.Location = new Point(400, 20);
+            }
             setValueIntoDGVS();
         }
 
@@ -163,33 +178,68 @@ namespace UI
 
         public void setIncomeFromDB()
         {
-            Thanks = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Thanks where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-            O10 = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_10 where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-            Cell = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Cell where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-            Archi = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Archi where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-            Mission = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Mission where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-            Rice = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Rice where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-            Help = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Help where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-            Car = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Car where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-            Term = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Term where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-            Other = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Other where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-            Interest = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Interest where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            if ( mode == DMode.Month)
+            {
+                Thanks = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Thanks where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+                O10 = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_10 where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+                Cell = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Cell where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+                Archi = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Archi where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+                Mission = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Mission where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+                Rice = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Rice where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+                Help = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Help where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+                Car = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Car where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+                Term = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Term where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+                Other = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Other where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+                Interest = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Interest where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
 
-            sum = Thanks + O10 + Cell + Archi + Mission + Rice + Help + Car + Term + Other + Interest;
+                sum = Thanks + O10 + Cell + Archi + Mission + Rice + Help + Car + Term + Other + Interest;
+            }
+            else if ( mode == DMode.Year)
+            {
+                Thanks = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Thanks where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
+                O10 = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_10 where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
+                Cell = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Cell where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
+                Archi = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Archi where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
+                Mission = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Mission where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
+                Rice = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Rice where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
+                Help = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Help where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
+                Car = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Car where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
+                Term = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Term where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
+                Other = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Other where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
+                Interest = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Offering_Interest where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
+
+                sum = Thanks + O10 + Cell + Archi + Mission + Rice + Help + Car + Term + Other + Interest;
+            }
         }
 
         public void setSpendFromDB()
         {
-            Worship = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Worship where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-            SMission = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Mission where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-            Edu = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Edu where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-            Human = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Human where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-            Vol = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Vol where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-            Main = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Main where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-            Loan = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Loan where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
-            Res = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Res where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+            if ( mode == DMode.Month)
+            {
+                Worship = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Worship where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+                SMission = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Mission where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+                Edu = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Edu where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+                Human = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Human where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+                Vol = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Vol where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+                Main = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Main where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+                Loan = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Loan where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
+                Res = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Res where strftime('%Y-%m', date) = '{0}'", string.Format(date.Year.ToString() + "-" + date.Month.ToString("d2"))));
 
-            spendSum = Worship + SMission + Edu + Human + Vol + Main + Loan + Res;
+                spendSum = Worship + SMission + Edu + Human + Vol + Main + Loan + Res;
+            }
+            else if ( mode == DMode.Year)
+            {
+                Worship = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Worship where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
+                SMission = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Mission where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
+                Edu = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Edu where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
+                Human = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Human where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
+                Vol = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Vol where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
+                Main = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Main where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
+                Loan = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Loan where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
+                Res = SQLite.ExecuteSumQuery(string.Format("select sum(amount) from Spending_Res where strftime('%Y', date) = '{0}'", string.Format(date.Year.ToString())));
+
+                spendSum = Worship + SMission + Edu + Human + Vol + Main + Loan + Res;
+            }
         }
         
         private void setIncomeDGV()
@@ -351,8 +401,17 @@ namespace UI
 
             afterBalance.Rows[0].Cells[0].Value = "  잔 액";
 
-            beforeBalance.Rows[0].Cells[1].Value = (SQLite.ExecuteSumQuery(string.Format("select amount from checksum where name = '{0}'", date.Year + "-" + (date.Month - 1).ToString("00")))).ToString("n0") + " 원";
-            afterBalance.Rows[0].Cells[1].Value = (SQLite.ExecuteSumQuery(string.Format("select amount from checksum where name = '{0}'", date.Year + "-" + date.Month.ToString("00")))).ToString("n0") + " 원";
+            if( mode == DMode.Month)
+            {
+                beforeBalance.Rows[0].Cells[1].Value = (SQLite.ExecuteSumQuery(string.Format("select amount from checksum where name = '{0}'", date.Year + "-" + (date.Month - 1).ToString("00")))).ToString("n0") + " 원";
+                afterBalance.Rows[0].Cells[1].Value = (SQLite.ExecuteSumQuery(string.Format("select amount from checksum where name = '{0}'", date.Year + "-" + date.Month.ToString("00")))).ToString("n0") + " 원";
+            }
+            else if (mode == DMode.Year)
+            {
+                beforeBalance.Rows[0].Cells[1].Value = (SQLite.ExecuteSumQuery(string.Format("select amount from checksum where name = '{0}'", date.Year + "-00"))).ToString("n0") + " 원";
+                afterBalance.Rows[0].Cells[1].Value = (SQLite.ExecuteSumQuery(string.Format("select amount from checksum where name = '{0}'", date.Year + "-12"))).ToString("n0") + " 원";
+            }
+            
         }
 
         private void AfterBalance_SelectionChanged(object sender, EventArgs e)
