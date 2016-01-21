@@ -407,7 +407,7 @@ namespace UI
             // 현재 데이터 입력
             curPray.Flower = 100000;
             curPray.Singer = 100000;
-            curPray.Jubo = 0;
+            curPray.Jubo = 2000000;
             curMissionWork.Misson = 660000;
             curMissionWork.Visit = 0;
             curEdu.WeekSchool = 200000;
@@ -460,14 +460,15 @@ namespace UI
             this.BackColor = Color.White;
 
             // 행 갯수와 Alignment
-            DataView.Location = new Point(80, 80);
-            DataView.Size = new Size(800, 400);
+            DataView.Location = new Point(60, 40);
+            DataView.Size = new Size(860, 452);
             DataView.ColumnCount = 7;
+
             DataView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             DataView.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
-            DataView.Font = new Font("Microsoft Sans Serif", 11);
-            DataView.RowTemplate.Height = 25;
+            DataView.Font = new Font("Microsoft Sans Serif", 12);
+            DataView.RowTemplate.Height = 30;
 
             // 컬럼 헤더
             DataView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
@@ -481,31 +482,50 @@ namespace UI
             DataView.Columns[6].HeaderText = "진도비";
             DataView.AllowUserToAddRows = false;
 
+            DataView.Columns[0].Width = 100;
+            DataView.Columns[1].Width = 130;
+            DataView.Columns[2].Width = 130;
+            DataView.Columns[3].Width = 130;
+            DataView.Columns[4].Width = 130;
+            DataView.Columns[5].Width = 130;
+            DataView.Columns[6].Width = 90;
+            /*
             for (int i = 0; i < DataView.ColumnCount; i++)
                 DataView.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                */
 
             for (int i = 0; i < DataView.ColumnCount; i++)
                 DataView.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
-            DataView.ReadOnly = true;
-
             DataView.RowCount = 37;
+            DataView.Rows[0].DefaultCellStyle.BackColor = Color.Lavender;
+            DataView.Rows[7].DefaultCellStyle.BackColor = Color.Lavender;
+            DataView.Rows[4].DefaultCellStyle.BackColor = Color.Lavender;
+            DataView.Rows[13].DefaultCellStyle.BackColor = Color.Lavender;
+            DataView.Rows[17].DefaultCellStyle.BackColor = Color.Lavender;
+            DataView.Rows[21].DefaultCellStyle.BackColor = Color.Lavender;
+            DataView.Rows[32].DefaultCellStyle.BackColor = Color.Lavender;
+            DataView.Rows[35].DefaultCellStyle.BackColor = Color.Lavender;
+            DataView.Rows[36].DefaultCellStyle.BackColor = Color.Lavender;
+
+            DataView.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            DataView.Columns[0].DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
+            DataView.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            DataView.Columns[1].DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
+            DataView.RowHeadersVisible = false;
+
+            DataView.SelectionChanged += DataView_SelectionChanged;
+            DataView.ClearSelection();
 
             // 프린트 관련 변수 및 이벤트 연결
             pd = new PrintDocument();
             pgSettings = new PageSettings();
             pd.PrintPage += Pd_PrintPage;
-            printBtn.Click += PrintBtn_Click;
 
         }
 
-        private void PrintBtn_Click(object sender, EventArgs e)
+        private void DataView_SelectionChanged(object sender, EventArgs e)
         {
-            PrintPreviewDialog dig = new PrintPreviewDialog();
-
-            dig.Document = pd;
-
-            dig.ShowDialog();
         }
 
         #region 프린터 인쇄 처리
@@ -517,19 +537,13 @@ namespace UI
         /// <param name="e"></param>
         private void Pd_PrintPage(object sender, PrintPageEventArgs e)
         {
-
-            int curYPos;
-
-            SizeF sz = e.Graphics.MeasureString(title.Text, new Font("Tahoma", 20));
-            //e.Graphics.DrawString(title.Text, new Font("Tahoma", 20), new SolidBrush(Color.Black), new Point((int)(pgSettings.PaperSize.Width / 2 - (sz.Width / 2)), curYPos));
-
             Bitmap tapBM = new Bitmap(pgSettings.PaperSize.Width, pgSettings.PaperSize.Height);
 
             // 사이즈 임시 저장
             Size tempSz = DataView.Size;
 
             // 높이에 맞는 사이즈 설정
-            DataView.Size = new Size(tempSz.Width, pgSettings.PaperSize.Height);
+            DataView.Size = new Size(tempSz.Width, 875);
 
             DataView.DrawToBitmap(tapBM, new Rectangle(new Point(0, 0), new Size(pgSettings.PaperSize.Width, pgSettings.PaperSize.Height)));
 
@@ -537,7 +551,15 @@ namespace UI
 
             DataView.Size = tempSz;
         }
-        
+
+        private void Btn_Click(object sender, EventArgs e)
+        {
+            PrintPreviewDialog dig = new PrintPreviewDialog();
+
+            dig.Document = pd;
+
+            dig.ShowDialog();
+        }
 
         #endregion
 
@@ -767,8 +789,8 @@ namespace UI
         /// <param name="e"></param>
         private void SpendDetail_Paint(object sender, PaintEventArgs e)
         {
-            title.Text = date.Year + "년 " + date.Month + "월 지출 세부 명세";
-            title.Location = new Point(350, 20);
+            label1.Text = date.Year + "년 " + date.Month + "월 지출 세부 명세";
+            label1.Location = new Point(350, 10);
             inputData();
         }
     }
@@ -1406,3 +1428,4 @@ namespace UI
     }
     #endregion
 }
+

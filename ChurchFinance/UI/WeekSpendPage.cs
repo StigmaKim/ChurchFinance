@@ -59,6 +59,11 @@ namespace UI
 
         private void DateTimePicker1_CloseUp(object sender, EventArgs e)
         {
+            SetData();
+        }
+
+        public void SetData()
+        {
             SetWorshipDGV(2);
             SetMissionDGV(2);
             SetEduDGV(2);
@@ -69,7 +74,6 @@ namespace UI
             SetResDGV(2);
 
             SetInputSumDGV();
-            Debug.WriteLine("HHHHHHHHHHHHHHHHHHHHHH");
 
             W_SpendTab.Controls.Add(_spend_Worship);
             currentTab = _spend_Worship;
@@ -192,6 +196,8 @@ namespace UI
             spend.AllowUserToAddRows = false;
             spend.RowHeadersWidthSizeMode =
                 DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            spend.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            spend.Columns[0].DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
 
             spend.Columns[0].Name = "항 목";
             spend.Columns[1].Name = "금 액";
@@ -216,6 +222,9 @@ namespace UI
             spend_total.RowHeadersWidthSizeMode =
                 DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             spend_total.RowHeadersDefaultCellStyle.Padding = new Padding(spend_total.RowHeadersWidth);
+            spend_total.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            spend_total.Columns[0].DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
+
 
             spend_total.Rows[0].Cells[0].Value = "Total";
             spend_total.ClearSelection();
@@ -241,6 +250,8 @@ namespace UI
             _spend_total.RowHeadersWidthSizeMode =
                 DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             _spend_total.RowHeadersDefaultCellStyle.Padding = new Padding(_spend_total.RowHeadersWidth);
+            _spend_total.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            _spend_total.Columns[0].DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
 
             _spend_total.Rows[0].Cells[0].Value = "Total";
             _spend_total.Rows[0].Cells[1].Value = "";
@@ -798,6 +809,9 @@ namespace UI
                 for (int i = 0; i < _spend_Worship.ColumnCount; i++)
                     _spend_Worship.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
+                _spend_Worship.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                _spend_Worship.Columns[0].DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
+
                 // Set Sumation.
                 int sum = 0;
                 for (int i = 0; i < _spend_Worship.RowCount; i++)
@@ -860,6 +874,9 @@ namespace UI
                     _spend_Mission.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 for (int i = 0; i < _spend_Mission.ColumnCount; i++)
                     _spend_Mission.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+
+                _spend_Mission.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                _spend_Mission.Columns[0].DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
 
                 // Set Sumation.
                 int sum = 0;
@@ -928,6 +945,9 @@ namespace UI
                 for (int i = 0; i < _spend_Edu.ColumnCount; i++)
                     _spend_Edu.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
+                _spend_Edu.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                _spend_Edu.Columns[0].DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
+
                 // Set Sumation.
                 int sum = 0;
                 for (int i = 0; i < _spend_Edu.RowCount; i++)
@@ -991,6 +1011,9 @@ namespace UI
                 for (int i = 0; i < _spend_Human.ColumnCount; i++)
                     _spend_Human.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
+                _spend_Human.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                _spend_Human.Columns[0].DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
+
                 // Set Sumation.
                 int sum = 0;
                 for (int i = 0; i < _spend_Human.RowCount; i++)
@@ -1053,6 +1076,9 @@ namespace UI
                     _spend_Vol.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 for (int i = 0; i < _spend_Vol.ColumnCount; i++)
                     _spend_Vol.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+
+                _spend_Vol.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                _spend_Vol.Columns[0].DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
 
                 // Set Sumation.
                 int sum = 0;
@@ -1129,6 +1155,9 @@ namespace UI
                 for (int i = 0; i < _spend_Main.ColumnCount; i++)
                     _spend_Main.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
+                _spend_Main.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                _spend_Main.Columns[0].DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
+
                 // Set Sumation.
                 int sum = 0;
                 for (int i = 0; i < _spend_Main.RowCount; i++)
@@ -1187,6 +1216,9 @@ namespace UI
                 for (int i = 0; i < _spend_Loan.ColumnCount; i++)
                     _spend_Loan.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
 
+                _spend_Loan.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                _spend_Loan.Columns[0].DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
+
                 // Set Sumation.
                 int sum = 0;
                 for (int i = 0; i < _spend_Loan.RowCount; i++)
@@ -1228,6 +1260,9 @@ namespace UI
                     _spend_Res.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 for (int i = 0; i < _spend_Res.ColumnCount; i++)
                     _spend_Res.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+
+                _spend_Res.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                _spend_Res.Columns[0].DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
 
                 // Set Sumation.
                 int sum = 0;
