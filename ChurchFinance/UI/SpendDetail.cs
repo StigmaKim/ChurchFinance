@@ -370,7 +370,7 @@ namespace UI
             curLoan = new Loan();
             
             #endregion
-                        
+
             printBtn = btn;
 
             // 표 설정
@@ -602,7 +602,7 @@ namespace UI
             if(curPray.getSum() == 0 || budgetPray.getSum() == 0)
                 DataView.Rows[0].Cells[6].Value = 0.ToString("0.00") + "%";
             else
-                DataView.Rows[0].Cells[6].Value = ((float)(curPray.getSum())
+            DataView.Rows[0].Cells[6].Value = ((float)(curPray.getSum())
                 / (float)(budgetPray.getSum()) * 100).ToString("0.00") + "%";
 
             DataView.Rows[1].Cells[1].Value = "강단꽃꽃이";
@@ -637,7 +637,7 @@ namespace UI
             if (curMissionWork.getSum() == 0 || budgetMissionWork.getSum() == 0)
                 DataView.Rows[4].Cells[6].Value = 0.ToString("0.00") + "%";
             else
-                DataView.Rows[4].Cells[6].Value = ((float)(curMissionWork.getSum()) 
+            DataView.Rows[4].Cells[6].Value = ((float)(curMissionWork.getSum())
                 / (float)(budgetMissionWork.getSum()) * 100).ToString("0.00") + "%";
 
             DataView.Rows[5].Cells[1].Value = "선교비";
@@ -664,7 +664,7 @@ namespace UI
             if (curPray.getSum() == 0 || budgetPray.getSum() == 0)
                 DataView.Rows[7].Cells[6].Value = 0.ToString("0.00") + "%";
             else
-                DataView.Rows[7].Cells[6].Value = ((float)(curEdu.getSum())
+            DataView.Rows[7].Cells[6].Value = ((float)(curEdu.getSum())
                 / (float)(budgetEdu.getSum()) * 100).ToString("0.00") + "%";
 
             DataView.Rows[8].Cells[1].Value = "주일학교지원비";
@@ -715,7 +715,7 @@ namespace UI
             if (curPerson.getSum() == 0 || budgetPerson.getSum() == 0)
                 DataView.Rows[13].Cells[6].Value = 0.ToString("0.00") + "%";
             else
-                DataView.Rows[13].Cells[6].Value = ((float)(curPerson.getSum())
+            DataView.Rows[13].Cells[6].Value = ((float)(curPerson.getSum())
                 / (float)(budgetPerson.getSum()) * 100).ToString("0.00") + "%";
 
             DataView.Rows[14].Cells[1].Value = "목사님사례비";
@@ -750,7 +750,7 @@ namespace UI
             if (curService.getSum() == 0 || budgetService.getSum() == 0)
                 DataView.Rows[17].Cells[6].Value = 0.ToString("0.00") + "%";
             else
-                DataView.Rows[17].Cells[6].Value = ((float)(curService.getSum())
+            DataView.Rows[17].Cells[6].Value = ((float)(curService.getSum())
                 / (float)(budgetService.getSum()) * 100).ToString("0.00") + "%";
 
             DataView.Rows[18].Cells[1].Value = "경조비";
@@ -785,7 +785,7 @@ namespace UI
             if (curManage.getSum() == 0 || budgetManage.getSum() == 0)
                 DataView.Rows[21].Cells[6].Value = 0.ToString("0.00") + "%";
             else
-                DataView.Rows[21].Cells[6].Value = ((float)(curManage.getSum())
+            DataView.Rows[21].Cells[6].Value = ((float)(curManage.getSum())
                 / (float)(budgetManage.getSum()) * 100).ToString("0.00") + "%";
 
             DataView.Rows[22].Cells[1].Value = "사택유지비";
@@ -876,7 +876,7 @@ namespace UI
             if (curLoan.getSum() == 0 || budgetLoan.getSum() == 0)
                 DataView.Rows[32].Cells[6].Value = 0.ToString("0.00") + "%";
             else
-                DataView.Rows[32].Cells[6].Value = ((float)(curLoan.getSum())
+            DataView.Rows[32].Cells[6].Value = ((float)(curLoan.getSum())
                 / (float)(budgetLoan.getSum()) * 100).ToString("0.00") + "%";
 
             DataView.Rows[33].Cells[1].Value = "상환적립";
@@ -931,7 +931,7 @@ namespace UI
         {
             label1.Text = date.Year + "년 " + date.Month + "월 지출 세부 명세";
             label1.Location = new Point(350, 10);
-            SetValueFromDB();
+            inputData();
         }
     }
 
