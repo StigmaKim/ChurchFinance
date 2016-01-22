@@ -17,14 +17,6 @@ namespace UI
 {
     public partial class Form1 : Form
     {
-
-        private enum Tab
-        {
-            Year,
-            Month,
-            Week
-        };
-
         // DataGridView 생성
         DataGridView income = null;
         DataGridView income_total = null;
@@ -100,20 +92,10 @@ namespace UI
         Budget BIp;
         Budget BSp;
 
-        // 월탭
         Button reportBtn;
         Button incomeBtn;
         Button spendBtn;
         Button detailBtn;
-
-        // 년도 버튼
-        Button YReportBtn;
-        Button YIncomeBtn;
-        Button YSpendBtn;
-        Button YDetailBtn;
-        Button YPersonBtn;
-
-        Tab curTab;
 
         int cnt = 0;
 
@@ -165,20 +147,13 @@ namespace UI
             W_IncomeTab = new NeoTabPage();
             W_SpendingTab = new NeoTabPage();
 
-            // 월 버튼 선언
+            // 버튼 선언
             reportBtn = new Button();
             incomeBtn = new Button();
             spendBtn = new Button();
             detailBtn = new Button();
 
-            // 년도 버튼 선언
-            YReportBtn = new Button();
-            YIncomeBtn = new Button();
-            YSpendBtn = new Button();
-            YDetailBtn = new Button();
-            YPersonBtn = new Button();
-
-            // 월버튼 세팅
+            // 버튼 세팅
             reportBtn.Size = new Size(107, 40);
             reportBtn.Location = new Point(843, 6);
             reportBtn.Text = "인쇄";
@@ -196,47 +171,15 @@ namespace UI
             detailBtn.Text = "인쇄";
             detailBtn.Font = button1.Font;
 
-            // 년도 버튼 세팅
-            YReportBtn.Size = new Size(107, 40);
-            YReportBtn.Location = new Point(843, 6);
-            YReportBtn.Text = "인쇄";
-            YReportBtn.Font = button1.Font;
-            YIncomeBtn.Size = new Size(107, 40);
-            YIncomeBtn.Location = new Point(843, 6);
-            YIncomeBtn.Text = "인쇄";
-            YIncomeBtn.Font = button1.Font;
-            YSpendBtn.Size = new Size(107, 40);
-            YSpendBtn.Location = new Point(843, 6);
-            YSpendBtn.Text = "인쇄";
-            YSpendBtn.Font = button1.Font;
-            YDetailBtn.Size = new Size(107, 40);
-            YDetailBtn.Location = new Point(843, 6);
-            YDetailBtn.Text = "인쇄";
-            YDetailBtn.Font = button1.Font;
-            YPersonBtn.Size = new Size(107, 40);
-            YPersonBtn.Location = new Point(843, 6);
-            YPersonBtn.Text = "인쇄";
-            YPersonBtn.Font = button1.Font;
-            
             panel1.Controls.Add(reportBtn);
             panel1.Controls.Add(incomeBtn);
             panel1.Controls.Add(spendBtn);
             panel1.Controls.Add(detailBtn);
-            panel1.Controls.Add(YReportBtn);
-            panel1.Controls.Add(YIncomeBtn);
-            panel1.Controls.Add(YSpendBtn);
-            panel1.Controls.Add(YDetailBtn);
-            panel1.Controls.Add(YPersonBtn);
 
-            curTab = Tab.Week;
-
-            /*
             reportBtn.Show();
             incomeBtn.Hide();
             spendBtn.Hide();
             detailBtn.Hide();
-            */
-            //
 
             // 월별 탭
             M_ReportTab = new NeoTabPage();
@@ -269,31 +212,31 @@ namespace UI
             // 년도 탭 
             Y_ReportTab = new NeoTabPage();
             Y_ReportTab.Text = "재정 보고";
-            yearSR = new SpendReport(SpendReport.DMode.Year, YReportBtn);
+            yearSR = new SpendReport(SpendReport.DMode.Year, new Button());
             yearSR.Dock = DockStyle.Fill;
             Y_ReportTab.Controls.Add(yearSR);
 
             Y_IncomeTab = new NeoTabPage();
             Y_IncomeTab.Text = "재정 수입";
-            yearIP = new IncomeProgress(IncomeProgress.DMode.Y_income, YIncomeBtn);
+            yearIP = new IncomeProgress(IncomeProgress.DMode.Y_income, new Button());
             yearIP.Dock = DockStyle.Fill;
             Y_IncomeTab.Controls.Add(yearIP);
 
             Y_SpendingTab = new NeoTabPage();
             Y_SpendingTab.Text = "재정 지출";
-            yearSP = new IncomeProgress(IncomeProgress.DMode.Y_spend, YSpendBtn);
+            yearSP = new IncomeProgress(IncomeProgress.DMode.Y_spend, new Button());
             yearSP.Dock = DockStyle.Fill;
             Y_SpendingTab.Controls.Add(yearSP);
 
             Y_DetailTab = new NeoTabPage();
             Y_DetailTab.Text = "지출 세부 항목";
-            yearSD = new SpendDetail(SpendDetail.DMode.Year, YDetailBtn);
+            yearSD = new SpendDetail(SpendDetail.DMode.Year, new Button());
             yearSD.Dock = DockStyle.Fill;
             Y_DetailTab.Controls.Add(yearSD);
             
             Y_PersonTab = new NeoTabPage();
             Y_PersonTab.Text = "개인별 정산";
-            yearR = new YReport(YPersonBtn);
+            yearR = new YReport();
             yearR.Dock = DockStyle.Fill;
             Y_PersonTab.Controls.Add(yearR);
             
@@ -314,137 +257,35 @@ namespace UI
             createCheckSumTable();
         }
 
-        /// <summary>
-        /// 탭 변경에 따른 버튼 배치
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void NeoTabWindow1_SelectedIndexChanged(object sender, SelectedIndexChangedEventArgs e)
         {
-            // 재정보고 탭
             if (neoTabWindow1.SelectedIndex == 0)
             {
-                if (curTab == Tab.Month)
-                {
-                    YReportBtn.Hide();
-                    YIncomeBtn.Hide();
-                    YSpendBtn.Hide();
-                    YDetailBtn.Hide();
-                    YPersonBtn.Hide();
-                    reportBtn.Show();
-                    incomeBtn.Hide();
-                    spendBtn.Hide();
-                    detailBtn.Hide();
-                }
-                else if(curTab == Tab.Year)
-                {
-                    reportBtn.Hide();
-                    incomeBtn.Hide();
-                    spendBtn.Hide();
-                    detailBtn.Hide();
-                    YReportBtn.Show();
-                    YIncomeBtn.Hide();
-                    YSpendBtn.Hide();
-                    YDetailBtn.Hide();
-                    YPersonBtn.Hide();
-                }
-            }
-            // 재정수입 탭
-            else if (neoTabWindow1.SelectedIndex == 1)
-            {
-                if (curTab == Tab.Month)
-                {
-                    YReportBtn.Hide();
-                    YIncomeBtn.Hide();
-                    YSpendBtn.Hide();
-                    YDetailBtn.Hide();
-                    YPersonBtn.Hide();
-                    reportBtn.Hide();
-                    incomeBtn.Show();
-                    spendBtn.Hide();
-                    detailBtn.Hide();
-                }
-                else if(curTab == Tab.Year)
-                {
-                    reportBtn.Hide();
-                    incomeBtn.Hide();
-                    spendBtn.Hide();
-                    detailBtn.Hide();
-                    YReportBtn.Hide();
-                    YIncomeBtn.Show();
-                    YSpendBtn.Hide();
-                    YDetailBtn.Hide();
-                    YPersonBtn.Hide();
-                }
-            }
-            // 재정지출 탭
-            else if (neoTabWindow1.SelectedIndex == 2)
-            {
-                if(curTab == Tab.Month)
-                {
-                    YReportBtn.Hide();
-                    YIncomeBtn.Hide();
-                    YSpendBtn.Hide();
-                    YDetailBtn.Hide();
-                    YPersonBtn.Hide();
-                    reportBtn.Hide();
-                    incomeBtn.Hide();
-                    spendBtn.Show();
-                    detailBtn.Hide();
-                }
-                else if(curTab == Tab.Year)
-                {
-                    YReportBtn.Hide();
-                    YIncomeBtn.Hide();
-                    YSpendBtn.Show();
-                    YDetailBtn.Hide();
-                    YPersonBtn.Hide();
-                    reportBtn.Hide();
-                    incomeBtn.Hide();
-                    spendBtn.Hide();
-                    detailBtn.Hide();
-                }
-            }
-            // 세부 항목 지출 탭
-            else if (neoTabWindow1.SelectedIndex == 3)
-            {
-                if(curTab == Tab.Month)
-                {
-                    YReportBtn.Hide();
-                    YIncomeBtn.Hide();
-                    YSpendBtn.Hide();
-                    YDetailBtn.Hide();
-                    YPersonBtn.Hide();
-                    reportBtn.Hide();
-                    incomeBtn.Hide();
-                    spendBtn.Hide();
-                    detailBtn.Show();
-                }
-                else if(curTab == Tab.Year)
-                {
-                    YReportBtn.Hide();
-                    YIncomeBtn.Hide();
-                    YSpendBtn.Hide();
-                    YDetailBtn.Show();
-                    YPersonBtn.Hide();
-                    reportBtn.Hide();
-                    incomeBtn.Hide();
-                    spendBtn.Hide();
-                    detailBtn.Hide();
-                }
-            }
-            // 사람
-            else if(neoTabWindow1.SelectedIndex == 4)
-            {
-                YReportBtn.Hide();
-                YIncomeBtn.Hide();
-                YSpendBtn.Hide();
-                YDetailBtn.Hide();
-                YPersonBtn.Show();
-                reportBtn.Hide();
+                reportBtn.Show();
                 incomeBtn.Hide();
                 spendBtn.Hide();
                 detailBtn.Hide();
+            }
+            else if (neoTabWindow1.SelectedIndex == 1)
+            {
+                reportBtn.Hide();
+                incomeBtn.Show();
+                spendBtn.Hide();
+                detailBtn.Hide();
+            }
+            else if (neoTabWindow1.SelectedIndex == 2)
+            {
+                reportBtn.Hide();
+                incomeBtn.Hide();
+                spendBtn.Show();
+                detailBtn.Hide();
+            }
+            else if (neoTabWindow1.SelectedIndex == 3)
+            {
+                reportBtn.Hide();
+                incomeBtn.Hide();
+                spendBtn.Hide();
+                detailBtn.Show();
             }
         }
 
@@ -620,8 +461,6 @@ namespace UI
         {
             neoTabWindow1.Controls.Clear();
 
-            curTab = Tab.Year;
-
             neoTabWindow1.Controls.Add(Y_ReportTab);
             neoTabWindow1.Controls.Add(Y_IncomeTab);
             neoTabWindow1.Controls.Add(Y_SpendingTab);
@@ -657,22 +496,11 @@ namespace UI
             button1.Visible = false;
             button2.Visible = true;
 
-            // 버튼
-            YReportBtn.Show();
-            YIncomeBtn.Hide();
-            YSpendBtn.Hide();
-            YDetailBtn.Hide();
-            YPersonBtn.Hide();
-            reportBtn.Hide();
-            incomeBtn.Hide();
-            spendBtn.Hide();
-            detailBtn.Hide();
+            // 값 세팅 부분
         }
         private void MonthBtn_Click(object sender, EventArgs e)
         {
             neoTabWindow1.Controls.Clear();
-
-            curTab = Tab.Month;
 
             neoTabWindow1.Controls.Add(M_ReportTab);
             neoTabWindow1.Controls.Add(M_IncomeTab);
@@ -703,24 +531,12 @@ namespace UI
 
             // SpendDetail
             sd.SetDate(dateTimePicker1.Value);
-
-            YReportBtn.Hide();
-            YIncomeBtn.Hide();
-            YSpendBtn.Hide();
-            YDetailBtn.Hide();
-            YPersonBtn.Hide();
-            reportBtn.Show();
-            incomeBtn.Hide();
-            spendBtn.Hide();
-            detailBtn.Hide();
         }
         private void WeekBtn_Click(object sender, EventArgs e)
         {
             neoTabWindow1.Controls.Clear();
             neoTabWindow1.Controls.Add(W_IncomeTab);
             neoTabWindow1.Controls.Add(W_SpendingTab);
-
-            curTab = Tab.Week;
 
             currentCategory = "Week";
             button1.Visible = true;

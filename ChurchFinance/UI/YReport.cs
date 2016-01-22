@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
-using System.Drawing.Printing;
 
 namespace UI
 {
@@ -34,13 +33,9 @@ namespace UI
 
         #endregion
 
-        PrintDocument pd;
-        PageSettings pgSettings;
-        Button printButton;
-
         #region 생성자
 
-        public YReport(Button printBtn)
+        public YReport()
         {
             InitializeComponent();
             SQLite = new SQLite();
@@ -61,7 +56,6 @@ namespace UI
             sum = 0;
 
             #endregion
-
             NN.Location = new Point(750, 50);
             NN.Font = new Font("Microsoft Sans Serif", 13);
             name.Font = new Font("Microsoft Sans Serif", 15);
@@ -85,63 +79,7 @@ namespace UI
 
             inputData();
 
-            pd = new PrintDocument();
-            pgSettings = new PageSettings();
-
-            printButton = printBtn;
-            printButton.Click += PrintButton_Click;
-            Paint += YReport_Paint;
-            pd.PrintPage += Pd_PrintPage;   
-        }
-
-        private void PrintButton_Click(object sender, EventArgs e)
-        {
-            PrintPreviewDialog ppd = new PrintPreviewDialog();
-
-            ppd.Document = pd;
-
-            ppd.ShowDialog();
-
-        }
-
-        private void Pd_PrintPage(object sender, PrintPageEventArgs e)
-        {
-            int curYPos = 80;
-
-            income.RowHeadersVisible = false;
-
-            SizeF sz = e.Graphics.MeasureString(title.Text, new Font("Tahoma", 20));
-            e.Graphics.DrawString(title.Text, new Font("Tahoma", 20), new SolidBrush(Color.Black), new Point((int)(pgSettings.PaperSize.Width / 2 - (sz.Width / 2)), curYPos));
-
-            curYPos += 80;
-
-            SizeF nameSz = e.Graphics.MeasureString(name.Text, new Font("Tahoma", 15));
-            e.Graphics.DrawString(name.Text, new Font("Tahoma", 12), new SolidBrush(Color.Black), new Point((int)(pgSettings.PaperSize.Width / 2 - (nameSz.Width / 2)), curYPos));
-
-            curYPos += 120;
-
-            Bitmap bm = new Bitmap(this.income.Width, this.income.Height);
-            income.DrawToBitmap(bm, new Rectangle(0, 0, this.income.Width, this.income.Height));
-
-            // DataGridView 그리기
-            // e.Graphics.DrawImage(bm, new Rectangle(pgSettings.Margins.Right / 2, curYPos, pgSettings.PaperSize.Width - ((pgSettings.Margins.Left / 2) + pgSettings.Margins.Right), this.income.Height));
-            e.Graphics.DrawImage(bm, new Rectangle((pgSettings.PaperSize.Width / 2 - bm.Width / 2), curYPos, this.income.Width, this.income.Height));
-            
-            curYPos += bm.Size.Height + 15;
-
-            income.RowHeadersVisible = true;
-            total.RowHeadersVisible = false;
-
-            Bitmap totalBm = new Bitmap(this.total.Width, this.total.Height);
-            total.DrawToBitmap(totalBm, new Rectangle(0, 0, this.total.Width, this.total.Height));
-
-            // DataGridView 그리기
-            // e.Graphics.DrawImage(bm, new Rectangle(pgSettings.Margins.Right / 2, curYPos, pgSettings.PaperSize.Width - ((pgSettings.Margins.Left / 2) + pgSettings.Margins.Right), this.income.Height));
-            e.Graphics.DrawImage(totalBm, new Rectangle((pgSettings.PaperSize.Width / 2 - totalBm.Width / 2), curYPos, this.total.Width, this.total.Height));
-
-
-            total.RowHeadersVisible = true;            
-
+            Paint += YReport_Paint;            
         }
 
         public void SetDate(DateTime d)
