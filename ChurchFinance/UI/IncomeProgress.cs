@@ -1028,6 +1028,68 @@ namespace UI
                 AdditionalView.RowHeadersVisible = true;
                 SumView.RowHeadersVisible = true;
             }
+            else if(mode == DMode.Y_income)
+            {
+                int curYPos = 150;
+                int margin = 20;
+
+                budgetView.RowHeadersVisible = false;
+                AdditionalView.RowHeadersVisible = false;
+                SumView.RowHeadersVisible = false;
+
+                // 문자 그리기
+                SizeF sz = e.Graphics.MeasureString(title.Text, new Font("Tahoma", 20));
+                e.Graphics.DrawString(title.Text, new Font("Tahoma", 20), new SolidBrush(Color.Black), new Point((int)(pgSettings.PaperSize.Width / 2 - (sz.Width / 2)), curYPos));
+
+                Bitmap bm = new Bitmap(this.budgetView.Width, this.budgetView.Height);
+                budgetView.DrawToBitmap(bm, new Rectangle(0, 0, this.budgetView.Width, this.budgetView.Height));
+
+                curYPos += (int)sz.Height + 80;
+
+                // DataGridView 그리기
+                e.Graphics.DrawImage(bm, new Rectangle(pgSettings.Margins.Right / 2, curYPos, pgSettings.PaperSize.Width - ((pgSettings.Margins.Left / 2) + pgSettings.Margins.Right), this.budgetView.Height));
+
+                curYPos += bm.Size.Height + 15;
+
+                bm = new Bitmap(this.AdditionalView.Width, this.AdditionalView.Height);
+                AdditionalView.DrawToBitmap(bm, new Rectangle(0, 0, this.AdditionalView.Width, this.AdditionalView.Height));
+                e.Graphics.DrawImage(bm, new Rectangle(pgSettings.Margins.Right / 2, curYPos, pgSettings.PaperSize.Width - ((pgSettings.Margins.Left / 2) + pgSettings.Margins.Right), this.AdditionalView.Height));
+
+                curYPos += bm.Size.Height + 15;
+
+                bm = new Bitmap(this.SumView.Width, this.SumView.Height);
+                SumView.DrawToBitmap(bm, new Rectangle(0, 0, this.SumView.Width, this.SumView.Height));
+                e.Graphics.DrawImage(bm, new Rectangle(pgSettings.Margins.Right / 2, curYPos, pgSettings.PaperSize.Width - ((pgSettings.Margins.Left / 2) + pgSettings.Margins.Right), this.SumView.Height));
+
+                budgetView.RowHeadersVisible = true;
+                AdditionalView.RowHeadersVisible = true;
+                SumView.RowHeadersVisible = true;
+            }
+            else if(mode == DMode.Y_spend)
+            {
+                int curYPos = 150;
+                int margin = 20;
+
+                budgetView.RowHeadersVisible = false;
+
+                // 문자 그리기
+                SizeF sz = e.Graphics.MeasureString(title.Text, new Font("Tahoma", 20));
+                e.Graphics.DrawString(title.Text, new Font("Tahoma", 20), new SolidBrush(Color.Black), new Point((int)(pgSettings.PaperSize.Width / 2 - (sz.Width / 2)), curYPos));
+
+                Bitmap bm = new Bitmap(this.budgetView.Width, this.budgetView.Height);
+                budgetView.DrawToBitmap(bm, new Rectangle(0, 0, this.budgetView.Width, this.budgetView.Height));
+
+                curYPos += (int)sz.Height + 80;
+
+                // DataGridView 그리기
+                e.Graphics.DrawImage(bm, new Rectangle(pgSettings.Margins.Right / 2, curYPos, pgSettings.PaperSize.Width - ((pgSettings.Margins.Left / 2) + pgSettings.Margins.Right), this.budgetView.Height));
+
+                curYPos += bm.Size.Height + 15;
+
+                budgetView.RowHeadersVisible = true;
+                AdditionalView.RowHeadersVisible = true;
+                SumView.RowHeadersVisible = true;
+            }
         }
 
         #endregion
