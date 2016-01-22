@@ -21,7 +21,7 @@ namespace UI
 
         // 기타 변수
         private DateTime date;
-
+        
         private String personName;
 
         public PersonDetail()

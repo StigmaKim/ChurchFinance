@@ -9,7 +9,6 @@ namespace UI
     static class Program
     {
 
-        enum Mode { Test, Regular};
         /// <summary>
         /// 해당 응용 프로그램의 주 진입점입니다.
         /// </summary>
@@ -19,17 +18,7 @@ namespace UI
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Mode mode = Mode.Regular;
-
-            switch(mode)
-            {
-                case Mode.Regular:
-                    Application.Run(new Form1());
-                    break;
-                case Mode.Test:
-                    Application.Run(new TestForm());
-                    break;
-            }
+            Application.Run(new Form1());
         }
     }
 }
