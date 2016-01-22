@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UI</RootNamespace>
     <AssemblyName>UI</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -64,30 +64,35 @@
   <PropertyGroup>
     <SignManifests>true</SignManifests>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-  </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>UI.Program</StartupObject>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NeoTabControlLibrary">
-      <HintPath>..\..\..\..\Download\NeoTabControlLibrary_demo\NeoTabControlLibrary.dll</HintPath>
+    <Reference Include="NeoTabControlLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\NeoTabControlLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="NeoTabControlLibrary.CommonObjects">
-      <HintPath>..\..\..\..\Download\NeoTabControlLibrary_demo\NeoTabControlLibrary.CommonObjects.dll</HintPath>
+    <Reference Include="NeoTabControlLibrary.CommonObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\NeoTabControlLibrary.CommonObjects.dll</HintPath>
     </Reference>
-    <Reference Include="NeoTabControlLibrary.Renderer.MarginBlue">
-      <HintPath>..\..\..\..\Download\NeoTabControlLibrary_demo\Add-ins\MarginBlue\NeoTabControlLibrary.Renderer.MarginBlue.dll</HintPath>
+    <Reference Include="NeoTabControlLibrary.Renderer.MarginBlue, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Add-ins\MarginBlue\NeoTabControlLibrary.Renderer.MarginBlue.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite, Version=1.0.79.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Library\C#\System.Data.SQLite.dll</HintPath>
+      <HintPath>bin\Debug\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
